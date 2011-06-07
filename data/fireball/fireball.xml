@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<character>
+   <name>fireball</name>
+   <type>projectile</type>
+   <position x_pos="15" y_pos="5" alpha="0.9" scale="1"/>
+   <action name="start" trigger="NONE" from="start" to="start" continual="true"/>
+   <animation name="start">
+      <frame path="data/fireball/fireball00.png" width="40" height="20" delay="20">
+         <move x_vel=".6" y_vel="0"/>
+         <offense x_pos="20" y_pos="4" width="12" height="12"/>
+         <collision path="data/fireball_collision/fireball_collision.xml" opponent="HIT_M" x_pos="0" y_pos="0" index="2"/>
+      </frame>
+      <frame path="data/fireball/fireball01.png" width="40" height="20" delay="20">
+         <move x_vel=".6" y_vel="0"/>
+         <offense x_pos="20" y_pos="4" width="12" height="12"/>
+         <collision path="data/fireball_collision/fireball_collision.xml" opponent="HIT_M" x_pos="0" y_pos="0" index="2"/>
+      </frame>
+      <frame path="data/fireball/fireball02.png" width="40" height="20" delay="20">
+         <move x_vel=".6" y_vel="0"/>
+         <offense x_pos="20" y_pos="4" width="12" height="12"/>
+         <collision path="data/fireball_collision/fireball_collision.xml" opponent="HIT_M" x_pos="0" y_pos="0" index="2"/>
+      </frame>
+      <frame path="data/fireball/fireball03.png" width="40" height="20" delay="20">
+         <move x_vel=".6" y_vel="0"/>
+         <offense x_pos="20" y_pos="4" width="12" height="12"/>
+         <collision path="data/fireball_collision/fireball_collision.xml" opponent="HIT_M" x_pos="0" y_pos="0" index="2"/>
+      </frame>
+      <frame path="data/fireball/fireball04.png" width="40" height="20" delay="20">
+         <move x_vel=".6" y_vel="0"/>
+         <offense x_pos="20" y_pos="4" width="12" height="12"/>
+         <collision path="data/fireball_collision/fireball_collision.xml" opponent="HIT_M" x_pos="0" y_pos="0" index="2"/>
+      </frame>
+      <frame path="data/fireball/fireball05.png" width="40" height="20" delay="20">
+         <move x_vel=".6" y_vel="0"/>
+         <offense x_pos="20" y_pos="4" width="12" height="12"/>
+         <collision path="data/fireball_collision/fireball_collision.xml" opponent="HIT_M" x_pos="0" y_pos="0" index="2"/>
+      </frame>
+      <frame path="data/fireball/fireball06.png" width="40" height="20" delay="20">
+         <move x_vel=".6" y_vel="0"/>
+         <offense x_pos="20" y_pos="4" width="12" height="12"/>
+         <collision path="data/fireball_collision/fireball_collision.xml" opponent="HIT_M" x_pos="0" y_pos="0" index="2"/>
+      </frame>
+      <frame path="data/fireball/fireball07.png" width="40" height="20" delay="20">
+         <move x_vel=".6" y_vel="0"/>
+         <offense x_pos="20" y_pos="4" width="12" height="12"/>
+         <collision path="data/fireball_collision/fireball_collision.xml" opponent="HIT_M" x_pos="0" y_pos="0" index="2"/>
+      </frame>
+      <frame path="data/fireball/fireball08.png" width="40" height="20" delay="20">
+         <move x_vel=".6" y_vel="0"/>
+         <offense x_pos="20" y_pos="4" width="12" height="12"/>
+         <collision path="data/fireball_collision/fireball_collision.xml" opponent="HIT_M" x_pos="0" y_pos="0" index="2"/>
+      </frame>
+      <frame path="data/fireball/fireball09.png" width="40" height="20" delay="20">
+         <move x_vel=".6" y_vel="0"/>
+         <offense x_pos="20" y_pos="4" width="12" height="12"/>
+         <collision path="data/fireball_collision/fireball_collision.xml" opponent="HIT_M" x_pos="0" y_pos="0" index="2"/>
+      </frame>
+   </animation>
+</character>

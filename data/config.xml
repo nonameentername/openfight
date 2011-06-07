@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<configuration>
+   <player_one>
+      <key_up device = "keyboard" key="115"/>
+      <key_down device = "keyboard" key="120"/>
+      <key_left device = "keyboard" key="122"/>
+      <key_right device = "keyboard" key="99"/>
+      <key_a device = "keyboard" key="106"/>
+      <key_b device = "keyboard" key="107"/>
+      <key_c device = "keyboard" key="108"/>
+      <key_x device = "keyboard" key="109"/>
+      <key_y device = "keyboard" key="44"/>
+      <key_z device = "keyboard" key="46"/>
+   </player_one>
+   <player_two>
+      <key_up device = "keyboard" key="273"/>
+      <key_down device = "keyboard" key="274"/>
+      <key_left device = "keyboard" key="276"/>
+      <key_right device = "keyboard" key="275"/>
+      <key_a device = "keyboard" key="260"/>
+      <key_b device = "keyboard" key="261"/>
+      <key_c device = "keyboard" key="262"/>
+      <key_x device = "keyboard" key="257"/>
+      <key_y device = "keyboard" key="258"/>
+      <key_z device = "keyboard" key="259"/>
+   </player_two>
+</configuration>

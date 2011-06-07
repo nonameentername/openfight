@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<character>
+   <name>fireball_collision</name>
+   <type>temporary</type>
+   <position x_pos="5" y_pos="0" alpha="0.9" scale="1"/>
+   <action name="start" trigger="NONE" from="start" to="start" continual="true"/>
+   <animation name="start">
+      <frame path="data/fireball_collision/fireball_collision00.png" width="40" height="40" delay="1"/>
+      <frame path="data/fireball_collision/fireball_collision01.png" width="40" height="40" delay="1"/>
+      <frame path="data/fireball_collision/fireball_collision02.png" width="40" height="40" delay="1"/>
+      <frame path="data/fireball_collision/fireball_collision03.png" width="40" height="40" delay="1"/>
+      <frame path="data/fireball_collision/fireball_collision04.png" width="40" height="40" delay="1"/>
+      <frame path="data/fireball_collision/fireball_collision05.png" width="40" height="40" delay="1"/>
+      <frame path="data/fireball_collision/fireball_collision06.png" width="40" height="40" delay="1"/>
+      <frame path="data/fireball_collision/fireball_collision07.png" width="40" height="40" delay="1"/>
+      <frame path="data/fireball_collision/fireball_collision08.png" width="40" height="40" delay="1"/>
+      <frame path="data/fireball_collision/fireball_collision09.png" width="40" height="40" delay="1"/>
+      <frame path="data/fireball_collision/fireball_collision10.png" width="40" height="40" delay="1"/>
+      <frame path="data/fireball_collision/fireball_collision11.png" width="40" height="40" delay="1"/>
+      <frame path="data/fireball_collision/fireball_collision12.png" width="40" height="40" delay="1"/>
+      <frame path="data/fireball_collision/fireball_collision13.png" width="40" height="40" delay="1"/>
+   </animation>
+</character>
