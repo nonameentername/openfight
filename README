@@ -3,9 +3,9 @@ Use cmake to compile this project.
 On ubuntu install the required packages:
     build-essential
     libxml2-dev
-    libsdl1.2-all
-    libsdl-image-1.2
-    libglut-dev
+    libsdl1.2-dev
+    libsdl-image1.2-dev
+    libglu1-mesa-dev
 
 make a directory to hold the build and call cmake:
     mkdir build
