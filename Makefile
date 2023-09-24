@@ -4,8 +4,17 @@ IMAGE_NAME=openfight-compiler
 docker:
 	docker build . -t ${IMAGE_NAME}
 
+UNAME := $(shell uname)
+ifeq ($(UNAME), Windows)
+	UID=1000
+	GID=1000
+else
+	UID=`id -u`
+	GID=`id -g`
+endif
+
 shell:	docker
-	docker run -it --rm -v `pwd`:/tmp/workdir -w /tmp/workdir ${IMAGE_NAME} bash
+	docker run -it --rm -v `pwd`:/tmp/workdir --user ${UID}:${GID} -w /tmp/workdir ${IMAGE_NAME} bash
 
 compile: clean
 	mkdir -p build \
