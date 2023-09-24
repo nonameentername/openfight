@@ -63,7 +63,7 @@ class Player
       Collision *getOffense();
       Collision *getDefense();
 
-      bool initialize(std::string file_name, bool player_one, GLfloat x_pos, GLfloat y_pos);
+      void initialize(std::string file_name, bool player_one, GLfloat x_pos, GLfloat y_pos);
       void setOpponent(Player *opponent);
       bool updateState(std::string command);
       bool updateState(std::string command, bool from_opponent);

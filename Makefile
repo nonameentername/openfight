@@ -24,7 +24,7 @@ compile: clean
 	&& cp ${MAIN}* ..
 
 zip:
-	zip -r ${MAIN}-${PLATFORM}.zip data images ${MAIN} ${MAIN}.exe
+	zip -r ${MAIN}-${PLATFORM}.zip data ${MAIN} ${MAIN}.exe
 
 linux:
 	PLATFORM=linux CXX=g++ make compile	zip
