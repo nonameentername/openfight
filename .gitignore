@@ -1,4 +1,4 @@
 build/*
-openfight
+openfight*
 cmake*
 .idea

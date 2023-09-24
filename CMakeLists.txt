@@ -5,6 +5,7 @@ cmake_minimum_required(VERSION 3.5)
 file(GLOB SOURCE src/*.cpp)
 file(GLOB HEADER src/*.h)
 
+set(OpenGL_GL_PREFERENCE LEGACY)
 find_package(OpenGL REQUIRED)
 find_package(SDL REQUIRED)
 find_package(SDL_image REQUIRED)
@@ -24,6 +25,7 @@ target_link_libraries(
     ${OPENGL_LIBRARY}
     ${SDL_LIBRARY}
     ${SDL_IMAGE_LIBRARIES}
-    ${LIBXML2_LIBRARIES})
+    ${LIBXML2_LIBRARIES}
+)
 
 file(COPY data DESTINATION "${CMAKE_CURRENT_BINARY_DIR}")
