@@ -185,6 +185,7 @@ SDL_Event Input::poll()
                playerKeys[i]->keys[j] = pressed;
             }
    }
+   return event;
 }
 
 string Input::getKeyName(int key)

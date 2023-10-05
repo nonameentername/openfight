@@ -90,7 +90,7 @@ Collision *Player::getDefense()
    return NULL;
 }
 
-bool Player::initialize(std::string file_name, bool player_one, GLfloat x_pos, GLfloat y_pos)
+void Player::initialize(std::string file_name, bool player_one, GLfloat x_pos, GLfloat y_pos)
 {
    xmlDoc  *doc            = NULL;
    xmlNode *root_element   = NULL;

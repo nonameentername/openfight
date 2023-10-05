@@ -101,8 +101,10 @@ int main(int argc, char *argv[])
             if(key != "0" && key != "1")
                done = object_manager->get(key)->update();
 
-            if(done)
-               object_manager->remove(key);
+            if (done) {
+                object_manager->remove(key);
+                break;
+            }
 
             key = object_manager->next();
          }

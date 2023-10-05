@@ -1,10 +1,11 @@
-project(sdl_game)
+project(openfight)
 
-cmake_minimum_required(VERSION 2.6)
+cmake_minimum_required(VERSION 3.5)
 
 file(GLOB SOURCE src/*.cpp)
 file(GLOB HEADER src/*.h)
 
+set(OpenGL_GL_PREFERENCE LEGACY)
 find_package(OpenGL REQUIRED)
 find_package(SDL REQUIRED)
 find_package(SDL_image REQUIRED)
@@ -17,11 +18,14 @@ include_directories(
     ${SDL_IMAGE_INCLUDE_DIR}
     ${LIBXML2_INCLUDE_DIR})
 
-add_executable(sdl_game ${SOURCE} ${HEADER})
+add_executable(openfight ${SOURCE} ${HEADER})
 
 target_link_libraries(
-    sdl_game
+    openfight
     ${OPENGL_LIBRARY}
     ${SDL_LIBRARY}
     ${SDL_IMAGE_LIBRARIES}
-    ${LIBXML2_LIBRARIES})
+    ${LIBXML2_LIBRARIES}
+)
+
+file(COPY data DESTINATION "${CMAKE_CURRENT_BINARY_DIR}")
