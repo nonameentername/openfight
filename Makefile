@@ -1,5 +1,11 @@
-MAIN=openfight
-IMAGE_NAME=openfight-compiler
+CMAKE      := $(shell command -v cmake)
+MAIN       := openfight
+IMAGE_NAME := openfight-compiler
+
+compile: clean
+	${CMAKE} -Bbuild
+	${CMAKE} --build build
+	cp build/${MAIN}* ..
 
 docker:
 	docker build . -t ${IMAGE_NAME}
@@ -15,11 +21,6 @@ endif
 
 shell:	docker
 	docker run -it --rm -v `pwd`:/tmp/workdir --user ${UID}:${GID} -w /tmp/workdir ${IMAGE_NAME} bash
-
-compile: clean
-	cmake -Bbuild
-	cmake --build build
-	cp build/${MAIN}* .
 
 zip:
 	zip -r ${MAIN}-${PLATFORM}.zip data ${MAIN} ${MAIN}.exe
