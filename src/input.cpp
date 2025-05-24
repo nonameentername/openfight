@@ -137,53 +137,72 @@ int Input::getKeyWait(string &device)
    return result;
 }
 
-void Input::poll(const SDL_Event& event)
+SDL_Event Input::poll()
 {
    string device;
    int button = -1;
    bool pressed = false;
 
-   switch (event.type)
+   SDL_Event event;
+
+   SDL_PumpEvents();
+
+   while(SDL_PollEvent(&event))
    {
-      case SDL_QUIT:
-         quit_key = true;
-         break;
 
-      case SDL_KEYDOWN:
-      case SDL_KEYUP:
-         device = deviceName(event);
-         button = event.key.keysym.sym;
-         pressed = (event.type == SDL_KEYDOWN);
-         break;
-
-      case SDL_JOYBUTTONDOWN:
-      case SDL_JOYBUTTONUP:
-         device = deviceName(event);
-         button = event.jbutton.button;
-         pressed = (event.type == SDL_JOYBUTTONDOWN);
-         break;
-
-      case SDL_JOYAXISMOTION:
-         device = deviceName(event);
-         button = event.jaxis.axis;
-         pressed = (event.jaxis.value > 0);
-         break;
-   }
-
-   if (device == "keyboard" && button == SDLK_ESCAPE)
-      quit_key = true;
-
-   for (size_t i = 0; i < playerKeys.size(); i++)
-   {
-      for (int j = 0; j < KEY_MAX; j++)
+      switch (event.type)
       {
-         if (device == playerKeys[i]->config_device[j] &&
-             button == playerKeys[i]->config_keys[j])
+         case SDL_QUIT:
+            quit_key = true;
+            break;
+
+         case SDL_KEYDOWN:
+         case SDL_KEYUP:
+            device = deviceName(event);
+            button = event.key.keysym.sym;
+            pressed = (event.type == SDL_KEYDOWN);
+            break;
+
+         case SDL_JOYBUTTONDOWN:
+         case SDL_JOYBUTTONUP:
+            device = deviceName(event);
+            button = event.jbutton.button;
+            pressed = (event.type == SDL_JOYBUTTONDOWN);
+            break;
+
+         case SDL_JOYAXISMOTION:
+            device = deviceName(event);
+            button = event.jaxis.axis;
+            pressed = (event.jaxis.value > 0);
+            break;
+
+
+         case SDL_WINDOWEVENT:
+            if (event.window.event == SDL_WINDOWEVENT_RESIZED)
+            {
+               return event;
+            }
+            break;
+
+      }
+
+      if (device == "keyboard" && button == SDLK_ESCAPE)
+         quit_key = true;
+
+      for (size_t i = 0; i < playerKeys.size(); i++)
+      {
+         for (int j = 0; j < KEY_MAX; j++)
          {
-            playerKeys[i]->keys[j] = pressed;
+            if (device == playerKeys[i]->config_device[j] &&
+               button == playerKeys[i]->config_keys[j])
+            {
+               playerKeys[i]->keys[j] = pressed;
+            }
          }
       }
    }
+
+   return event;
 }
 
 string Input::getKeyName(int key)

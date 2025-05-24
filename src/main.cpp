@@ -79,24 +79,20 @@ int main(int argc, char *argv[])
 
         if (updateGame(game_time))
         {
-            SDL_Event event;
-            while (SDL_PollEvent(&event))
+            SDL_Event event = input.poll();
+
+            if (event.type == SDL_QUIT)
             {
-                input.poll(event);
+                running = false;
+            }
+            else if (event.type == SDL_WINDOWEVENT &&
+                        event.window.event == SDL_WINDOWEVENT_RESIZED)
+            {
+                int sw = event.window.data1;
+                int sh = event.window.data2;
 
-                if (event.type == SDL_QUIT)
-                {
-                    running = false;
-                }
-                else if (event.type == SDL_WINDOWEVENT &&
-                         event.window.event == SDL_WINDOWEVENT_RESIZED)
-                {
-                    int sw = event.window.data1;
-                    int sh = event.window.data2;
-
-                    SDL_SetWindowSize(window, sw, sh);
-                    graphics->resizeWindow(sw, sh);
-                }
+                SDL_SetWindowSize(window, sw, sh);
+                graphics->resizeWindow(sw, sh);
             }
 
             bool *keys = input.getKeys(0);
