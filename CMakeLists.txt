@@ -18,7 +18,7 @@ include_directories(
     ${SDL_IMAGE_INCLUDE_DIR}
     ${LIBXML2_INCLUDE_DIR})
 
-add_executable(openfight ${SOURCE} ${HEADER})
+add_executable(${PROJECT_NAME} ${SOURCE} ${HEADER})
 
 target_link_libraries(
     ${PROJECT_NAME}
