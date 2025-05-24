@@ -21,7 +21,7 @@ class Animation
       std::vector<Collision*> offense;
       std::vector<Collision*> defense;
       std::vector<Actions*>    action;
-      std::vector<uint>       delays;
+      std::vector<uint>        delays;
       uint current;
       uint current_delay;
       bool is_combo;

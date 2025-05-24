@@ -1,8 +1,7 @@
 #include "player.h"
+#include "global.h"
 
 using namespace std;
-
-bool show_hitbox = true;
 
 Player::Player()
 {

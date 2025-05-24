@@ -8,12 +8,9 @@
 #include "graphics.h"
 #include "configuration.h"
 #include "playerBridge.h"
+#include "global.h"
 
 using namespace std;
-
-#define screen_width  800
-#define screen_height 600
-#define screen_bpp    24
 
 #ifdef __cplusplus
 extern "C"
