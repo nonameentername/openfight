@@ -1,7 +1,7 @@
 #ifndef _sprite_h
 #define _sprite_h
 
-#include <SDL/SDL_opengl.h>
+#include <SDL2/SDL_opengl.h>
 
 class Sprite
 {

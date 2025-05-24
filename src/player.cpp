@@ -1,5 +1,4 @@
 #include "player.h"
-#include "global.h"
 
 using namespace std;
 

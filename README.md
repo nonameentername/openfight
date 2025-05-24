@@ -17,7 +17,7 @@ The project can be built using cmake.
 
 To build in ubuntu, install the required packages:
 
-    sudo apt install build-essential libxml2-dev libsdl1.2-dev libsdl-image1.2-dev libglu1-mesa-dev
+    sudo apt install build-essential libxml2-dev libsdl2-dev libsdl-image2-dev libglu1-mesa-dev libglew-dev
 
 Create a directory that is used for the build and generates the platform-specific makefiles:
 

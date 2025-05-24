@@ -4,7 +4,7 @@
 #include <iostream>
 #include <string>
 #include <list>
-#include <SDL/SDL.h>
+#include <SDL2/SDL.h>
 #include "input.h"
 
 class KeyState

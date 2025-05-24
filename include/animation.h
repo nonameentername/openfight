@@ -1,17 +1,15 @@
 #ifndef _animation_h
 #define _animation_h
 
-#include <iostream>
 #include <string>
 #include <vector>
-#include <SDL/SDL.h>
-#include <SDL/SDL_opengl.h>
-#include <SDL/SDL_image.h>
-#include "utilities.h"
+#include <SDL2/SDL.h>
+#include <GL/glew.h>
+#include <GL/gl.h>
+
 #include "sprite.h"
 #include "collision.h"
 #include "actions.h"
-#include "graphicsCore.h"
 
 
 class Animation

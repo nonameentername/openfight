@@ -6,9 +6,12 @@
 #include <vector>
 #include <libxml/parser.h>
 #include <libxml/tree.h>
-#include <SDL/SDL.h>
-#include <SDL/SDL_opengl.h>
-#include <SDL/SDL_image.h>
+#include <SDL2/SDL.h>
+#include <GL/glew.h>
+#include <GL/gl.h>
+
+#include <SDL2/SDL_opengl.h>
+#include <SDL2/SDL_image.h>
 
 extern const float GAME_TIME_UPDATE_FREQ;
 

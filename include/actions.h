@@ -4,10 +4,9 @@
 #include <iostream>
 #include <string>
 #include <typeinfo>
-#include <map>
 #include <vector>
-#include <SDL/SDL.h>
-#include <SDL/SDL_opengl.h>
+#include <GL/glew.h>
+#include <GL/gl.h>
 
 class Player;
 

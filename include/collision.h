@@ -1,12 +1,10 @@
 #ifndef _collision_h
 #define _collision_h
 
-#include <iostream>
-#include <string>
 #include <vector>
-#include <SDL/SDL.h>
-#include <SDL/SDL_opengl.h>
-#include <SDL/SDL_image.h>
+#include <GL/glew.h>
+#include <GL/gl.h>
+
 #include "collisionBox.h"
 
 class Collision

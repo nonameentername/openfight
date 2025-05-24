@@ -1,36 +1,50 @@
+cmake_minimum_required(VERSION 3.10...3.27)
 project(openfight)
-
-cmake_minimum_required(VERSION 3.5)
 
 file(GLOB SOURCE src/*.cpp)
 file(GLOB HEADER src/*.h)
 
 set(OpenGL_GL_PREFERENCE LEGACY)
+
 find_package(OpenGL REQUIRED)
-find_package(SDL REQUIRED)
-find_package(SDL_image REQUIRED)
+find_package(PkgConfig REQUIRED)
+find_package(GLU REQUIRED)
+pkg_check_modules(SDL2 REQUIRED sdl2)
+pkg_check_modules(SDL2_IMAGE REQUIRED SDL2_image)
 find_package(LibXml2 REQUIRED)
+find_package(GLEW REQUIRED)
 
 include_directories(
     ${PROJECT_SOURCE_DIR}/include
     ${OPENGL_INCLUDE_DIR}
-    ${SDL_INCLUDE_DIR}
-    ${SDL_IMAGE_INCLUDE_DIR}
-    ${LIBXML2_INCLUDE_DIR})
+    ${GLU_INCLUDE_DIRS}
+    ${SDL2_INCLUDE_DIRS}
+    ${SDL2_IMAGE_INCLUDE_DIRS}
+    ${LIBXML2_INCLUDE_DIR}
+    ${GLEW_INCLUDE_DIRS}
+)
+
+link_directories(
+    ${SDL2_LIBRARY_DIRS}
+    ${SDL2_IMAGE_LIBRARY_DIRS}
+    ${GLEW_LIBRARY_DIRS}
+)
 
 add_executable(${PROJECT_NAME} ${SOURCE} ${HEADER})
 
 target_link_libraries(
     ${PROJECT_NAME}
-    ${OPENGL_LIBRARY}
-    ${SDL_LIBRARY}
-    ${SDL_IMAGE_LIBRARIES}
+    ${OPENGL_gl_LIBRARY}
+    ${GLU_LIBRARIES}
+    ${SDL2_LIBRARIES}
+    ${SDL2_IMAGE_LIBRARIES}
     ${LIBXML2_LIBRARIES}
+    ${GLEW_LIBRARIES}
+    GLU
 )
 
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy
             $<TARGET_FILE:${PROJECT_NAME}>
             ${CMAKE_CURRENT_BINARY_DIR}/..
-    COMMENT "Copying openfight to parent directory after build"
 )
