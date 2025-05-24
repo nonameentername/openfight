@@ -71,6 +71,9 @@ int main(int argc, char *argv[])
     object_manager->add("0", player.getPlayer());
     object_manager->add("1", player2.getPlayer());
 
+    Uint32 lastTime = SDL_GetTicks();
+    int frames = 0;
+
     bool running = true;
 
     while (running && !input.quitGame())
@@ -130,6 +133,15 @@ int main(int argc, char *argv[])
                 (*i)->draw();
 
             SDL_GL_SwapWindow(window);
+
+            frames++;
+            Uint32 currentTime = SDL_GetTicks();
+            if (currentTime > lastTime + 1000) {
+                float fps = frames * 1000.0f / (currentTime - lastTime);
+                printf("FPS: %.2f\n", fps);
+                lastTime = currentTime;
+                frames = 0;
+            }
 
             game_time = getGameTime();
         }
