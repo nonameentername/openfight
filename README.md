@@ -16,10 +16,10 @@ To build in ubuntu install the required packages:
 
 Create a directory that is used for the build and generates the platform specific makefiles:
 
-    mkdir build
-    cd build
-    cmake ..
+    cmake -Bbuild
+    cmake --build build
+    
 
 The project can then be compiled using the generated makefiles:
 
-    make
+    ./build/openfight
