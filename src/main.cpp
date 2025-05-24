@@ -8,12 +8,9 @@
 #include "graphics.h"
 #include "configuration.h"
 #include "playerBridge.h"
+#include "global.h"
 
 using namespace std;
-
-#define screen_width  800
-#define screen_height 600
-#define screen_bpp    24
 
 #ifdef __cplusplus
 extern "C"
@@ -43,6 +40,8 @@ int main(int argc, char *argv[])
    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
    SDL_SetVideoMode(screen_width, screen_height, screen_bpp, video_flags);
+
+   SDL_WM_SetCaption("OpenFight", NULL);
 
    graphics->initialize(screen_width, screen_height);
 

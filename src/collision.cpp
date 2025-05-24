@@ -53,4 +53,3 @@ void Collision::draw()
    for(int i = 0; i < collisions.size(); i++)
       collisions[i]->draw();
 }
-

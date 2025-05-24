@@ -18,14 +18,19 @@ include_directories(
     ${SDL_IMAGE_INCLUDE_DIR}
     ${LIBXML2_INCLUDE_DIR})
 
-add_executable(openfight ${SOURCE} ${HEADER})
+add_executable(${PROJECT_NAME} ${SOURCE} ${HEADER})
 
 target_link_libraries(
-    openfight
+    ${PROJECT_NAME}
     ${OPENGL_LIBRARY}
     ${SDL_LIBRARY}
     ${SDL_IMAGE_LIBRARIES}
     ${LIBXML2_LIBRARIES}
 )
 
-file(COPY data DESTINATION "${CMAKE_CURRENT_BINARY_DIR}")
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy
+            $<TARGET_FILE:${PROJECT_NAME}>
+            ${CMAKE_CURRENT_BINARY_DIR}/..
+    COMMENT "Copying openfight to parent directory after build"
+)

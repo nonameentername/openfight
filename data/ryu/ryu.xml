@@ -43,10 +43,10 @@
    <action name="stand"          trigger="" from="thrown" to="idle"/>
    <action name="jump_kick"      trigger="LK" from="jump,jump_forward,jump_back" to="*previous"/>
    <action name="fireball"       trigger="QCF_LP" from="idle,walk_forward,duck,start_duck,end_duck,1punch" to="idle"/>
-   <animation name="start">
+   <animation name="start" show_hitbox="true">
       <frame path="data/ryu/idle00.png" width="20" height="40" delay="10"/>
    </animation>
-   <animation name="idle" continual="true">
+   <animation name="idle" continual="true" show_hitbox="true">
       <frame path="data/ryu/idle00.png" width="20" height="40" delay="10">
          <move x_vel="0" y_vel="0"/>
          <defense x_pos="4" y_pos="4" width="12" height="30"/>
@@ -72,7 +72,7 @@
          <defense x_pos="4" y_pos="4" width="12" height="30"/>
       </frame>
    </animation>
-   <animation name="turn">
+   <animation name="turn" show_hitbox="true">
       <frame path="data/ryu/turn00.png" width="20" height="40" delay="2">
          <move x_vel="0" y_vel="0"/>
          <defense x_pos="4" y_pos="4" width="12" height="26"/>
@@ -89,7 +89,7 @@
          <defense x_pos="8" y_pos="30" width="6" height="5"/>
       </frame>
    </animation>
-   <animation name="turn_duck">
+   <animation name="turn_duck" show_hitbox="true">
       <frame path="data/ryu/turn_duck00.png" width="20" height="40" delay="2">
          <move x_vel="0" y_vel="0"/>
          <defense x_pos="4" y_pos="4" width="12" height="20"/>
@@ -103,7 +103,7 @@
          <defense x_pos="4" y_pos="4" width="12" height="20"/>
       </frame>
    </animation>
-   <animation name="walk_back" continual="true">
+   <animation name="walk_back" continual="true" show_hitbox="true">
       <frame path="data/ryu/walk_back00.png" width="20" height="40" delay="10">
          <move x_vel="-0.2" y_vel="0"/>
          <defense x_pos="4" y_pos="4" width="12" height="30"/>
@@ -235,7 +235,7 @@
          <defense x_pos="4" y_pos="4" width="12" height="20"/>
       </frame>
    </animation>
-   <animation name="duck_punch">
+   <animation name="duck_punch" show_hitbox="true">
       <frame path="data/ryu/duck_punch00.png" width="40" height="40" delay="2">
          <move x_vel="0" y_vel="0"/>
          <defense x_pos="14" y_pos="4" width="12" height="20"/>
@@ -255,7 +255,7 @@
          <defense x_pos="14" y_pos="4" width="12" height="20"/>
       </frame>
    </animation>
-   <animation name="jump">
+   <animation name="jump" show_hitbox="true">
       <frame path="data/ryu/jump00.png" width="20" height="40" delay="5">
          <move x_vel="0" y_vel="2.0"/>
          <defense x_pos="4" y_pos="4" width="12" height="30"/>
@@ -297,7 +297,7 @@
          <defense x_pos="4" y_pos="4" width="12" height="30"/>
       </frame>
    </animation>
-   <animation name="jump_forward">
+   <animation name="jump_forward" show_hitbox="true">
       <frame path="data/ryu/jump_forward00.png" width="20" height="40" delay="5">
          <move x_vel="0.4" y_vel="2.0"/>
          <defense x_pos="4" y_pos="4" width="12" height="30"/>
@@ -339,7 +339,7 @@
          <defense x_pos="4" y_pos="4" width="12" height="30"/>
       </frame>
    </animation>
-   <animation name="jump_back">
+   <animation name="jump_back" show_hitbox="true">
       <frame path="data/ryu/jump_forward07.png" width="20" height="40" delay="5">
          <move x_vel="-0.4" y_vel="2.0"/>
          <defense x_pos="4" y_pos="4" width="12" height="30"/>
@@ -381,7 +381,7 @@
          <defense x_pos="4" y_pos="4" width="12" height="30"/>
       </frame>
    </animation>
-   <animation name="block_low">
+   <animation name="block_low" show_hitbox="true">
       <frame path="data/ryu/block_low00.png" width="40" height="40" delay="10">
          <move x_vel="0" y_vel="0"/>
          <defense x_pos="4" y_pos="4" width="12" height="30"/>
@@ -391,7 +391,7 @@
          <defense x_pos="4" y_pos="4" width="12" height="30"/>
       </frame>
    </animation>
-   <animation name="block_high">
+   <animation name="block_high" show_hitbox="true">
       <frame path="data/ryu/block00.png" width="40" height="40" delay="10">
          <move x_vel="0" y_vel="0"/>
          <defense x_pos="4" y_pos="4" width="12" height="30"/>
@@ -401,7 +401,7 @@
          <defense x_pos="4" y_pos="4" width="12" height="30"/>
       </frame>
    </animation>
-   <animation name="hurt_low">
+   <animation name="hurt_low" show_hitbox="true">
       <frame path="data/ryu/hurt00.png" width="40" height="40" delay="2">
          <move x_vel="-0.1" y_vel="0"/>
          <defense x_pos="14" y_pos="4" width="12" height="30"/>
@@ -533,7 +533,7 @@
       <defense x_pos="14" y_pos="4" width="12" height="30"/>
    </frame>
 </animation>
-<animation name="2punch" combo="true">
+<animation name="2punch" combo="true" show_hitbox="true">
    <frame path="data/ryu/2punch00.png" width="40" height="40" delay="4">
       <move x_vel="0" y_vel="0"/>
       <defense x_pos="14" y_pos="4" width="12" height="30"/>

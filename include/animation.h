@@ -21,11 +21,12 @@ class Animation
       std::vector<Collision*> offense;
       std::vector<Collision*> defense;
       std::vector<Actions*>    action;
-      std::vector<uint>       delays;
+      std::vector<uint>        delays;
       uint current;
       uint current_delay;
       bool is_combo;
       bool is_continual;
+      bool show_hitbox;
       bool inverted;
       GLfloat x_pos;
       GLfloat y_pos;
@@ -33,7 +34,7 @@ class Animation
       void updateCollisions();
 
    public:
-      Animation(bool is_combo, bool is_continual);
+      Animation(bool is_combo, bool is_continual, bool show_hitbox);
       Animation(const Animation &a);
       ~Animation();
 
@@ -51,6 +52,7 @@ class Animation
       void draw(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha);
       void draw(GLfloat alpha);
       void draw();
+      void drawHitBox();
 };
 
 

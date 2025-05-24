@@ -11,12 +11,18 @@ class CollisionBox
       GLfloat y_pos;
       GLfloat width;
       GLfloat height;
+      GLfloat red;
+      GLfloat blue;
+      GLfloat green;
+      GLfloat alpha;
+
       bool inverted;
 
       GLfloat x;
       GLfloat y;
    public:
       CollisionBox(GLfloat x_pos, GLfloat y_pos, GLfloat width, GLfloat height);
+      CollisionBox(GLfloat x_pos, GLfloat y_pos, GLfloat width, GLfloat height, GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha);
       ~CollisionBox();
 
       GLfloat x1();
@@ -27,6 +33,7 @@ class CollisionBox
       void update(GLfloat x, GLfloat y, bool inverted);
       bool overlaps(CollisionBox *other);
       void draw();
+
 };
 
 

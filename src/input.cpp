@@ -144,6 +144,9 @@ SDL_Event Input::poll()
 
       switch(event.type)
       {
+         case SDL_QUIT:
+            quit_key = true;
+            break;
          case SDL_KEYDOWN:
             device  = deviceName(event);
             button  = event.key.keysym.sym;
