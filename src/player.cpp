@@ -165,6 +165,7 @@ void Player::initialize(std::string file_name, bool player_one, GLfloat x_pos, G
       string name       = getProperty<string>(animation_node[i], "name");
       bool is_combo     = getProperty<bool>(animation_node[i], "combo");
       bool is_continual = getProperty<bool>(animation_node[i], "continual");
+      bool show_hitbox = getProperty<bool>(animation_node[i], "show_hitbox");
 
       animation = new Animation(is_combo, is_continual, show_hitbox);
 
