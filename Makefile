@@ -5,8 +5,7 @@ IMAGE_NAME := openfight-compiler
 compile: clean
 	${CMAKE} -Bbuild
 	${CMAKE} --build build
-	cp build/${MAIN}* .
-
+	
 docker:
 	docker build . -t ${IMAGE_NAME}
 

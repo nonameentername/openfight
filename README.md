@@ -22,4 +22,4 @@ Create a directory that is used for the build and generates the platform-specifi
 
 The project can then be compiled using the generated makefiles:
 
-    ./build/openfight
+    ./openfight
