@@ -17,11 +17,9 @@ shell:	docker
 	docker run -it --rm -v `pwd`:/tmp/workdir --user ${UID}:${GID} -w /tmp/workdir ${IMAGE_NAME} bash
 
 compile: clean
-	mkdir -p build \
-	&& cd build \
-	&& cmake .. -DCMAKE_BUILD_TYPE=Debug \
-	&& make \
-	&& cp ${MAIN}* ..
+	cmake -Bbuild
+	cmake --build build
+	cp build/${MAIN}* .
 
 zip:
 	zip -r ${MAIN}-${PLATFORM}.zip data ${MAIN} ${MAIN}.exe
