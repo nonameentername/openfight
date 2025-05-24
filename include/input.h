@@ -47,7 +47,6 @@ class Input
       void addPlayer();
       void addPlayer(int *config_keys, std::string *config_device);
 
-//      SDL_Event poll(SDL_Event event);
       void poll(const SDL_Event& event);
       bool *getKeys(int player);
       bool  quitGame();
