@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
     }
 
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-    SDL_GL_SetSwapInterval(1); // vsync
+    SDL_GL_SetSwapInterval(0); // Turn off VSync because it was causing low FPS
 
     graphics->initialize(screen_width, screen_height);
 
