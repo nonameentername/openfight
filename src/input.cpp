@@ -168,13 +168,6 @@ void Input::poll(const SDL_Event& event)
          button = event.jaxis.axis;
          pressed = (event.jaxis.value > 0);
          break;
-
-      case SDL_WINDOWEVENT:
-         if (event.window.event == SDL_WINDOWEVENT_RESIZED)
-         {
-            // Caso queira tratar o resize, faça aqui, mas não retorne evento.
-         }
-         break;
    }
 
    if (device == "keyboard" && button == SDLK_ESCAPE)
