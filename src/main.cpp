@@ -41,6 +41,8 @@ int main(int argc, char *argv[])
 
    SDL_SetVideoMode(screen_width, screen_height, screen_bpp, video_flags);
 
+   SDL_WM_SetCaption("OpenFight", NULL);
+
    graphics->initialize(screen_width, screen_height);
 
    Configuration configuration("data/config.xml");
