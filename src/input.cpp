@@ -99,12 +99,13 @@ void Input::addPlayer(int *config_keys, string *config_device)
 int Input::getKeyWait(string &device)
 {
    SDL_Event event;
-   bool done = false;
-   int result = -1;
 
-   while (!done)
+   bool done = false;
+   int result;
+
+   do
    {
-      SDL_WaitEvent(&event);
+      SDL_PollEvent(&event);
 
       switch(event.type)
       {
@@ -113,95 +114,86 @@ int Input::getKeyWait(string &device)
             result = event.key.keysym.sym;
             done = true;
             break;
-
          case SDL_JOYBUTTONDOWN:
             device = deviceName(event);
             result = event.jbutton.button;
             done = true;
             break;
-
          case SDL_JOYAXISMOTION:
-            if (event.jaxis.value > 0)
+            if(event.jaxis.value > 0)
             {
                device = deviceName(event);
                result = event.jaxis.axis;
                done = true;
             }
-            break;
-
-         default:
-            break;
       }
    }
+   while(!done);
 
    return result;
 }
 
 SDL_Event Input::poll()
 {
-   string device;
-   int button = -1;
-   bool pressed = false;
-
    SDL_Event event;
+
+   string device;
+   int button;
+   bool pressed;
 
    SDL_PumpEvents();
 
    while(SDL_PollEvent(&event))
    {
+      device = "";
+      button = -1;
 
-      switch (event.type)
+      switch(event.type)
       {
          case SDL_QUIT:
             quit_key = true;
             break;
-
          case SDL_KEYDOWN:
+            device  = deviceName(event);
+            button  = event.key.keysym.sym;
+            pressed = true;
+            break;
          case SDL_KEYUP:
-            device = deviceName(event);
-            button = event.key.keysym.sym;
-            pressed = (event.type == SDL_KEYDOWN);
+            device  = deviceName(event);
+            button  = event.key.keysym.sym;
+            pressed = false;
             break;
-
          case SDL_JOYBUTTONDOWN:
+            device  = deviceName(event);
+            button  = event.jbutton.button;
+            pressed = true;
+            break;
          case SDL_JOYBUTTONUP:
-            device = deviceName(event);
-            button = event.jbutton.button;
-            pressed = (event.type == SDL_JOYBUTTONDOWN);
+            device  = deviceName(event);
+            button  = event.jbutton.button;
+            pressed = false;
             break;
-
          case SDL_JOYAXISMOTION:
-            device = deviceName(event);
-            button = event.jaxis.axis;
-            pressed = (event.jaxis.value > 0);
+            device  = deviceName(event);
+            button  = event.jaxis.axis;
+            pressed = event.jaxis.value > 0;
             break;
-
-
          case SDL_WINDOWEVENT:
-            if (event.window.event == SDL_WINDOWEVENT_RESIZED)
-            {
-               return event;
-            }
-            break;
-
+            return event;
       }
 
-      if (device == "keyboard" && button == SDLK_ESCAPE)
+      if(device == "keyboard" &&
+         button == SDLK_ESCAPE)
          quit_key = true;
 
-      for (size_t i = 0; i < playerKeys.size(); i++)
-      {
-         for (int j = 0; j < KEY_MAX; j++)
-         {
-            if (device == playerKeys[i]->config_device[j] &&
+      for(int i = 0; i < playerKeys.size(); i++)
+         for(int j = 0; j < KEY_MAX; j++)
+            if(device == playerKeys[i]->config_device[j] &&
                button == playerKeys[i]->config_keys[j])
             {
                playerKeys[i]->keys[j] = pressed;
             }
-         }
-      }
    }
-
    return event;
 }
 
