@@ -2,6 +2,8 @@
 
 using namespace std;
 
+bool show_hitbox = true;
+
 Player::Player()
 {
    current_state = "start";
@@ -165,7 +167,7 @@ void Player::initialize(std::string file_name, bool player_one, GLfloat x_pos, G
       bool is_combo     = getProperty<bool>(animation_node[i], "combo");
       bool is_continual = getProperty<bool>(animation_node[i], "continual");
 
-      animation = new Animation(is_combo, is_continual);
+      animation = new Animation(is_combo, is_continual, show_hitbox);
 
       vector<xmlNode*> frame_node = findChildren(animation_node[i], "frame");
       for(int j = 0; j < frame_node.size(); j++)
@@ -187,7 +189,7 @@ void Player::initialize(std::string file_name, bool player_one, GLfloat x_pos, G
             float width  = getProperty<float>(defense_node[k], "width");
             float height = getProperty<float>(defense_node[k], "height");
 
-            defense->addCollision(new CollisionBox(x_pos, y_pos, width, height));
+            defense->addCollision(new CollisionBox(x_pos, y_pos, width, height, 0.f, 0.f, 1.f, 1.f));
          }
 
          vector<xmlNode*> offense_node = findChildren(frame_node[j], "offense");
@@ -198,7 +200,7 @@ void Player::initialize(std::string file_name, bool player_one, GLfloat x_pos, G
             float width  = getProperty<float>(offense_node[k], "width");
             float height = getProperty<float>(offense_node[k], "height");
 
-            offense->addCollision(new CollisionBox(x_pos, y_pos, width, height));
+            offense->addCollision(new CollisionBox(x_pos, y_pos, width, height, 1.f, 0.f, 0.f, 1.f));
          }
 
          vector<xmlNode*> object_node = findChildren(frame_node[j], "create_object");

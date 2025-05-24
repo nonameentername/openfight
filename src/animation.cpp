@@ -3,10 +3,11 @@
 
 using namespace std;
 
-Animation::Animation(bool is_combo, bool is_continual)
+Animation::Animation(bool is_combo, bool is_continual, bool show_hitbox)
 {
    this->is_combo     = is_combo;
    this->is_continual = is_continual;
+   this->show_hitbox  = show_hitbox;
    current       = 0;
    current_delay = 0;
 }
@@ -148,27 +149,28 @@ void Animation::restart()
 void Animation::draw(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha)
 {
    updateCollisions();
-
    sprites[current]->draw(x_pos, y_pos, scale, inverted, red, green, blue, alpha);
-//   offense[current]->draw();
-//   defense[current]->draw();
+   drawHitBox();
 }
 
 void Animation::draw(GLfloat alpha)
 {
    updateCollisions();
-
    sprites[current]->draw(x_pos, y_pos, scale, inverted, alpha);
-//   offense[current]->draw();
-//   defense[current]->draw();
+   drawHitBox();
 }
 
 void Animation::draw()
 {
    updateCollisions();
-
    sprites[current]->draw(x_pos, y_pos, scale, inverted);
-//   offense[current]->draw();
-//   defense[current]->draw();
+   drawHitBox();
+   
+}
+
+void Animation::drawHitBox(){
+   if(!show_hitbox) return;
+   offense[current]->draw();
+   defense[current]->draw();
 }
 
