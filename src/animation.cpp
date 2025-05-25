@@ -39,8 +39,17 @@ Animation::~Animation()
    for(int i = 0; i < sprites.size(); i++)
    {
       delete sprites[i];
+   }
+   for(int i = 0; i < offense.size(); i++)
+   {
       delete offense[i];
+   }
+   for(int i = 0; i < defense.size(); i++)
+   {
       delete defense[i];
+   }
+   for(int i = 0; i < action.size(); i++)
+   {
       delete action[i];
    }
 }
