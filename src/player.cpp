@@ -27,8 +27,8 @@ Player::Player(const Player &p)
 
    type     = p.type;
    inverted = p.inverted;
-   is_hurt  = is_hurt;
-   index    = index;
+   is_hurt  = p.is_hurt;
+   index    = p.index;
 
    current_state  = p.current_state;
    previous_state = p.previous_state;
