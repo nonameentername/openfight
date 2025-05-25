@@ -5,7 +5,7 @@
 #include <string>
 #include <sstream>
 #include <vector>
-#include <SDL/SDL.h>
+#include <SDL2/SDL.h>
 
 enum Keys 
 { 

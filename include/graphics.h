@@ -1,7 +1,10 @@
 #ifndef _graphics_h
 #define _graphics_h
 
-#include <SDL/SDL_opengl.h>
+#include <GL/glew.h>
+#include <GL/gl.h>
+
+#include <SDL2/SDL_opengl.h>
 
 class Graphics
 {

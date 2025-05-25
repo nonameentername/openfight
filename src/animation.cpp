@@ -19,9 +19,9 @@ Animation::Animation(const Animation &a)
    is_combo      = a.is_combo;
    is_continual  = a.is_continual;
    inverted      = a.inverted;
-   x_pos         = x_pos;
-   y_pos         = y_pos;
-   scale         = scale;
+   x_pos         = a.x_pos;
+   y_pos         = a.y_pos;
+   scale         = a.scale;
 
    for(int i = 0; i < a.sprites.size(); i++)
    {
@@ -39,8 +39,17 @@ Animation::~Animation()
    for(int i = 0; i < sprites.size(); i++)
    {
       delete sprites[i];
+   }
+   for(int i = 0; i < offense.size(); i++)
+   {
       delete offense[i];
+   }
+   for(int i = 0; i < defense.size(); i++)
+   {
       delete defense[i];
+   }
+   for(int i = 0; i < action.size(); i++)
+   {
       delete action[i];
    }
 }

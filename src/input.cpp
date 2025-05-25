@@ -1,42 +1,43 @@
 #include "input.h"
+#include <SDL2/SDL.h>
+#include <iostream>
+#include <sstream>
 
 using namespace std;
 
 string Input::key_names[KEY_MAX] =
 { 
-   "U",
-   "D",
-   "B",
-   "F",
-   "a",
-   "b",
-   "c",
-   "x",
-   "y",
-   "z"
+   "U", "D", "B", "F",
+   "a", "b", "c",
+   "x", "y", "z"
 };
 
 Input::Input()
 {
-   for(int i =0; i < KEY_MAX; i++)
+   for(int i = 0; i < KEY_MAX; i++)
       keys[i] = false;
 
    quit_key = false;
 
-   int num_joysticks = SDL_NumJoysticks();
-   vector<SDL_Joystick*> sticks;
+   SDL_InitSubSystem(SDL_INIT_JOYSTICK);
+   SDL_JoystickEventState(SDL_ENABLE);
 
-   for(int i = 0; i < num_joysticks; i++)
-      sticks.push_back(SDL_JoystickOpen(i));
+   int num_joysticks = SDL_NumJoysticks();
+
+   for(int i = 0; i < num_joysticks; i++) {
+      SDL_Joystick* joy = SDL_JoystickOpen(i);
+      if (joy != nullptr)
+         sticks.push_back(joy);
+   }
 }
 
 Input::~Input()
 {
-   for(int i = 0; i < playerKeys.size(); i++)
-      delete playerKeys[i];
-   
-   for(int i = 0; i < sticks.size(); i++)
-      SDL_JoystickClose(sticks[i]);
+   for (auto* key : playerKeys)
+      delete key;
+
+   for (auto* stick : sticks)
+      SDL_JoystickClose(stick);
 }
 
 string Input::deviceName(SDL_Event event)
@@ -47,28 +48,33 @@ string Input::deviceName(SDL_Event event)
    {
       case SDL_KEYDOWN:
       case SDL_KEYUP:
-      sstream << "keyboard";
-      break;
+         sstream << "keyboard";
+         break;
+
       case SDL_JOYBUTTONDOWN:
       case SDL_JOYBUTTONUP:
-      sstream << "joystick" << (int)event.jbutton.which;
-      break;
+         sstream << "joystick" << static_cast<int>(event.jbutton.which);
+         break;
+
       case SDL_JOYAXISMOTION:
-      sstream << "joystick" << (int)event.jaxis.which;
-      break;
+         sstream << "joystick" << static_cast<int>(event.jaxis.which);
+         break;
+
+      default:
+         break;
    }
    return sstream.str();
 }
 
 void Input::addPlayer()
 {
-   KeyStruct *player = new KeyStruct();
+   KeyStruct* player = new KeyStruct();
    string device;
 
    for(int i = 0; i < KEY_MAX; i++)
    {
       cout << key_names[i] << endl;
-      player->config_keys[i]   = getKeyWait(device);
+      player->config_keys[i] = getKeyWait(device);
       player->config_device[i] = device;
       player->keys[i] = false;
    }
@@ -78,11 +84,11 @@ void Input::addPlayer()
 
 void Input::addPlayer(int *config_keys, string *config_device)
 {
-   KeyStruct *player = new KeyStruct();
-   
+   KeyStruct* player = new KeyStruct();
+
    for(int i = 0; i < KEY_MAX; i++)
    {
-      player->config_keys[i]   = config_keys[i];
+      player->config_keys[i] = config_keys[i];
       player->config_device[i] = config_device[i];
       player->keys[i] = false;
    }
@@ -96,9 +102,9 @@ int Input::getKeyWait(string &device)
 
    bool done = false;
    int result;
-  
+
    do
-   { 
+   {
       SDL_PollEvent(&event);
 
       switch(event.type)
@@ -172,7 +178,7 @@ SDL_Event Input::poll()
             button  = event.jaxis.axis;
             pressed = event.jaxis.value > 0;
             break;
-         case SDL_VIDEORESIZE:
+         case SDL_WINDOWEVENT:
             return event;
       }
 
@@ -201,13 +207,10 @@ bool Input::quitGame()
    return quit_key;
 }
 
-bool *Input::getKeys(int player)
+bool* Input::getKeys(int player)
 {
-   for(int i = 0; i < KEY_MAX; i++)
+   for (int i = 0; i < KEY_MAX; i++)
       keys[i] = playerKeys[player]->keys[i];
 
    return keys;
 }
-
-
-

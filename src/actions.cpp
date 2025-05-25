@@ -7,18 +7,10 @@ Action::Action()
 {
 }
 
-Action::~Action()
-{
-}
-
 MoveAction::MoveAction(GLfloat x_vel, GLfloat y_vel)
 {
    this->x_vel  = x_vel;
    this->y_vel  = y_vel;
-}
-
-MoveAction::~MoveAction()
-{
 }
 
 void MoveAction::doAction(Player *player, Player *opponent)
@@ -35,10 +27,6 @@ CreateObjectAction::CreateObjectAction(string object, GLfloat x_pos, GLfloat y_p
    this->index  = index;
 }
 
-CreateObjectAction::~CreateObjectAction()
-{
-}
-
 void CreateObjectAction::doAction(Player *player, Player *opponent)
 {
    player->copyObject(object, x_pos, y_pos, index);
@@ -52,10 +40,6 @@ CollisionAction::CollisionAction(string object, GLfloat x_pos, GLfloat y_pos, in
    this->index       = index;
    this->to          = to;
    this->to_opponent = to_opponent;
-}
-
-CollisionAction::~CollisionAction()
-{
 }
 
 void CollisionAction::doAction(Player *player, Player *opponent)
@@ -78,19 +62,22 @@ Actions::Actions()
 
 Actions::Actions(const Actions &a)
 {
-   for(int i = 0; i < a.actions.size(); i++)
+   for (int i = 0; i < a.actions.size(); i++)
    {
-      if(typeid(*a.actions[i]) == typeid(CreateObjectAction))
+      Action* act = a.actions[i];
+      if (!act) continue;
+
+      if (typeid(*act) == typeid(CreateObjectAction))
       {
-         actions.push_back(new CreateObjectAction(static_cast<const CreateObjectAction&>(*a.actions[i])));
+         actions.push_back(new CreateObjectAction(static_cast<const CreateObjectAction&>(*act)));
       }
-      else if(typeid(*a.actions[i]) == typeid(CollisionAction))
+      else if (typeid(*act) == typeid(CollisionAction))
       {
-         actions.push_back(new CollisionAction(static_cast<const CollisionAction&>(*a.actions[i])));
+         actions.push_back(new CollisionAction(static_cast<const CollisionAction&>(*act)));
       }
-      else if(typeid(*a.actions[i]) == typeid(MoveAction))
+      else if (typeid(*act) == typeid(MoveAction))
       {
-         actions.push_back(new MoveAction(static_cast<const MoveAction&>(*a.actions[i])));
+         actions.push_back(new MoveAction(static_cast<const MoveAction&>(*act)));
       }
    }
 }
@@ -106,21 +93,21 @@ void Actions::addAction(Action *a)
    actions.push_back(a);
 }
 
-bool Actions::doActions(Player *player, Player *opponent, const type_info& type)
+bool Actions::doActions(Player* player, Player* opponent, const std::type_info& type)
 {
    bool result = false;
 
-   for(int i = 0; i < actions.size(); i++)
+   for (int i = 0; i < actions.size(); i++)
    {
-      if(typeid(*actions[i]) == type)
+      Action* act = actions[i];
+      if (act && typeid(*act) == type)
       {
-         actions[i]->doAction(player, opponent);
+         act->doAction(player, opponent);
          result = true;
       }
    }
 
    return result;
 }
-
 
 

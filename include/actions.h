@@ -4,10 +4,9 @@
 #include <iostream>
 #include <string>
 #include <typeinfo>
-#include <map>
 #include <vector>
-#include <SDL/SDL.h>
-#include <SDL/SDL_opengl.h>
+#include <GL/glew.h>
+#include <GL/gl.h>
 
 class Player;
 
@@ -15,7 +14,7 @@ class Action
 {
    public:
       Action();
-      ~Action();
+      virtual ~Action() = default;
 
       virtual void doAction(Player *player, Player *opponent) = 0;
 };
@@ -28,7 +27,7 @@ class MoveAction : public Action
 
    public:
       MoveAction(GLfloat x_vel, GLfloat y_vel);
-      ~MoveAction();
+      virtual ~MoveAction() = default;
 
       void doAction(Player *player, Player *opponent);
 };
@@ -43,7 +42,7 @@ class CreateObjectAction : public Action
 
    public:
       CreateObjectAction(std::string object, GLfloat x_pos, GLfloat y_pos, int index);
-      ~CreateObjectAction();
+      virtual ~CreateObjectAction() = default;
 
       void doAction(Player *player, Player *opponent);
 };
@@ -60,7 +59,7 @@ class CollisionAction : public Action
 
    public:
       CollisionAction(std::string object, GLfloat x_pos, GLfloat y_pos, int index, std::string to, std::string to_opponent);
-      ~CollisionAction();
+      virtual ~CollisionAction() = default;
 
       void doAction(Player *player, Player *opponent);
 };

@@ -1,7 +1,6 @@
 #ifndef _collision_box_h
 #define _collision_box_h
 
-#include <SDL/SDL_opengl.h>
 #include "graphicsCore.h"
 
 class CollisionBox

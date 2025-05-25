@@ -4,8 +4,10 @@
 #include <map>
 #include <iostream>
 #include <string>
-#include <SDL/SDL_opengl.h>
-#include <SDL/SDL_image.h>
+#include <GL/glew.h>
+#include <GL/gl.h>
+#include <SDL2/SDL_opengl.h>
+#include <SDL2/SDL_image.h>
 
 class TextureManager
 {

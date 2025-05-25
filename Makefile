@@ -1,13 +1,15 @@
 CMAKE      := $(shell command -v cmake)
+DOCKER     := $(shell command -v docker)
 MAIN       := openfight
 IMAGE_NAME := openfight-compiler
+BUILD_TYPE ?= Release
 
 compile: clean
-	${CMAKE} -Bbuild
+	${CMAKE} -Bbuild -DCMAKE_BUILD_TYPE=${BUILD_TYPE}
 	${CMAKE} --build build
 	
 docker:
-	docker build . -t ${IMAGE_NAME}
+	${DOCKER} build . -t ${IMAGE_NAME}
 
 UNAME := $(shell uname)
 ifeq ($(UNAME), Windows)
@@ -19,7 +21,7 @@ else
 endif
 
 shell:	docker
-	docker run -it --rm -v `pwd`:/tmp/workdir --user ${UID}:${GID} -w /tmp/workdir ${IMAGE_NAME} bash
+	${DOCKER} run -it --rm -v `pwd`:/tmp/workdir --user ${UID}:${GID} -w /tmp/workdir ${IMAGE_NAME} bash
 
 zip:
 	zip -r ${MAIN}-${PLATFORM}.zip data ${MAIN} ${MAIN}.exe
@@ -35,3 +37,6 @@ mac:
 
 clean:
 	rm -rf ${MAIN} *.exe *.o build/*
+
+check-leak:
+	valgrind --leak-check=full --leak-check=full --show-leak-kinds=all  --track-origins=yes ./openfight

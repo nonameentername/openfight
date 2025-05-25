@@ -5,7 +5,10 @@
 #include <cmath>
 #include <algorithm>
 #include <iostream>
-#include <SDL/SDL_opengl.h>
+#include <GL/glew.h>
+#include <GL/gl.h>
+
+#include <SDL2/SDL_opengl.h>
 #include "player.h"
 #include "graphicsCore.h"
 

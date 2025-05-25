@@ -1,4 +1,4 @@
-#include <SDL/SDL.h>
+#include <SDL2/SDL.h>
 #include "utilities.h"
 #include "input.h"
 #include "animation.h"
@@ -18,113 +18,141 @@ extern "C"
 
 int main(int argc, char *argv[])
 {
-   if( SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK) == 1 )
-      return -1;
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK) != 0) {
+        return -1;
+    }
 
-   const SDL_VideoInfo *video_info = SDL_GetVideoInfo();
-   if(video_info == NULL)
-      return -1;
+    SDL_Window *window = SDL_CreateWindow("OpenFight",
+                                          SDL_WINDOWPOS_CENTERED,
+                                          SDL_WINDOWPOS_CENTERED,
+                                          screen_width, screen_height,
+                                          SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
 
-   atexit(SDL_Quit);
+    if (!window) {
+        SDL_Quit();
+        return -1;
+    }
 
-   int video_flags = SDL_OPENGL | SDL_GL_DOUBLEBUFFER | SDL_HWPALETTE | SDL_RESIZABLE;
+    SDL_GLContext glContext = SDL_GL_CreateContext(window);
+    if (!glContext) {
+        SDL_DestroyWindow(window);
+        SDL_Quit();
+        return -1;
+    }
 
-   if(video_info->hw_available)
-      video_flags |= SDL_HWSURFACE;
-   else
-      video_flags |= SDL_SWSURFACE;
+    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+    SDL_GL_SetSwapInterval(0); // Turn off VSync because it was causing low FPS
 
-   if(video_info->blit_hw)
-      video_flags |= SDL_HWACCEL;
+    graphics->initialize(screen_width, screen_height);
 
-   SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+    Configuration configuration("data/config.xml");
+    configuration.read();
 
-   SDL_SetVideoMode(screen_width, screen_height, screen_bpp, video_flags);
+    Input input;
+    input.addPlayer(configuration.getConfigKeys(true), configuration.getConfigDevice(true));
+    input.addPlayer(configuration.getConfigKeys(false), configuration.getConfigDevice(false));
 
-   SDL_WM_SetCaption("OpenFight", NULL);
+    PlayerAgent player;
+    player.initialize("data/ryu/ryu.xml", "data/ryu/moves.xml", true);
 
-   graphics->initialize(screen_width, screen_height);
+    PlayerAgent player2;
+    player2.initialize("data/ryu/ryu.xml", "data/ryu/moves.xml", false);
 
-   Configuration configuration("data/config.xml");
-   configuration.read();
+    auto p2 = player2.getPlayer().get();
+    auto p1 = player.getPlayer().get();
+    player.getPlayer()->setOpponent(p2);
+    player2.getPlayer()->setOpponent(p1);
 
-   Input input;
-   input.addPlayer(configuration.getConfigKeys(true), configuration.getConfigDevice(true));
-   input.addPlayer(configuration.getConfigKeys(false), configuration.getConfigDevice(false));
+    Sprite background;
+    GLuint texture = texture_manager->addTexture("data/background.png", false);
+    background.setTexture(texture, 200, 100);
 
-   PlayerAgent player;
-   player.initialize("data/ryu/ryu.xml", "data/ryu/moves.xml", true);
+    PlayerBridge bridge;
+    bridge.initialize(p1, p2);
 
-   PlayerAgent player2;
-   player2.initialize("data/ryu/ryu.xml","data/ryu/moves.xml",  false);
+    object_manager->add("0", p1);
+    object_manager->add("1", p2);
 
-   player.getPlayer()->setOpponent(player2.getPlayer());
-   player2.getPlayer()->setOpponent(player.getPlayer());
+    Uint32 lastTime = SDL_GetTicks();
+    int frames = 0;
 
-   Sprite background;
-   GLuint texture = texture_manager->addTexture("data/background.png", false);
-   background.setTexture(texture,200,100);
+    bool running = true;
 
-   PlayerBridge bridge;
-   bridge.initialize(player.getPlayer(), player2.getPlayer());
+    while (running && !input.quitGame())
+    {
+        float game_time;
 
-   object_manager->add("0", player.getPlayer());
-   object_manager->add("1", player2.getPlayer());
+        if (updateGame(game_time))
+        {
+            SDL_Event event = input.poll();
 
+            if (event.type == SDL_QUIT)
+            {
+                running = false;
+            }
+            else if (event.type == SDL_WINDOWEVENT &&
+                        event.window.event == SDL_WINDOWEVENT_RESIZED)
+            {
+                int sw = event.window.data1;
+                int sh = event.window.data2;
 
-   while(!input.quitGame())
-   {  
-      float game_time;
-
-      if(updateGame(game_time))
-      {
-         SDL_Event event = input.poll();
- 
-         if(event.type == SDL_VIDEORESIZE)
-         {
-            SDL_SetVideoMode(event.resize.w, event.resize.h, screen_bpp, video_flags);
-            graphics->resizeWindow(event.resize.w, event.resize.h);
-         }
-
-         bool *keys = input.getKeys(0);
-         player.update(keys);
-
-         bool *keys2 = input.getKeys(1);
-         player2.update(keys2);
-
-         string key = object_manager->first();
-         while(key != "")
-         {
-            bool done = false;
-
-            if(key != "0" && key != "1")
-               done = object_manager->get(key)->update();
-
-            if (done) {
-                object_manager->remove(key);
-                break;
+                SDL_SetWindowSize(window, sw, sh);
+                graphics->resizeWindow(sw, sh);
             }
 
-            key = object_manager->next();
-         }
+            bool *keys = input.getKeys(0);
+            player.update(keys);
 
-         //draw
-         glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT); // Clear color and depth buffer
+            bool *keys2 = input.getKeys(1);
+            player2.update(keys2);
 
-         glLoadIdentity(); // Reset orientation
-         glTranslatef(-50.0f, -50.0f, -120.0f);
+            string key = object_manager->first();
+            while (key != "")
+            {
+                bool done = false;
 
-         bridge.update();
-         background.draw(50,50,1, false);
+                if (key != "0" && key != "1")
+                    done = object_manager->get(key)->update();
 
-         list<Player*> objects = object_manager->getSortedList();
+                if (done) {
+                    object_manager->remove(key);
+                    break;
+                }
 
-         for(list<Player*>::iterator i = objects.begin(); i != objects.end(); i++)
-            (*i)->draw();
+                key = object_manager->next();
+            }
 
-         SDL_GL_SwapBuffers();
+            // Render
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            glLoadIdentity();
+            glTranslatef(-50.0f, -50.0f, -120.0f);
 
-         game_time = getGameTime();
-      }
-   }
+            bridge.update();
+            background.draw(50, 50, 1, false);
+
+            list<Player *> objects = object_manager->getSortedList();
+            for (auto i = objects.begin(); i != objects.end(); ++i)
+                (*i)->draw();
+
+            SDL_GL_SwapWindow(window);
+
+            frames++;
+            Uint32 currentTime = SDL_GetTicks();
+            if (currentTime > lastTime + 1000) {
+                float fps = frames * 1000.0f / (currentTime - lastTime);
+                printf("FPS: %.2f\n", fps);
+                lastTime = currentTime;
+                frames = 0;
+            }
+
+            game_time = getGameTime();
+        }
+    }
+
+    SDL_GL_DeleteContext(glContext);
+    SDL_DestroyWindow(window);
+    SDL_Quit();
+
+
+    return 0;
 }

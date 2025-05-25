@@ -1,7 +1,8 @@
 #ifndef _camera_h
 #define _camera_h
 
-#include <SDL/SDL_opengl.h>
+#include <GL/glew.h>
+#include <GL/gl.h>
 
 class Camera
 {
