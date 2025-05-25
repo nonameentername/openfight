@@ -1,6 +1,10 @@
 cmake_minimum_required(VERSION 3.10...3.27)
 project(openfight)
 
+if(CMAKE_BUILD_TYPE MATCHES Debug)
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fsanitize=address")
+endif()
+
 file(GLOB SOURCE src/*.cpp)
 file(GLOB HEADER src/*.h)
 

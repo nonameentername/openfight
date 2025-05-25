@@ -3,7 +3,7 @@ MAIN       := openfight
 IMAGE_NAME := openfight-compiler
 
 compile: clean
-	${CMAKE} -Bbuild
+	${CMAKE} -Bbuild -DCMAKE_BUILD_TYPE=Release
 	${CMAKE} --build build
 	
 docker:
