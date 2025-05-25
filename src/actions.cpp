@@ -7,18 +7,10 @@ Action::Action()
 {
 }
 
-Action::~Action()
-{
-}
-
 MoveAction::MoveAction(GLfloat x_vel, GLfloat y_vel)
 {
    this->x_vel  = x_vel;
    this->y_vel  = y_vel;
-}
-
-MoveAction::~MoveAction()
-{
 }
 
 void MoveAction::doAction(Player *player, Player *opponent)
@@ -35,10 +27,6 @@ CreateObjectAction::CreateObjectAction(string object, GLfloat x_pos, GLfloat y_p
    this->index  = index;
 }
 
-CreateObjectAction::~CreateObjectAction()
-{
-}
-
 void CreateObjectAction::doAction(Player *player, Player *opponent)
 {
    player->copyObject(object, x_pos, y_pos, index);
@@ -52,10 +40,6 @@ CollisionAction::CollisionAction(string object, GLfloat x_pos, GLfloat y_pos, in
    this->index       = index;
    this->to          = to;
    this->to_opponent = to_opponent;
-}
-
-CollisionAction::~CollisionAction()
-{
 }
 
 void CollisionAction::doAction(Player *player, Player *opponent)

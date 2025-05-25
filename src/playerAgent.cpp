@@ -6,18 +6,10 @@
 
 using namespace std;
 
-
 PlayerAgent::PlayerAgent()
-{
-}
+    : player(nullptr), moves(nullptr), current_frame(0) {}
 
-PlayerAgent::~PlayerAgent()
-{
-   delete player;
-   delete moves;
-}
-
-Player *PlayerAgent::getPlayer()
+std::shared_ptr<Player> PlayerAgent::getPlayer()
 {
    return player;
 }
@@ -25,10 +17,10 @@ Player *PlayerAgent::getPlayer()
 bool PlayerAgent::initialize(string file_name, string moves_file, bool player_one)
 {
    GLfloat location = player_one ? 30:70;
-   player = new Player();
+   player = std::make_shared<Player>();
    player->initialize(file_name, player_one, location, 0);
 
-   moves = new Moves();
+   moves = std::make_unique<Moves>();
    moves->initialize(moves_file);
 
    for(int i = 0; i < KEY_MAX; i++)

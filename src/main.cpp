@@ -58,18 +58,20 @@ int main(int argc, char *argv[])
     PlayerAgent player2;
     player2.initialize("data/ryu/ryu.xml", "data/ryu/moves.xml", false);
 
-    player.getPlayer()->setOpponent(player2.getPlayer());
-    player2.getPlayer()->setOpponent(player.getPlayer());
+    auto p2 = player2.getPlayer().get();
+    auto p1 = player.getPlayer().get();
+    player.getPlayer()->setOpponent(p2);
+    player2.getPlayer()->setOpponent(p1);
 
     Sprite background;
     GLuint texture = texture_manager->addTexture("data/background.png", false);
     background.setTexture(texture, 200, 100);
 
     PlayerBridge bridge;
-    bridge.initialize(player.getPlayer(), player2.getPlayer());
+    bridge.initialize(p1, p2);
 
-    object_manager->add("0", player.getPlayer());
-    object_manager->add("1", player2.getPlayer());
+    object_manager->add("0", p1);
+    object_manager->add("1", p2);
 
     Uint32 lastTime = SDL_GetTicks();
     int frames = 0;
@@ -150,6 +152,7 @@ int main(int argc, char *argv[])
     SDL_GL_DeleteContext(glContext);
     SDL_DestroyWindow(window);
     SDL_Quit();
+
 
     return 0;
 }

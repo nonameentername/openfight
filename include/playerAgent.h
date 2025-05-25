@@ -4,6 +4,7 @@
 #include <string>
 #include <list>
 #include <map>
+#include <memory>
 #include <vector>
 #include "input.h"
 #include "keyState.h"
@@ -13,8 +14,8 @@
 class PlayerAgent
 {
    private:
-      Player *player;
-      Moves *moves;
+      std::shared_ptr<Player> player;
+      std::unique_ptr<Moves> moves;
       static const int QUEUE_KEY_MAX   = 20;
       static const int INPUT_FRAME_MAX = 10;
       bool previous_keys[KEY_MAX];
@@ -24,9 +25,9 @@ class PlayerAgent
 
    public:
       PlayerAgent();
-      ~PlayerAgent();
+      virtual ~PlayerAgent() = default;
 
-      Player *getPlayer();
+      std::shared_ptr<Player> getPlayer();
       bool initialize(std::string file_name, std::string moves_file, bool player_one);
       void update( bool *keys );
       void draw();
