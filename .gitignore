@@ -2,3 +2,4 @@ build/*
 openfight*
 cmake*
 .idea
+.vscode

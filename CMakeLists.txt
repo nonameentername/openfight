@@ -12,7 +12,7 @@ find_package(GLU REQUIRED)
 pkg_check_modules(SDL2 REQUIRED sdl2)
 pkg_check_modules(SDL2_IMAGE REQUIRED SDL2_image)
 find_package(LibXml2 REQUIRED)
-find_package(GLEW REQUIRED)
+find_package(GLEW REQUIRED CONFIG)
 
 include_directories(
     ${PROJECT_SOURCE_DIR}/include
@@ -40,7 +40,7 @@ target_link_libraries(
     ${SDL2_IMAGE_LIBRARIES}
     ${LIBXML2_LIBRARIES}
     ${GLEW_LIBRARIES}
-    GLU
+    GLEW::GLEW
 )
 
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
