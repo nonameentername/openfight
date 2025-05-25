@@ -12,7 +12,12 @@ find_package(GLU REQUIRED)
 pkg_check_modules(SDL2 REQUIRED sdl2)
 pkg_check_modules(SDL2_IMAGE REQUIRED SDL2_image)
 find_package(LibXml2 REQUIRED)
-find_package(GLEW REQUIRED CONFIG)
+
+if(APPLE)
+    find_package(GLEW REQUIRED CONFIG)
+else()
+    find_package(GLEW REQUIRED)
+endif()
 
 include_directories(
     ${PROJECT_SOURCE_DIR}/include
@@ -35,12 +40,12 @@ add_executable(${PROJECT_NAME} ${SOURCE} ${HEADER})
 target_link_libraries(
     ${PROJECT_NAME}
     ${OPENGL_gl_LIBRARY}
-    ${GLU_LIBRARIES}
+    ${GLU_LIBRARY}
+    ${GLEW_LIBRARIES}
+    GLEW::GLEW
     ${SDL2_LIBRARIES}
     ${SDL2_IMAGE_LIBRARIES}
     ${LIBXML2_LIBRARIES}
-    ${GLEW_LIBRARIES}
-    GLEW::GLEW
 )
 
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
