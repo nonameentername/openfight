@@ -27,4 +27,4 @@ Create a directory used for the build and generates the platform-specific makefi
 
 The project can then be compiled using the generated makefiles:
 
-    ./openfight
+    ./run-linux.sh
