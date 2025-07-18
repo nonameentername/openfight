@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  build-and-run:
     runs-on: ubuntu-latest
 
     steps:
@@ -26,18 +26,25 @@ jobs:
             libglew-dev \
             xvfb
 
-      - name: Build project
+      - name: Build
         run: |
-          cmake -Bbuild
-          cmake --build build
+            cmake -Bbuild
+            cmake --build build
 
-      - name: Start Xvfb manually
+      - name: Start Xvfb
         run: |
-          export DISPLAY=:99
           Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
-          sleep 3
+          export DISPLAY=:99
+          echo "Waiting for Xvfb to be ready..."
+          sleep 2
 
-      - name: Run openfight with graceful shutdown
+      - name: Run script for 5 seconds then stop
         run: |
           export DISPLAY=:99
-          timeout --signal=SIGINT 5 ./openfight
+          ./openfight &
+          PID=$!
+          echo "🚀 Running openfight (PID=$PID) for 5 seconds..."
+          sleep 5
+          echo "🛑 Stopping openfight..."
+          kill -SIGINT $PID || kill -SIGTERM $PID || kill -9 $PID
+          echo "✅ openfight stopped"
