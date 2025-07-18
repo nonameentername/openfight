@@ -31,7 +31,13 @@ jobs:
           cmake -Bbuild
           cmake --build build
 
-      - name: Run openfight (headless for 2 seconds)
+      - name: Start Xvfb manually
         run: |
-          echo "🚀 Launching openfight for 2 seconds..."
-          timeout 2 xvfb-run --auto-servernum --server-args='-screen 0 1024x768x24' ./openfight
+          export DISPLAY=:99
+          Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+          sleep 3
+
+      - name: Run openfight (manual Xvfb)
+        run: |
+          export DISPLAY=:99
+          timeout 5 ./openfight
