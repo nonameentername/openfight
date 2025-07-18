@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<character>
+   <name>collision</name>
+   <type>temporary</type>
+   <position x_pos="20" y_pos="0" alpha="0.7" scale="1"/>
+   <action name="start" trigger="NONE" from="start" to="start" continual="true"/>
+   <animation name="start">
+      <frame path="data/collision/01.pcx" width="60" height="15" delay="1"/>
+      <frame path="data/collision/02.pcx" width="60" height="15" delay="1"/>
+      <frame path="data/collision/03.pcx" width="60" height="30" delay="1"/>
+      <frame path="data/collision/04.pcx" width="60" height="30" delay="1"/>
+      <frame path="data/collision/05.pcx" width="60" height="30" delay="1"/>
+      <frame path="data/collision/06.pcx" width="60" height="30" delay="1"/>
+      <frame path="data/collision/07.pcx" width="60" height="30" delay="1"/>
+      <frame path="data/collision/08.pcx" width="60" height="30" delay="1"/>
+      <frame path="data/collision/09.pcx" width="60" height="30" delay="1"/>
+      <frame path="data/collision/10.pcx" width="60" height="30" delay="1"/>
+      <frame path="data/collision/11.pcx" width="60" height="30" delay="1"/>
+      <frame path="data/collision/12.pcx" width="60" height="30" delay="1"/>
+      <frame path="data/collision/13.pcx" width="60" height="30" delay="1"/>
+   </animation>
+</character>

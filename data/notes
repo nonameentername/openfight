@@ -1,0 +1,13 @@
+change color:
+   convert *.pcx -fill black -opaque '#fa00fa' output.pcx
+   
+change format:
+   mogrify -format png *.pcx
+
+resize:
+   convert *.png -background black -gravity center -extent 64x128 output.png
+
+convert to RGB:
+   convert -colorspace RGB * output.png
+   
+convert -fill black -opaque '#fa00fa' -background black -gravity center -extent 128x128 -colorspace RGB -format png * output.png

@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<character>
+   <name>collision</name>
+   <type>temporary</type>
+   <position x_pos="0" y_pos="-15" alpha="0.7" scale="1"/>
+   <action name="start" trigger="NONE" from="start" to="start" continual="true"/>
+   <animation name="start">
+      <frame path="data/ground_collision/00.png" width="40" height="10" delay="1"/>
+      <frame path="data/ground_collision/01.png" width="40" height="10" delay="1"/>
+      <frame path="data/ground_collision/02.png" width="40" height="10" delay="1"/>
+      <frame path="data/ground_collision/03.png" width="40" height="10" delay="1"/>
+      <frame path="data/ground_collision/04.png" width="40" height="10" delay="1"/>
+      <frame path="data/ground_collision/05.png" width="40" height="10" delay="1"/>
+      <frame path="data/ground_collision/06.png" width="40" height="10" delay="1"/>
+      <frame path="data/ground_collision/07.png" width="40" height="10" delay="1"/>
+      <frame path="data/ground_collision/08.png" width="40" height="10" delay="1"/>
+      <frame path="data/ground_collision/09.png" width="40" height="10" delay="1"/>
+      <frame path="data/ground_collision/10.png" width="40" height="10" delay="1"/>
+      <frame path="data/ground_collision/11.png" width="40" height="10" delay="1"/>
+      <frame path="data/ground_collision/12.png" width="40" height="10" delay="1"/>
+      <frame path="data/ground_collision/13.png" width="40" height="10" delay="1"/>
+      <frame path="data/ground_collision/14.png" width="40" height="10" delay="1"/>
+      <frame path="data/ground_collision/15.png" width="40" height="10" delay="1"/>
+   </animation>
+</character>
