@@ -50,7 +50,7 @@ jobs:
           sleep 5
 
           echo "🛑 Stopping openfight..."
-          kill -SIGINT $PID || kill -SIGTERM $PID || kill -9 $PID
+          kill -SIGTERM $PID || kill -9 $PID
 
           # Wait for the process to exit and flush output
           wait $PID || true
