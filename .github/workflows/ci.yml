@@ -52,6 +52,9 @@ jobs:
           echo "🛑 Stopping openfight..."
           kill -SIGINT $PID || kill -SIGTERM $PID || kill -9 $PID
 
+          # Wait for the process to exit and flush output
+          wait $PID || true
+
           # Validate the game actually ran
           if grep -q 'FPS:' openfight.log; then
             echo "✅ openfight ran successfully"
