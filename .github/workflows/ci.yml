@@ -38,13 +38,26 @@ jobs:
           echo "Waiting for Xvfb to be ready..."
           sleep 2
 
-      - name: Run script for 5 seconds then stop
+      - name: Run openfight for 5 seconds and verify output
         run: |
           export DISPLAY=:99
-          ./openfight &
+
+          # Run the game and capture output to a file
+          ./openfight > openfight.log 2>&1 &
           PID=$!
+
           echo "🚀 Running openfight (PID=$PID) for 5 seconds..."
           sleep 5
+
           echo "🛑 Stopping openfight..."
           kill -SIGINT $PID || kill -SIGTERM $PID || kill -9 $PID
-          echo "✅ openfight stopped"
+
+          # Validate the game actually ran
+          if grep -q 'FPS:' openfight.log; then
+            echo "✅ openfight ran successfully"
+          else
+            echo "❌ openfight did not produce expected output"
+            echo "----- openfight.log -----"
+            cat openfight.log
+            exit 1
+          fi
