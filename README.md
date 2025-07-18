@@ -1,4 +1,4 @@
-# openfight
+# OpenFight
 
 This is an open source fighting game written in C++ using SDL
 
@@ -10,7 +10,8 @@ This is an open source fighting game written in C++ using SDL
 https://github.com/user-attachments/assets/1d26f60d-91d8-4dae-ac71-6a7d8bc14b7e
 
 
-# Requirements
+## Requirements
+
 * cmake
 * libxml2-dev
 * libsdl2-dev libsdl2-image-dev libglu1-mesa-dev libglew-dev
