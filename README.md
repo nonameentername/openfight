@@ -18,4 +18,5 @@ https://github.com/user-attachments/assets/1d26f60d-91d8-4dae-ac71-6a7d8bc14b7e
 
 The project can be executed using the following script:
 
-    ./run-linux.sh
+    make ubuntu-install-deps build
+    ./openfight

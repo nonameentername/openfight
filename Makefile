@@ -4,7 +4,7 @@ MAIN       := openfight
 IMAGE_NAME := openfight-compiler
 BUILD_TYPE ?= Release
 
-compile: clean
+build: clean
 	${CMAKE} -Bbuild -DCMAKE_BUILD_TYPE=${BUILD_TYPE}
 	${CMAKE} --build build
 	
@@ -19,6 +19,9 @@ else
 	UID=`id -u`
 	GID=`id -g`
 endif
+
+ubuntu-install-deps:
+	sudo apt install -y build-essential libxml2-dev libsdl2-dev libsdl2-image-dev libglu1-mesa-dev libglew-dev
 
 shell:	docker
 	${DOCKER} run -it --rm -v `pwd`:/tmp/workdir --user ${UID}:${GID} -w /tmp/workdir ${IMAGE_NAME} bash

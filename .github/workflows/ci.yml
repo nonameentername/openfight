@@ -16,20 +16,12 @@ jobs:
 
       - name: Install dependencies
         run: |
-          sudo apt update
-          sudo apt install -y \
-            build-essential \
-            libxml2-dev \
-            libsdl2-dev \
-            libsdl2-image-dev \
-            libglu1-mesa-dev \
-            libglew-dev \
-            xvfb
+          make ubuntu-install-deps
+          sudo apt install -y xvfb
 
       - name: Build
         run: |
-            cmake -Bbuild
-            cmake --build build
+            make build
 
       - name: Start Xvfb
         run: |
