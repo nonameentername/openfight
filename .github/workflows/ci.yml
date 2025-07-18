@@ -1,0 +1,37 @@
+name: ci
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y \
+            build-essential \
+            libxml2-dev \
+            libsdl2-dev \
+            libsdl2-image-dev \
+            libglu1-mesa-dev \
+            libglew-dev \
+            xvfb
+
+      - name: Build project
+        run: |
+          cmake -Bbuild
+          cmake --build build
+
+      - name: Run openfight (headless for 2 seconds)
+        run: |
+          echo "🚀 Launching openfight for 2 seconds..."
+          timeout 2 xvfb-run --auto-servernum --server-args='-screen 0 1024x768x24' ./openfight
