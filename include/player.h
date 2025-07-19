@@ -9,8 +9,7 @@
 #include <map>
 #include <libxml/parser.h>
 #include <libxml/tree.h>
-#include <GL/glew.h>
-#include <GL/gl.h>
+#include "gl.h"
 
 #include <SDL2/SDL_opengl.h>
 #include "objectManager.h"

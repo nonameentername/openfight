@@ -4,8 +4,7 @@
 #include <string>
 #include <vector>
 #include <SDL2/SDL.h>
-#include <GL/glew.h>
-#include <GL/gl.h>
+#include "gl.h"
 
 #include "sprite.h"
 #include "collision.h"

@@ -36,7 +36,7 @@ windows:
 	PLATFORM=windows CXX=i686-w64-mingw32-g++ make build zip
 
 mac:
-	PLATFORM=mac CXX=clang make build zip	
+	PLATFORM=mac CXX=g++ make build zip	
 
 clean:
 	rm -rf ${MAIN} *.exe *.o build/*

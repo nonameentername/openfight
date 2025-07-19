@@ -2,8 +2,7 @@
 #define _collision_h
 
 #include <vector>
-#include <GL/glew.h>
-#include <GL/gl.h>
+#include "gl.h"
 
 #include "collisionBox.h"
 

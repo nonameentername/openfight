@@ -1,8 +1,7 @@
 #ifndef _graphics_h
 #define _graphics_h
 
-#include <GL/glew.h>
-#include <GL/gl.h>
+#include "gl.h"
 
 #include <SDL2/SDL_opengl.h>
 
