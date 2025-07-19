@@ -37,7 +37,7 @@ linux:
 	PLATFORM=linux CXX=g++ make build zip
 
 windows:
-	PLATFORM=windows CXX=i686-w64-mingw32-g++ make build zip
+	PLATFORM=windows CXX=i686-w64-mingw32-g++ CC=i686-w64-mingw32-gcc make build zip
 
 mac:
 	PLATFORM=mac CXX=g++ make build zip	
