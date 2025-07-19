@@ -6,7 +6,10 @@ if(CMAKE_BUILD_TYPE MATCHES Debug)
     add_link_options(-fsanitize=address -fsanitize=undefined)
 endif()
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-error=implicit-exception-spec-mismatch")
+if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+  add_compile_options(-Wno-inconsistent-missing-override)
+endif()
+
 
 file(GLOB SOURCE src/*.cpp)
 file(GLOB HEADER src/*.h)
