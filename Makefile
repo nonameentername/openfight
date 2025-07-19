@@ -30,13 +30,13 @@ zip:
 	zip -r ${MAIN}-${PLATFORM}.zip data ${MAIN} ${MAIN}.exe
 
 linux:
-	PLATFORM=linux CXX=g++ make compile	zip
+	PLATFORM=linux CXX=g++ make build zip
 
 windows:
-	PLATFORM=windows CXX=i686-w64-mingw32-g++ make compile zip
+	PLATFORM=windows CXX=i686-w64-mingw32-g++ make build zip
 
 mac:
-	PLATFORM=mac CXX=clang make compile zip	
+	PLATFORM=mac CXX=clang make build zip	
 
 clean:
 	rm -rf ${MAIN} *.exe *.o build/*
