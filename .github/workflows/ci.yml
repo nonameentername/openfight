@@ -56,3 +56,43 @@ jobs:
             cat openfight.log
             exit 1
           fi
+
+  MacOS:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          make macos-install-deps
+
+      - name: Build
+        run: |
+          make build
+
+      - name: Run openfight for 5 seconds and verify output
+        run: |
+          # Run the game and capture output to a file
+          ./openfight > openfight.log 2>&1 &
+          PID=$!
+
+          echo "🚀 Running openfight (PID=$PID) for 5 seconds..."
+          sleep 5
+
+          echo "🛑 Stopping openfight..."
+          kill -SIGTERM $PID || kill -9 $PID
+
+          # Wait for the process to exit and flush output
+          wait $PID || true
+
+          # Validate the game actually ran
+          if grep -q 'FPS:' openfight.log; then
+            echo "✅ openfight ran successfully"
+          else
+            echo "❌ openfight did not produce expected output"
+            echo "----- openfight.log -----"
+            cat openfight.log
+            exit 1
+          fi
