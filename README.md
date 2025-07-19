@@ -1,3 +1,7 @@
+[![CI](https://github.com/humbertodias/openfight/actions/workflows/ci.yml/badge.svg)](https://github.com/humbertodias/openfight/actions/workflows/ci.yml)
+[![CD](https://github.com/humbertodias/openfight/actions/workflows/cd.yml/badge.svg)](https://github.com/humbertodias/openfight/actions/workflows/cd.yml)
+![GitHub all downloads](https://img.shields.io/github/downloads/humbertodias/openfight/total)
+
 # OpenFight
 
 This is an open source fighting game written in C++ using SDL
