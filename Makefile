@@ -43,7 +43,7 @@ mac:
 	PLATFORM=mac CXX=g++ make build zip	
 
 clean:
-	rm -rf ${MAIN} *.exe *.o build/*
+	rm -rf ${MAIN} *.exe *.o build
 
 check-leak:
 	valgrind --leak-check=full --leak-check=full --show-leak-kinds=all --track-origins=yes ./${MAIN}
