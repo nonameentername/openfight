@@ -31,7 +31,7 @@ shell:	docker
 	${DOCKER} run -it --rm -v `pwd`:/tmp/workdir --user ${UID}:${GID} -w /tmp/workdir ${IMAGE_NAME} bash
 
 zip:
-	zip -r ${MAIN}-${PLATFORM}-${ARCH}.zip data ${MAIN} ${MAIN}.exe
+	zip -9 -r ${MAIN}-${PLATFORM}-${ARCH}.zip data ${MAIN} ${MAIN}.exe
 
 linux:
 	PLATFORM=linux CXX=g++ make build zip
