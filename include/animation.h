@@ -18,9 +18,9 @@ class Animation
       std::vector<Collision*> offense;
       std::vector<Collision*> defense;
       std::vector<Actions*>    action;
-      std::vector<uint>        delays;
-      uint current;
-      uint current_delay;
+      std::vector<unsigned int>        delays;
+      unsigned int current;
+      unsigned int current_delay;
       bool is_combo;
       bool is_continual;
       bool show_hitbox;
@@ -42,7 +42,7 @@ class Animation
       Actions   *getActions();
       bool isCombo();
       bool isContinual();
-      void addFrame(std::string file_name, GLfloat w, GLfloat h, Collision *o, Collision *d, Actions *a, uint delay);
+      void addFrame(std::string file_name, GLfloat w, GLfloat h, Collision *o, Collision *d, Actions *a, unsigned int delay);
       void update(GLfloat x, GLfloat y, GLfloat s, bool flip);
       bool nextFrame(bool &changed);
       void restart();

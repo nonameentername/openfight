@@ -19,7 +19,7 @@ class PlayerAgent
       static const int QUEUE_KEY_MAX   = 20;
       static const int INPUT_FRAME_MAX = 10;
       bool previous_keys[KEY_MAX];
-      uint current_frame;
+      unsigned int current_frame;
       std::list<KeyState> key_queue;
       std::map<std::string, int> time_held;
 
