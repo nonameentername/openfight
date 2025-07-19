@@ -29,7 +29,7 @@ The project can be executed using the following script:
 ## 🤝 Contributing
 
 Pull requests are welcome!  
-If you find a bug or have a feature suggestion, feel free to [open an issue](https://github.com/nonameentername/sdl-openmugen/issues).
+If you find a bug or have a feature suggestion, feel free to [open an issue](https://github.com/nonameentername/openfight/issues).
 
 ## 🛣️ Roadmap
 
