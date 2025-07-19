@@ -1,30 +1,36 @@
-# openfight
+[![CI](https://github.com/nonameentername/openfight/actions/workflows/ci.yml/badge.svg)](https://github.com/nonameentername/openfight/actions/workflows/ci.yml)
+[![CD](https://github.com/nonameentername/openfight/actions/workflows/cd.yml/badge.svg)](https://github.com/nonameentername/openfight/actions/workflows/cd.yml)
+![GitHub all downloads](https://img.shields.io/github/downloads/nonameentername/openfight/total)
 
-![openfight](./images//openfight-1.png)
-![openfight](./images//openfight-2.png)
-![openfight](./images//openfight-3.png)
-![openfight](./images//openfight-4.png)
+# OpenFight
+
+This is an open source fighting game written in C++ using SDL
+
+![openfight](./images/openfight-1.png)
+![openfight](./images/openfight-2.png)
+![openfight](./images/openfight-3.png)
+![openfight](./images/openfight-4.png)
 
 https://github.com/user-attachments/assets/1d26f60d-91d8-4dae-ac71-6a7d8bc14b7e
 
 
+## Requirements
 
+* cmake
+* libxml2-dev
+* libsdl2-dev libsdl2-image-dev libglu1-mesa-dev libglew-dev
 
-This is an open source fighting game written in C++ using SDL.
+The project can be executed using the following script:
 
-The project can be built using cmake.
-
-
-To build in ubuntu, install the required packages:
-
-    sudo apt install build-essential libxml2-dev libsdl2-dev libsdl2-image-dev libglu1-mesa-dev libglew-dev
-
-Create a directory used for the build and generates the platform-specific makefiles:
-
-    cmake -Bbuild
-    cmake --build build
-    
-
-The project can then be compiled using the generated makefiles:
-
+    make ubuntu-install-deps build
     ./openfight
+
+
+## 🤝 Contributing
+
+Pull requests are welcome!  
+If you find a bug or have a feature suggestion, feel free to [open an issue](https://github.com/nonameentername/sdl-openmugen/issues).
+
+## 🛣️ Roadmap
+
+Check out the [ROADMAP](./ROADMAP.md) for planned features and upcoming improvements

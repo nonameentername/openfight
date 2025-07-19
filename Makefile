@@ -3,8 +3,9 @@ DOCKER     := $(shell command -v docker)
 MAIN       := openfight
 IMAGE_NAME := openfight-compiler
 BUILD_TYPE ?= Release
+ARCH  	   := $(shell uname -m)
 
-compile: clean
+build: clean
 	${CMAKE} -Bbuild -DCMAKE_BUILD_TYPE=${BUILD_TYPE}
 	${CMAKE} --build build
 	
@@ -20,20 +21,26 @@ else
 	GID=`id -g`
 endif
 
+ubuntu-install-deps:
+	sudo apt install -y build-essential libxml2-dev libsdl2-dev libsdl2-image-dev libglu1-mesa-dev libglew-dev
+
+macos-install-deps:
+	brew install sdl2 sdl2_image sdl2_gfx cmake make libxml2 glew
+
 shell:	docker
 	${DOCKER} run -it --rm -v `pwd`:/tmp/workdir --user ${UID}:${GID} -w /tmp/workdir ${IMAGE_NAME} bash
 
 zip:
-	zip -r ${MAIN}-${PLATFORM}.zip data ${MAIN} ${MAIN}.exe
+	zip -r ${MAIN}-${PLATFORM}-${ARCH}.zip data ${MAIN} ${MAIN}.exe
 
 linux:
-	PLATFORM=linux CXX=g++ make compile	zip
+	PLATFORM=linux CXX=g++ make build zip
 
 windows:
-	PLATFORM=windows CXX=i686-w64-mingw32-g++ make compile zip
+	PLATFORM=windows CXX=i686-w64-mingw32-g++ make build zip
 
 mac:
-	PLATFORM=mac CXX=clang make compile zip	
+	PLATFORM=mac CXX=g++ make build zip	
 
 clean:
 	rm -rf ${MAIN} *.exe *.o build/*

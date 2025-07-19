@@ -1,0 +1,66 @@
+name: CD
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+defaults:
+  run:
+    shell: bash
+
+# required for upload
+permissions:
+  contents: write
+
+jobs:
+
+  Linux:
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      matrix:
+        runner: [ ubuntu-24.04, ubuntu-24.04-arm ]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: sudo apt update -y && make ubuntu-install-deps
+
+      - name: Build zip
+        run: make linux
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          files: |
+            *.zip
+
+  MacOS:
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      matrix:
+        runner: [ macos-latest, macos-13 ]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install
+        run: make macos-install-deps
+
+      - name: Build zip
+        run: |
+           echo 'export PATH="/opt/homebrew/opt/libxml2/bin:$PATH"' >> $HOME/.bash_profile
+           export LDFLAGS="-L/opt/homebrew/opt/libxml2/lib"
+           export CPPFLAGS="-I/opt/homebrew/opt/libxml2/include"
+           export PKG_CONFIG_PATH="/opt/homebrew/opt/libxml2/lib/pkgconfig"
+           make mac
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          files: |
+            *.zip            

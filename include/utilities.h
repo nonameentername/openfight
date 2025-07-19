@@ -7,8 +7,7 @@
 #include <libxml/parser.h>
 #include <libxml/tree.h>
 #include <SDL2/SDL.h>
-#include <GL/glew.h>
-#include <GL/gl.h>
+#include "gl.h"
 
 #include <SDL2/SDL_opengl.h>
 #include <SDL2/SDL_image.h>

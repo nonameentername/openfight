@@ -1,0 +1,58 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  Linux:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          make ubuntu-install-deps
+          sudo apt install -y xvfb
+
+      - name: Build
+        run: |
+            make build
+
+      - name: Start Xvfb
+        run: |
+          Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+          export DISPLAY=:99
+          echo "Waiting for Xvfb to be ready..."
+          sleep 2
+
+      - name: Run openfight for 5 seconds and verify output
+        run: |
+          export DISPLAY=:99
+
+          # Run the game and capture output to a file
+          ./openfight > openfight.log 2>&1 &
+          PID=$!
+
+          echo "🚀 Running openfight (PID=$PID) for 5 seconds..."
+          sleep 5
+
+          echo "🛑 Stopping openfight..."
+          kill -SIGTERM $PID || kill -9 $PID
+
+          # Wait for the process to exit and flush output
+          wait $PID || true
+
+          # Validate the game actually ran
+          if grep -q 'FPS:' openfight.log; then
+            echo "✅ openfight ran successfully"
+          else
+            echo "❌ openfight did not produce expected output"
+            echo "----- openfight.log -----"
+            cat openfight.log
+            exit 1
+          fi
