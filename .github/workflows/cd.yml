@@ -25,7 +25,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Install dependencies
-        run: sudo apt update -y && sudo apt install -y libsdl2-dev libsdl2-image-dev libglu1-mesa-dev libglew-dev build-essential cmake make libxml2-dev
+        run: sudo apt update -y && make ubuntu-install-deps
 
       - name: Build zip
         run: make linux
@@ -47,7 +47,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Install
-        run: brew install sdl2 sdl2_image sdl2_gfx cmake make libxml2 glew
+        run: make macos-install-dep
 
       - name: Build zip
         run: |

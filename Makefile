@@ -24,6 +24,9 @@ endif
 ubuntu-install-deps:
 	sudo apt install -y build-essential libxml2-dev libsdl2-dev libsdl2-image-dev libglu1-mesa-dev libglew-dev
 
+macos-install-deps:
+	brew install sdl2 sdl2_image sdl2_gfx cmake make libxml2 glew
+
 shell:	docker
 	${DOCKER} run -it --rm -v `pwd`:/tmp/workdir --user ${UID}:${GID} -w /tmp/workdir ${IMAGE_NAME} bash
 
