@@ -1,9 +1,9 @@
 CMAKE      := $(shell command -v cmake)
 DOCKER     := $(shell command -v docker)
+ARCH  	   := $(shell uname -m)
 MAIN       := openfight
 IMAGE_NAME := openfight-compiler
 BUILD_TYPE ?= Release
-ARCH  	   := $(shell uname -m)
 
 build: clean
 	${CMAKE} -Bbuild -DCMAKE_BUILD_TYPE=${BUILD_TYPE}
@@ -46,4 +46,4 @@ clean:
 	rm -rf ${MAIN} *.exe *.o build/*
 
 check-leak:
-	valgrind --leak-check=full --leak-check=full --show-leak-kinds=all  --track-origins=yes ./openfight
+	valgrind --leak-check=full --leak-check=full --show-leak-kinds=all --track-origins=yes ./${MAIN}
