@@ -47,7 +47,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Install
-        run: brew install sdl2 sdl2_image sdl2_gfx cmake make libxml2
+        run: brew install sdl2 sdl2_image sdl2_gfx cmake make libxml2 glew mesa
 
       - name: Build zip
         run: make mac
