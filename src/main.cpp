@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
 
     graphics->initialize(screen_width, screen_height);
 
-    Configuration configuration("data/config.xml");
+    Configuration configuration("data/config.json");
     configuration.read();
 
     Input input;
@@ -53,10 +53,10 @@ int main(int argc, char *argv[])
     input.addPlayer(configuration.getConfigKeys(false), configuration.getConfigDevice(false));
 
     PlayerAgent player;
-    player.initialize("data/ryu/ryu.xml", "data/ryu/moves.xml", true);
+    player.initialize("data/ryu/ryu.json", "data/ryu/moves.json", true);
 
     PlayerAgent player2;
-    player2.initialize("data/ryu/ryu.xml", "data/ryu/moves.xml", false);
+    player2.initialize("data/ryu/ryu.json", "data/ryu/moves.json", false);
 
     auto p2 = player2.getPlayer().get();
     auto p1 = player.getPlayer().get();

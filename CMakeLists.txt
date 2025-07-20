@@ -11,7 +11,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 file(GLOB SOURCE src/*.cpp)
-file(GLOB HEADER src/*.h)
+file(GLOB HEADER include/*.h)
 
 set(OpenGL_GL_PREFERENCE LEGACY)
 
@@ -20,7 +20,7 @@ find_package(PkgConfig REQUIRED)
 find_package(GLU REQUIRED)
 pkg_check_modules(SDL2 REQUIRED sdl2)
 pkg_check_modules(SDL2_IMAGE REQUIRED SDL2_image)
-find_package(LibXml2 REQUIRED)
+find_package(nlohmann_json REQUIRED)
 
 if(APPLE)
     find_package(GLEW REQUIRED CONFIG)
@@ -34,7 +34,6 @@ include_directories(
     ${GLU_INCLUDE_DIRS}
     ${SDL2_INCLUDE_DIRS}
     ${SDL2_IMAGE_INCLUDE_DIRS}
-    ${LIBXML2_INCLUDE_DIR}
     ${GLEW_INCLUDE_DIRS}
 )
 
@@ -54,7 +53,7 @@ target_link_libraries(
     GLEW::GLEW
     ${SDL2_LIBRARIES}
     ${SDL2_IMAGE_LIBRARIES}
-    ${LIBXML2_LIBRARIES}
+    nlohmann_json::nlohmann_json
 )
 
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD

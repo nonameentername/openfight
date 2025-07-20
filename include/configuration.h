@@ -5,8 +5,6 @@
 #include <list>
 #include <map>
 #include <typeinfo>
-#include <libxml/parser.h>
-#include <libxml/tree.h>
 #include "input.h"
 #include "utilities.h"
 
@@ -32,8 +30,8 @@ class Configuration
 {
    private:
       std::string file_name;
-      xmlDoc  *doc;
-      xmlNode *root_element;
+      // xmlDoc  *doc;
+      // xmlNode *root_element;
 
       static std::string config_name[CONFIG_MAX];
       int config_keys_one[KEY_MAX];
