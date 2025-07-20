@@ -30,8 +30,6 @@ class Configuration
 {
    private:
       std::string file_name;
-      // xmlDoc  *doc;
-      // xmlNode *root_element;
 
       static std::string config_name[CONFIG_MAX];
       int config_keys_one[KEY_MAX];
