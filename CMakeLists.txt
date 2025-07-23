@@ -20,7 +20,9 @@ find_package(PkgConfig REQUIRED)
 find_package(GLU REQUIRED)
 pkg_check_modules(SDL2 REQUIRED sdl2)
 pkg_check_modules(SDL2_IMAGE REQUIRED SDL2_image)
-find_package(nlohmann_json REQUIRED)
+
+add_subdirectory(yaml-cpp)
+include_directories(yaml-cpp/include)
 
 if(APPLE)
     find_package(GLEW REQUIRED CONFIG)
@@ -53,7 +55,7 @@ target_link_libraries(
     GLEW::GLEW
     ${SDL2_LIBRARIES}
     ${SDL2_IMAGE_LIBRARIES}
-    nlohmann_json::nlohmann_json
+    yaml-cpp
 )
 
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD

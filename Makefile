@@ -5,10 +5,13 @@ MAIN       := openfight
 IMAGE_NAME := openfight-compiler
 BUILD_TYPE ?= Release
 
-build: clean
+build: clean	yaml-cpp-update
 	${CMAKE} -Bbuild -DCMAKE_BUILD_TYPE=${BUILD_TYPE}
 	${CMAKE} --build build
 	
+yaml-cpp-update:
+	git submodule update --init --recursive
+
 docker:
 	${DOCKER} build . -t ${IMAGE_NAME}
 
@@ -22,10 +25,10 @@ else
 endif
 
 ubuntu-install-deps:
-	sudo apt install -y build-essential libsdl2-dev libsdl2-image-dev libglu1-mesa-dev libglew-dev nlohmann-json3-dev
+	sudo apt install -y build-essential libsdl2-dev libsdl2-image-dev libglu1-mesa-dev libglew-dev
 
 macos-install-deps:
-	brew install sdl2 sdl2_image sdl2_gfx cmake make glew nlohmann-json
+	brew install sdl2 sdl2_image sdl2_gfx cmake make glew
 
 shell:	docker
 	${DOCKER} run -it --rm -v `pwd`:/tmp/workdir --user ${UID}:${GID} -w /tmp/workdir ${IMAGE_NAME} bash
@@ -43,7 +46,7 @@ mac:
 	PLATFORM=mac CXX=g++ make build zip	
 
 clean:
-	rm -rf ${MAIN} *.exe *.o build
+	rm -rf ${MAIN} *.exe *.o build cmake-build-*
 
 check-leak:
 	valgrind --leak-check=full --leak-check=full --show-leak-kinds=all --track-origins=yes ./${MAIN}

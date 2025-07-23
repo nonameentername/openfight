@@ -23,6 +23,8 @@ jobs:
         runner: [ ubuntu-24.04, ubuntu-24.04-arm ]
     steps:
       - uses: actions/checkout@v4
+        with:
+          submodules: recursive
 
       - name: Install dependencies
         run: sudo apt update -y && make ubuntu-install-deps
@@ -45,16 +47,14 @@ jobs:
         runner: [ macos-latest, macos-13 ]
     steps:
       - uses: actions/checkout@v4
+        with:
+          submodules: recursive
 
       - name: Install
         run: make macos-install-deps
 
       - name: Build zip
         run: |
-           echo 'export PATH="/opt/homebrew/opt/libxml2/bin:$PATH"' >> $HOME/.bash_profile
-           export LDFLAGS="-L/opt/homebrew/opt/libxml2/lib"
-           export CPPFLAGS="-I/opt/homebrew/opt/libxml2/include"
-           export PKG_CONFIG_PATH="/opt/homebrew/opt/libxml2/lib/pkgconfig"
            make mac
 
       - name: Create GitHub Release
