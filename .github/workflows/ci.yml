@@ -18,7 +18,7 @@ jobs:
         run: make ubuntu-install-deps
 
       - name: Continuous Integration
-        run: make xvfb-start ci xvfb-stop
+        run: make DISPLAY=:99 xvfb-start ci xvfb-stop
 
   MacOS:
     runs-on: macos-latest

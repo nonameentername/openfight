@@ -35,8 +35,7 @@ ci-docker:
 	${DOCKER} run --rm -v "$(PWD)":/app -w /app ${IMAGE_NAME} sh -c "make clean build validate-log"
 
 xvfb-start:
-	Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
-	export DISPLAY=:99
+	Xvfb $(DISPLAY) -screen 0 1024x768x24 > /dev/null 2>&1 &
 
 xvfb-stop:
 	pkill -9 Xvfb
