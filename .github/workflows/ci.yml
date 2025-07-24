@@ -31,4 +31,4 @@ jobs:
         run: make macos-install-deps
 
       - name: Continuous Integration
-        run: make xvfb-start ci
+        run: make xvfb-start ci xvfb-stop
