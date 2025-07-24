@@ -18,7 +18,7 @@ jobs:
         run: make ubuntu-install-deps
 
       - name: Continuous Integration
-        run: make ci
+        run: make xvfb-start ci xvfb-stop
 
   MacOS:
     runs-on: macos-latest
@@ -31,4 +31,4 @@ jobs:
         run: make macos-install-deps
 
       - name: Continuous Integration
-        run: make xvfb-start ci xvfb-stop
+        run: make ci
