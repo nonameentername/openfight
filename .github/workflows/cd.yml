@@ -23,8 +23,6 @@ jobs:
         runner: [ ubuntu-24.04, ubuntu-24.04-arm ]
     steps:
       - uses: actions/checkout@v4
-        with:
-          submodules: recursive
 
       - name: Install dependencies
         run: sudo apt update -y && make ubuntu-install-deps
@@ -47,15 +45,12 @@ jobs:
         runner: [ macos-latest, macos-13 ]
     steps:
       - uses: actions/checkout@v4
-        with:
-          submodules: recursive
 
       - name: Install
         run: make macos-install-deps
 
       - name: Build zip
-        run: |
-           make mac
+        run: make mac
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2

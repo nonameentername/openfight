@@ -22,13 +22,40 @@ else
 endif
 
 ubuntu-install-deps:
-	sudo apt install -y build-essential libsdl2-dev libsdl2-image-dev libglu1-mesa-dev libglew-dev libyaml-cpp-dev
+	sudo apt install -y build-essential libsdl2-dev libsdl2-image-dev libglu1-mesa-dev libglew-dev libyaml-cpp-dev xvfb
 
 macos-install-deps:
 	brew install sdl2 sdl2_image sdl2_gfx cmake make glew yaml-cpp
 
 shell:	docker
 	${DOCKER} run -it --rm -v `pwd`:/tmp/workdir --user ${UID}:${GID} -w /tmp/workdir ${IMAGE_NAME} bash
+
+ci-docker:
+	${DOCKER} build -t ${IMAGE_NAME} .
+	${DOCKER} run --rm -v "$(PWD)":/app -w /app ${IMAGE_NAME} sh -c "make clean build validate-log"
+
+xvfb-start:
+	Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+	export DISPLAY=:99
+
+xvfb-stop:
+	pkill -9 Xvfb
+
+ci:
+	make clean build validate-log
+
+validate-log:
+	./$(MAIN) > log.txt 2>&1 &
+	sleep 3
+	@if grep -q 'VideoSystem Init OK' log.txt; then \
+		echo "✅ $(MAIN) ran successfully"; \
+	else \
+		echo "❌ $(MAIN) did not produce expected output"; \
+		echo "----- log.txt -----"; \
+		cat log.txt; \
+		exit 1; \
+	fi
+	pkill -9 $(MAIN)
 
 zip:
 	zip -9 -r ${MAIN}-${PLATFORM}-${ARCH}.zip data ${MAIN} ${MAIN}.exe
@@ -43,7 +70,7 @@ mac:
 	PLATFORM=mac CXX=g++ make build zip	
 
 clean:
-	rm -rf ${MAIN} *.exe *.o build cmake-build-*
+	rm -rf ${MAIN} *.exe *.o build cmake-build-* log.txt
 
 check-leak:
 	valgrind --leak-check=full --leak-check=full --show-leak-kinds=all --track-origins=yes ./${MAIN}

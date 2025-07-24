@@ -5,4 +5,5 @@ RUN apt update -y \
     gcc-multilib-i686-linux-gnu g++-multilib-i686-linux-gnu \
     clang \
     libsdl2-dev libsdl2-ttf-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-net-dev libglu1-mesa-dev libglew-dev \
-    libyaml-cpp-dev
+    libyaml-cpp-dev \
+    xvfb
