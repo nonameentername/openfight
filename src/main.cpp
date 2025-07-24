@@ -20,6 +20,7 @@ int main(int argc, char *argv[])
 {
     cout << "SDL Version: " << SDL_GetCompiledVersion() << endl;
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK) != 0) {
+        SDL_Log("SDL_Init failed: %s", SDL_GetError());
         return -1;
     }
 
@@ -30,12 +31,14 @@ int main(int argc, char *argv[])
                                           SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
 
     if (!window) {
+        SDL_Log("SDL_CreateWindow failed: %s", SDL_GetError());
         SDL_Quit();
         return -1;
     }
 
     SDL_GLContext glContext = SDL_GL_CreateContext(window);
     if (!glContext) {
+        SDL_Log("SDL_GL_CreateContext failed: %s", SDL_GetError());
         SDL_DestroyWindow(window);
         SDL_Quit();
         return -1;
@@ -46,7 +49,6 @@ int main(int argc, char *argv[])
 
     graphics->initialize(screen_width, screen_height);
     cout << "VideoSystem Init OK" << endl;
-
 
     Configuration configuration("data/config.yml");
     configuration.read();
