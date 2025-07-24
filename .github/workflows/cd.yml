@@ -50,12 +50,7 @@ jobs:
         run: make macos-install-deps
 
       - name: Build zip
-        run: |
-           echo 'export PATH="/opt/homebrew/opt/libxml2/bin:$PATH"' >> $HOME/.bash_profile
-           export LDFLAGS="-L/opt/homebrew/opt/libxml2/lib"
-           export CPPFLAGS="-I/opt/homebrew/opt/libxml2/include"
-           export PKG_CONFIG_PATH="/opt/homebrew/opt/libxml2/lib/pkgconfig"
-           make mac
+        run: make mac
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2

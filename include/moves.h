@@ -7,8 +7,6 @@
 #include <list>
 #include <vector>
 #include <map>
-#include <libxml/parser.h>
-#include <libxml/tree.h>
 #include "keyState.h"
 #include "input.h"
 

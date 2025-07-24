@@ -7,8 +7,6 @@
 #include <sstream>
 #include <iostream>
 #include <map>
-#include <libxml/parser.h>
-#include <libxml/tree.h>
 #include "gl.h"
 
 #include <SDL2/SDL_opengl.h>

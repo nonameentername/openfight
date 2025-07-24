@@ -18,7 +18,9 @@ extern "C"
 
 int main(int argc, char *argv[])
 {
+    cout << "SDL Version: " << SDL_GetCompiledVersion() << endl;
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK) != 0) {
+        SDL_Log("SDL_Init failed: %s", SDL_GetError());
         return -1;
     }
 
@@ -29,12 +31,14 @@ int main(int argc, char *argv[])
                                           SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
 
     if (!window) {
+        SDL_Log("SDL_CreateWindow failed: %s", SDL_GetError());
         SDL_Quit();
         return -1;
     }
 
     SDL_GLContext glContext = SDL_GL_CreateContext(window);
     if (!glContext) {
+        SDL_Log("SDL_GL_CreateContext failed: %s", SDL_GetError());
         SDL_DestroyWindow(window);
         SDL_Quit();
         return -1;
@@ -44,8 +48,9 @@ int main(int argc, char *argv[])
     SDL_GL_SetSwapInterval(0); // Turn off VSync because it was causing low FPS
 
     graphics->initialize(screen_width, screen_height);
+    cout << "VideoSystem Init OK" << endl;
 
-    Configuration configuration("data/config.xml");
+    Configuration configuration("data/config.yml");
     configuration.read();
 
     Input input;
@@ -53,10 +58,10 @@ int main(int argc, char *argv[])
     input.addPlayer(configuration.getConfigKeys(false), configuration.getConfigDevice(false));
 
     PlayerAgent player;
-    player.initialize("data/ryu/ryu.xml", "data/ryu/moves.xml", true);
+    player.initialize("data/ryu/ryu.yml", "data/ryu/moves.yml", true);
 
     PlayerAgent player2;
-    player2.initialize("data/ryu/ryu.xml", "data/ryu/moves.xml", false);
+    player2.initialize("data/ryu/ryu.yml", "data/ryu/moves.yml", false);
 
     auto p2 = player2.getPlayer().get();
     auto p1 = player.getPlayer().get();
@@ -140,7 +145,7 @@ int main(int argc, char *argv[])
             Uint32 currentTime = SDL_GetTicks();
             if (currentTime > lastTime + 1000) {
                 float fps = frames * 1000.0f / (currentTime - lastTime);
-                printf("FPS: %.2f\n", fps);
+                //printf("FPS: %.2f\n", fps);
                 lastTime = currentTime;
                 frames = 0;
             }

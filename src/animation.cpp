@@ -100,7 +100,7 @@ bool Animation::isContinual()
    return is_continual;
 }
 
-void Animation::addFrame(string file_name, GLfloat w, GLfloat h, Collision *o, Collision *d, Actions *a, uint delay)
+void Animation::addFrame(string file_name, GLfloat w, GLfloat h, Collision *o, Collision *d, Actions *a, unsigned int delay)
 {
    Sprite *sprite = new Sprite();
    GLuint texture = texture_manager->addTexture(file_name, false);

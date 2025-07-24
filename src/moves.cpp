@@ -69,27 +69,6 @@ void Moves::buildKey(list<KeyState> key_queue, map<string, int> &state, vector<K
    }
 }
 
-void Moves::initialize(string file_name)
-{
-   xmlDoc  *doc          = NULL;
-   xmlNode *root_element = NULL;
-
-   doc = xmlReadFile(file_name.c_str(), NULL, 0);
-   root_element = xmlDocGetRootElement(doc);
-
-   vector<xmlNode*> moves_node = findChildren(root_element, "move");
-
-   for(int i = 0; i < moves_node.size(); i++)
-   {
-      string keys    = getProperty<string>(moves_node[i], "keys");
-      string trigger = getProperty<string>(moves_node[i], "trigger");
-
-      moves.push_back(new MoveSequence(keys, trigger));
-   }
-
-   xmlFreeDoc(doc);
-}
-
 string Moves::getTrigger(list<KeyState> key_queue, map<string, int> &state)
 {
    string result = "NONE";
