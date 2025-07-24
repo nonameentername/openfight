@@ -86,17 +86,29 @@ void Moves::initialize(string file_name) {
     }
 }
 
-Node asSequence(const Node &node) {
-    if (node && node.IsSequence()) {
-        return node;
-    }
-
+inline Node asSequence(const Node &node) {
+    if (node && node.IsSequence()) return node;
     Node seq(NodeType::Sequence);
-    if (node && !node.IsNull()) {
-        seq.push_back(node);
-    }
-
+    if (node && !node.IsNull()) seq.push_back(node);
     return seq;
+}
+
+inline float getFloat(const Node &node, const string &key, float defaultValue = 0.0f) {
+    return node[key] ? node[key].as<float>() : defaultValue;
+}
+
+inline string getString(const Node &node, const string &key, const string &defaultValue = "") {
+    return node[key] ? node[key].as<string>() : defaultValue;
+}
+
+inline void addCollisions(const Node &node, Collision *coll, float r, float g, float b, float alpha) {
+    for (const auto &c: asSequence(node)) {
+        auto x = getFloat(c, "x_pos");
+        auto y = getFloat(c, "y_pos");
+        auto w = getFloat(c, "width");
+        auto h = getFloat(c, "height");
+        coll->addCollision(new CollisionBox(x, y, w, h, r, g, b, alpha));
+    }
 }
 
 void Player::initialize(string file_name, bool player_one, GLfloat x_pos, GLfloat y_pos) {
@@ -122,15 +134,15 @@ void Player::initialize(string file_name, bool player_one, GLfloat x_pos, GLfloa
 
     // Character type
     if (root["type"])
-        type = root["type"].as<string>();
+        type = getString(root, "type");
 
     // Initial position
     if (root["position"]) {
         const auto &pos = root["position"];
-        y_initial = pos["y_pos"].as<float>();
-        x_initial = pos["x_pos"].as<float>();
-        alpha_initial = pos["alpha"].as<float>();
-        scale_initial = pos["scale"].as<float>();
+        y_initial = getFloat(pos, "y_pos");
+        x_initial = getFloat(pos, "x_pos");
+        alpha_initial = getFloat(pos, "alpha");
+        scale_initial = getFloat(pos, "scale");
 
         moveXpos(x_initial);
         this->y_pos += y_initial;
@@ -139,12 +151,11 @@ void Player::initialize(string file_name, bool player_one, GLfloat x_pos, GLfloa
     }
 
     // Actions
-    Node actionNodes = asSequence(root["action"]);
-    for (const auto &action: actionNodes) {
-        string name = action["name"].as<string>();
-        string trigger = action["trigger"].as<string>();
-        string from = action["from"].as<string>();
-        string to = action["to"].as<string>();
+    for (const auto &action: asSequence(root["action"])) {
+        auto name = getString(action, "name");
+        auto trigger = getString(action, "trigger");
+        auto from = getString(action, "from");
+        auto to = getString(action, "to");
 
         auto from_tokens = splitString(from, ", ");
         auto trigger_tokens = splitString(trigger, ", ");
@@ -157,73 +168,61 @@ void Player::initialize(string file_name, bool player_one, GLfloat x_pos, GLfloa
     }
 
     // Animations
-    Node animations = asSequence(root["animation"]);
-    for (const auto &anim: animations) {
-        string name = anim["name"].as<string>();
-        bool is_combo = anim["combo"] ? anim["combo"].as<bool>() : false;
-        bool is_continual = anim["continual"] ? anim["continual"].as<bool>() : false;
-        bool show_hitbox = anim["show_hitbox"] ? anim["show_hitbox"].as<bool>() : false;
+    for (const auto &anim: asSequence(root["animation"])) {
+        auto name = getString(anim, "name");
+        auto is_combo = anim["combo"] ? anim["combo"].as<bool>() : false;
+        auto is_continual = anim["continual"] ? anim["continual"].as<bool>() : false;
+        auto show_hitbox = anim["show_hitbox"] ? anim["show_hitbox"].as<bool>() : false;
 
         animation = new Animation(is_combo, is_continual, show_hitbox);
 
-        Node frames = asSequence(anim["frame"]);
-        for (const auto &frame: frames) {
-            string path = frame["path"].as<string>();
-            float width = frame["width"].as<float>();
-            float height = frame["height"].as<float>();
-            float delay = frame["delay"].as<float>();
+        // Frames
+        for (const auto &frame: asSequence(anim["frame"])) {
+            auto path = getString(frame, "path");
+            auto width = getFloat(frame, "width");
+            auto height = getFloat(frame, "height");
+            auto delay = getFloat(frame, "delay");
 
             defense = new Collision();
             offense = new Collision();
             actions = new Actions();
 
             // defense
-            Node defs = asSequence(frame["defense"]);
-            for (const auto &d: defs) {
-                float x = d["x_pos"].as<float>();
-                float y = d["y_pos"].as<float>();
-                float w = d["width"].as<float>();
-                float h = d["height"].as<float>();
-                defense->addCollision(new CollisionBox(x, y, w, h, 0.f, 0.f, 1.f, 1.f));
+            for (const auto &d: asSequence(frame["defense"])) {
+                addCollisions(d, defense, 0.f, 0.f, 1.f, 1.f);
             }
 
-            Node offenses = asSequence(frame["offense"]);
-            for (const auto &o: offenses) {
-                float x = o["x_pos"].as<float>();
-                float y = o["y_pos"].as<float>();
-                float w = o["width"].as<float>();
-                float h = o["height"].as<float>();
-                offense->addCollision(new CollisionBox(x, y, w, h, 1.f, 0.f, 0.f, 1.f));
+            for (const auto &o: asSequence(frame["offense"])) {
+                addCollisions(o, offense, 1.f, 0.f, 0.f, 1.f);
             }
 
-            Node create_objects = asSequence(frame["create_object"]);
-            for (const auto &obj: create_objects) {
-                string path = obj["path"].as<string>();
-                float x = obj["x_pos"].as<float>();
-                float y = obj["y_pos"].as<float>();
-                int index = obj["index"].as<int>();
+            for (const auto &obj: asSequence(frame["create_object"])) {
+                auto path = getString(obj, "path");
+                auto x = getFloat(obj, "x_pos");
+                auto y = getFloat(obj, "y_pos");
+                auto index = obj["index"].as<int>();
 
                 createObject(path);
                 actions->addAction(new CreateObjectAction(path, x, y, index));
             }
 
             // collision
-            Node collisions = asSequence(frame["collision"]);
-            for (const auto &col: collisions) {
-                string path = col["path"].as<string>();
-                float x = col["x_pos"].as<float>();
-                float y = col["y_pos"].as<float>();
-                int index = col["index"].as<int>();
-                string to = col["to"] ? col["to"].as<string>() : "";
-                string to_opponent = col["opponent"] ? col["opponent"].as<string>() : "";
+            for (const auto &col: asSequence(frame["collision"])) {
+                auto path = getString(col, "path");
+                auto x = getFloat(col, "x_pos");
+                auto y = getFloat(col, "y_pos");
+                auto index = col["index"].as<int>();
+                auto to = getString(col, "to");
+                auto to_opponent = getString(col, "opponent");
 
                 createObject(path);
                 actions->addAction(new CollisionAction(path, x, y, index, to, to_opponent));
             }
 
             if (frame["move"]) {
-                float x = frame["move"]["x_vel"].as<float>();
-                float y = frame["move"]["y_vel"].as<float>();
+                auto move = frame["move"];
+                auto x = getFloat(move, "x_vel");
+                auto y = getFloat(move, "y_vel");
                 actions->addAction(new MoveAction(x, y));
             }
 
