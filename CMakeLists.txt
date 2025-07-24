@@ -20,9 +20,7 @@ find_package(PkgConfig REQUIRED)
 find_package(GLU REQUIRED)
 pkg_check_modules(SDL2 REQUIRED sdl2)
 pkg_check_modules(SDL2_IMAGE REQUIRED SDL2_image)
-
-add_subdirectory(yaml-cpp)
-include_directories(yaml-cpp/include)
+find_package(yaml-cpp REQUIRED)
 
 if(APPLE)
     find_package(GLEW REQUIRED CONFIG)

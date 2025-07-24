@@ -5,3 +5,4 @@
 - [ ] A title screen with character selection
 - [ ] Health tracking for players
 - [ ] Support for multiple rounds
+- [ ] Add sound effects and audio
