@@ -20,5 +20,6 @@ class Graphics
       int  getScreenHeight();
 };
 
+const char *SDL_GetCompiledVersion();
 
 #endif

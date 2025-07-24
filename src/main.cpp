@@ -18,6 +18,7 @@ extern "C"
 
 int main(int argc, char *argv[])
 {
+    cout << "SDL Version: " << SDL_GetCompiledVersion() << endl;
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK) != 0) {
         return -1;
     }
@@ -44,6 +45,8 @@ int main(int argc, char *argv[])
     SDL_GL_SetSwapInterval(0); // Turn off VSync because it was causing low FPS
 
     graphics->initialize(screen_width, screen_height);
+    cout << "VideoSystem Init OK" << endl;
+
 
     Configuration configuration("data/config.yml");
     configuration.read();
@@ -140,7 +143,7 @@ int main(int argc, char *argv[])
             Uint32 currentTime = SDL_GetTicks();
             if (currentTime > lastTime + 1000) {
                 float fps = frames * 1000.0f / (currentTime - lastTime);
-                printf("FPS: %.2f\n", fps);
+                //printf("FPS: %.2f\n", fps);
                 lastTime = currentTime;
                 frames = 0;
             }
