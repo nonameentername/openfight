@@ -4,3 +4,4 @@ cmake*
 .idea
 .vscode
 log.txt
+.cache

@@ -1,26 +1,24 @@
-#ifndef _collision_h
-#define _collision_h
+#ifndef OPEN_FIGHT_COLLISION_H
+#define OPEN_FIGHT_COLLISION_H
 
-#include <vector>
 #include "gl.h"
+#include <vector>
 
 #include "collisionBox.h"
 
-class Collision
-{
-   protected:
-      std::vector<CollisionBox*> collisions;
+class Collision {
+protected:
+    std::vector<CollisionBox *> collisions;
 
-   public:
-      Collision();
-      Collision(const Collision &c);
-      ~Collision();
+public:
+    Collision();
+    Collision(const Collision &c);
+    ~Collision();
 
-      void addCollision(CollisionBox *c);
-      void update(GLfloat x, GLfloat y, bool inverted);
-      bool overlaps(Collision *other);
-      void draw();
+    void addCollision(CollisionBox *c);
+    void update(GLfloat x, GLfloat y, bool inverted);
+    bool overlaps(Collision *other);
+    void draw();
 };
-
 
 #endif

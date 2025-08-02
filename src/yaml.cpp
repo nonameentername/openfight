@@ -1,7 +1,7 @@
 #include "yaml.h"
-#include "player.h"
-#include "moves.h"
 #include "configuration.h"
+#include "moves.h"
+#include "player.h"
 
 void Configuration::read() {
     ifstream file(file_name);
@@ -14,8 +14,7 @@ void Configuration::read() {
     try {
         root = Load(file);
     } catch (const ParserException &e) {
-        cerr << "Failed to parse YAML in file: " << file_name << endl
-                << e.what() << endl;
+        cerr << "Failed to parse YAML in file: " << file_name << endl << e.what() << endl;
         return;
     }
 
@@ -52,7 +51,6 @@ void Configuration::read() {
     readPlayerConfig("player_two", config_keys_two, device_keys_two);
 }
 
-
 void Moves::initialize(string file_name) {
     ifstream ifs(file_name);
     if (!ifs) {
@@ -64,8 +62,7 @@ void Moves::initialize(string file_name) {
     try {
         root = Load(ifs);
     } catch (const ParserException &e) {
-        cerr << "Failed to parse YAML in file: " << file_name << endl
-                << e.what() << endl;
+        cerr << "Failed to parse YAML in file: " << file_name << endl << e.what() << endl;
         return;
     }
 
@@ -76,7 +73,7 @@ void Moves::initialize(string file_name) {
 
     const Node &moveList = root["moves"]["move"];
 
-    for (const auto &item: moveList) {
+    for (const auto &item : moveList) {
         auto keys = item["keys"].as<string>();
         auto trigger = item["trigger"].as<string>();
 
@@ -87,9 +84,11 @@ void Moves::initialize(string file_name) {
 }
 
 inline Node asSequence(const Node &node) {
-    if (node && node.IsSequence()) return node;
+    if (node && node.IsSequence())
+        return node;
     Node seq(NodeType::Sequence);
-    if (node && !node.IsNull()) seq.push_back(node);
+    if (node && !node.IsNull())
+        seq.push_back(node);
     return seq;
 }
 
@@ -102,7 +101,7 @@ inline string getString(const Node &node, const string &key, const string &defau
 }
 
 inline void addCollisions(const Node &node, Collision *coll, float r, float g, float b, float alpha) {
-    for (const auto &c: asSequence(node)) {
+    for (const auto &c : asSequence(node)) {
         auto x = getFloat(c, "x_pos");
         auto y = getFloat(c, "y_pos");
         auto w = getFloat(c, "width");
@@ -151,7 +150,7 @@ void Player::initialize(string file_name, bool player_one, GLfloat x_pos, GLfloa
     }
 
     // Actions
-    for (const auto &action: asSequence(root["action"])) {
+    for (const auto &action : asSequence(root["action"])) {
         auto name = getString(action, "name");
         auto trigger = getString(action, "trigger");
         auto from = getString(action, "from");
@@ -160,15 +159,15 @@ void Player::initialize(string file_name, bool player_one, GLfloat x_pos, GLfloa
         auto from_tokens = splitString(from, ", ");
         auto trigger_tokens = splitString(trigger, ", ");
 
-        for (const auto &f: from_tokens)
-            for (const auto &t: trigger_tokens)
+        for (const auto &f : from_tokens)
+            for (const auto &t : trigger_tokens)
                 states[f][t] = name;
 
         next_state[name] = to;
     }
 
     // Animations
-    for (const auto &anim: asSequence(root["animation"])) {
+    for (const auto &anim : asSequence(root["animation"])) {
         auto name = getString(anim, "name");
         auto is_combo = anim["combo"] ? anim["combo"].as<bool>() : false;
         auto is_continual = anim["continual"] ? anim["continual"].as<bool>() : false;
@@ -177,7 +176,7 @@ void Player::initialize(string file_name, bool player_one, GLfloat x_pos, GLfloa
         animation = new Animation(is_combo, is_continual, show_hitbox);
 
         // Frames
-        for (const auto &frame: asSequence(anim["frame"])) {
+        for (const auto &frame : asSequence(anim["frame"])) {
             auto path = getString(frame, "path");
             auto width = getFloat(frame, "width");
             auto height = getFloat(frame, "height");
@@ -188,15 +187,15 @@ void Player::initialize(string file_name, bool player_one, GLfloat x_pos, GLfloa
             actions = new Actions();
 
             // defense
-            for (const auto &d: asSequence(frame["defense"])) {
+            for (const auto &d : asSequence(frame["defense"])) {
                 addCollisions(d, defense, 0.f, 0.f, 1.f, 1.f);
             }
 
-            for (const auto &o: asSequence(frame["offense"])) {
+            for (const auto &o : asSequence(frame["offense"])) {
                 addCollisions(o, offense, 1.f, 0.f, 0.f, 1.f);
             }
 
-            for (const auto &obj: asSequence(frame["create_object"])) {
+            for (const auto &obj : asSequence(frame["create_object"])) {
                 auto path = getString(obj, "path");
                 auto x = getFloat(obj, "x_pos");
                 auto y = getFloat(obj, "y_pos");
@@ -207,7 +206,7 @@ void Player::initialize(string file_name, bool player_one, GLfloat x_pos, GLfloa
             }
 
             // collision
-            for (const auto &col: asSequence(frame["collision"])) {
+            for (const auto &col : asSequence(frame["collision"])) {
                 auto path = getString(col, "path");
                 auto x = getFloat(col, "x_pos");
                 auto y = getFloat(col, "y_pos");
