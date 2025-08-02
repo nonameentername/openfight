@@ -1,30 +1,29 @@
-#ifndef _key_state_h
-#define _key_state_h
+#ifndef OPEN_FIGHT_KEY_STATE_H
+#define OPEN_FIGHT_KEY_STATE_H
 
-#include <iostream>
-#include <string>
-#include <list>
-#include <SDL2/SDL.h>
 #include "input.h"
+#include <SDL2/SDL.h>
+#include <iostream>
+#include <list>
+#include <string>
 
-class KeyState
-{
-   private:
-      int key;
-      int time_held;
-      bool pressed;
-      bool held;
+class KeyState {
+private:
+    int key;
+    int time_held;
+    bool pressed;
+    bool held;
 
-   public:
-      KeyState(int key, bool pressed);
-      KeyState(int key, int time_held, bool pressed, bool held);
-      ~KeyState();
+public:
+    KeyState(int key, bool pressed);
+    KeyState(int key, int time_held, bool pressed, bool held);
+    ~KeyState();
 
-      bool operator==(const KeyState *c) const;
-      void   setTimeHeld(int time_held);
-      void   setHeld(bool held);
-      int    getKey();
-      bool   keyPressed();
+    bool operator==(const KeyState *c) const;
+    void setTimeHeld(int time_held);
+    void setHeld(bool held);
+    int getKey();
+    bool keyPressed();
 };
 
 #endif

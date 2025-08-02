@@ -1,14 +1,14 @@
-#include <SDL2/SDL.h>
-#include "utilities.h"
-#include "input.h"
 #include "animation.h"
-#include "playerAgent.h"
-#include "sprite.h"
-#include "graphicsCore.h"
-#include "graphics.h"
 #include "configuration.h"
-#include "playerBridge.h"
 #include "global.h"
+#include "graphics.h"
+#include "graphicsCore.h"
+#include "input.h"
+#include "playerAgent.h"
+#include "playerBridge.h"
+#include "sprite.h"
+#include "utilities.h"
+#include <SDL2/SDL.h>
 
 using namespace std;
 
@@ -16,19 +16,16 @@ using namespace std;
 extern "C"
 #endif
 
-int main(int argc, char *argv[])
-{
+    int
+    main(int argc, char *argv[]) {
     cout << "SDL Version: " << SDL_GetCompiledVersion() << endl;
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK) != 0) {
         SDL_Log("SDL_Init failed: %s", SDL_GetError());
         return -1;
     }
 
-    SDL_Window *window = SDL_CreateWindow("OpenFight",
-                                          SDL_WINDOWPOS_CENTERED,
-                                          SDL_WINDOWPOS_CENTERED,
-                                          screen_width, screen_height,
-                                          SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
+    SDL_Window *window = SDL_CreateWindow("OpenFight", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, screen_width,
+                                          screen_height, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
 
     if (!window) {
         SDL_Log("SDL_CreateWindow failed: %s", SDL_GetError());
@@ -83,21 +80,15 @@ int main(int argc, char *argv[])
 
     bool running = true;
 
-    while (running && !input.quitGame())
-    {
+    while (running && !input.quitGame()) {
         float game_time;
 
-        if (updateGame(game_time))
-        {
+        if (updateGame(game_time)) {
             SDL_Event event = input.poll();
 
-            if (event.type == SDL_QUIT)
-            {
+            if (event.type == SDL_QUIT) {
                 running = false;
-            }
-            else if (event.type == SDL_WINDOWEVENT &&
-                        event.window.event == SDL_WINDOWEVENT_RESIZED)
-            {
+            } else if (event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_RESIZED) {
                 int sw = event.window.data1;
                 int sh = event.window.data2;
 
@@ -112,8 +103,7 @@ int main(int argc, char *argv[])
             player2.update(keys2);
 
             string key = object_manager->first();
-            while (key != "")
-            {
+            while (key != "") {
                 bool done = false;
 
                 if (key != "0" && key != "1")
@@ -145,7 +135,7 @@ int main(int argc, char *argv[])
             Uint32 currentTime = SDL_GetTicks();
             if (currentTime > lastTime + 1000) {
                 float fps = frames * 1000.0f / (currentTime - lastTime);
-                //printf("FPS: %.2f\n", fps);
+                // printf("FPS: %.2f\n", fps);
                 lastTime = currentTime;
                 frames = 0;
             }
@@ -157,7 +147,6 @@ int main(int argc, char *argv[])
     SDL_GL_DeleteContext(glContext);
     SDL_DestroyWindow(window);
     SDL_Quit();
-
 
     return 0;
 }

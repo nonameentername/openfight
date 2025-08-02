@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.10...3.27)
 project(openfight)
+set(LIBRARY_NAME libopenfight)
 
 if(CMAKE_BUILD_TYPE MATCHES Debug)
     add_compile_options(-fsanitize=address -fsanitize=undefined)
@@ -9,6 +10,7 @@ endif()
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 file(GLOB SOURCE src/*.cpp)
 file(GLOB HEADER include/*.h)
@@ -44,6 +46,9 @@ link_directories(
 )
 
 add_executable(${PROJECT_NAME} ${SOURCE} ${HEADER})
+
+add_library(${LIBRARY_NAME} ${SOURCE} ${HEADER})
+set_target_properties(${LIBRARY_NAME} PROPERTIES OUTPUT_NAME ${PROJECT_NAME})
 
 target_link_libraries(
     ${PROJECT_NAME}

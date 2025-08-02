@@ -1,8 +1,8 @@
-#ifndef GLOBAL_H
-#define GLOBAL_H
+#ifndef OPEN_FIGHT_GLOBAL_H
+#define OPEN_FIGHT_GLOBAL_H
 
-#define screen_width  800
+#define screen_width 800
 #define screen_height 600
-#define screen_bpp    24
+#define screen_bpp 24
 
 #endif

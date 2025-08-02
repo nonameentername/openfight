@@ -1,29 +1,27 @@
-#ifndef _player_bridge_h
-#define _player_bridge_h
+#ifndef OPEN_FIGHT_PLAYER_BRIDGE_H
+#define OPEN_FIGHT_PLAYER_BRIDGE_H
 
-#include <string>
-#include <cmath>
-#include <algorithm>
-#include <iostream>
 #include "gl.h"
+#include <algorithm>
+#include <cmath>
+#include <iostream>
+#include <string>
 
-#include <SDL2/SDL_opengl.h>
-#include "player.h"
 #include "graphicsCore.h"
+#include "player.h"
+#include <SDL2/SDL_opengl.h>
 
-class PlayerBridge
-{
-   private:
-      Player *player_one;
-      Player *player_two;
+class PlayerBridge {
+private:
+    Player *player_one;
+    Player *player_two;
 
-   public:
-      PlayerBridge();
-      ~PlayerBridge();
+public:
+    PlayerBridge();
+    ~PlayerBridge();
 
-      void initialize(Player *player_one, Player *player_two);
-      void update();
+    void initialize(Player *player_one, Player *player_two);
+    void update();
 };
-
 
 #endif
