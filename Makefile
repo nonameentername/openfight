@@ -76,3 +76,6 @@ check-leak:
 
 format:
 	clang-format -i src/*.cpp include/*.h
+
+format-check:
+	clang-format -n src/*.cpp include/*.h
