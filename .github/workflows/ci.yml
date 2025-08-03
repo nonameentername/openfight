@@ -17,6 +17,9 @@ jobs:
       - name: Install dependencies
         run: make ubuntu-install-deps
 
+      - name: Run format check
+        run: make format-check
+
       - name: Continuous Integration
         run: make DISPLAY=:99 xvfb-start ci xvfb-stop
 
@@ -29,6 +32,9 @@ jobs:
 
       - name: Install dependencies
         run: make macos-install-deps
+
+      - name: Run format check
+        run: make format-check
 
       - name: Continuous Integration
         run: make ci
