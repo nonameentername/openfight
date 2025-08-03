@@ -45,7 +45,7 @@ ci:
 
 validate-log:
 	./$(MAIN) > log.txt 2>&1 &
-	sleep 3
+	sleep 5
 	@if grep -q 'VideoSystem Init OK' log.txt; then \
 		echo "✅ $(MAIN) ran successfully"; \
 	else \
