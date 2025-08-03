@@ -22,10 +22,10 @@ else
 endif
 
 ubuntu-install-deps:
-	sudo apt install -y build-essential libsdl2-dev libsdl2-image-dev libglu1-mesa-dev libglew-dev libyaml-cpp-dev xvfb
+	sudo apt install -y build-essential libsdl2-dev libsdl2-image-dev libglu1-mesa-dev libglew-dev libyaml-cpp-dev xvfb clang-format
 
 macos-install-deps:
-	brew install sdl2 sdl2_image sdl2_gfx cmake make glew yaml-cpp
+	brew install sdl2 sdl2_image sdl2_gfx cmake make glew yaml-cpp clang-format
 
 shell:	docker
 	${DOCKER} run -it --rm -v `pwd`:/tmp/workdir --user ${UID}:${GID} -w /tmp/workdir ${IMAGE_NAME} bash
