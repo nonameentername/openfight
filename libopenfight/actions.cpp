@@ -6,7 +6,7 @@ using namespace std;
 Action::Action() {
 }
 
-MoveAction::MoveAction(GLfloat x_vel, GLfloat y_vel) {
+MoveAction::MoveAction(float x_vel, float y_vel) {
     this->x_vel = x_vel;
     this->y_vel = y_vel;
 }
@@ -15,7 +15,7 @@ void MoveAction::doAction(Player *player, Player *opponent) {
     player->move(x_vel, y_vel);
 }
 
-CreateObjectAction::CreateObjectAction(string object, GLfloat x_pos, GLfloat y_pos, int index) {
+CreateObjectAction::CreateObjectAction(string object, float x_pos, float y_pos, int index) {
     this->object = object;
     this->x_pos = x_pos;
     this->y_pos = y_pos;
@@ -26,8 +26,7 @@ void CreateObjectAction::doAction(Player *player, Player *opponent) {
     player->copyObject(object, x_pos, y_pos, index);
 }
 
-CollisionAction::CollisionAction(string object, GLfloat x_pos, GLfloat y_pos, int index, string to,
-                                 string to_opponent) {
+CollisionAction::CollisionAction(string object, float x_pos, float y_pos, int index, string to, string to_opponent) {
     this->object = object;
     this->x_pos = x_pos;
     this->y_pos = y_pos;

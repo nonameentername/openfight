@@ -5,32 +5,31 @@
 
 class CollisionBox {
 private:
-    GLfloat x_pos;
-    GLfloat y_pos;
-    GLfloat width;
-    GLfloat height;
-    GLfloat red;
-    GLfloat blue;
-    GLfloat green;
-    GLfloat alpha;
+    float x_pos;
+    float y_pos;
+    float width;
+    float height;
+    float red;
+    float blue;
+    float green;
+    float alpha;
 
     bool inverted;
 
-    GLfloat x;
-    GLfloat y;
+    float x;
+    float y;
 
 public:
-    CollisionBox(GLfloat x_pos, GLfloat y_pos, GLfloat width, GLfloat height);
-    CollisionBox(GLfloat x_pos, GLfloat y_pos, GLfloat width, GLfloat height, GLfloat red, GLfloat green, GLfloat blue,
-                 GLfloat alpha);
+    CollisionBox(float x_pos, float y_pos, float width, float height);
+    CollisionBox(float x_pos, float y_pos, float width, float height, float red, float green, float blue, float alpha);
     ~CollisionBox();
 
-    GLfloat x1();
-    GLfloat x2();
-    GLfloat y1();
-    GLfloat y2();
+    float x1();
+    float x2();
+    float y1();
+    float y2();
 
-    void update(GLfloat x, GLfloat y, bool inverted);
+    void update(float x, float y, bool inverted);
     bool overlaps(CollisionBox *other);
     void draw();
 };

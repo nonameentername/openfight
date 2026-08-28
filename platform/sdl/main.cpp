@@ -1,10 +1,12 @@
 #include "animation.h"
 #include "configuration.h"
+#include "gl.h"
 #include "global.h"
 #include "graphics.h"
 #include "graphicsCore.h"
 #include "playerAgent.h"
 #include "playerBridge.h"
+#include "sdlGlRenderBackend.h"
 #include "sdlInput.h"
 #include "sprite.h"
 #include "utilities.h"
@@ -53,6 +55,9 @@ extern "C"
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
     SDL_GL_SetSwapInterval(0); // Turn off VSync because it was causing low FPS
 
+    SdlGlRenderBackend sdl_render_backend;
+    render_backend = &sdl_render_backend;
+
     graphics->initialize(screen_width, screen_height);
     cout << "VideoSystem Init OK" << endl;
 
@@ -75,7 +80,7 @@ extern "C"
     player2.getPlayer()->setOpponent(p1);
 
     Sprite background;
-    GLuint texture = texture_manager->addTexture("data/background.png", false);
+    unsigned int texture = texture_manager->addTexture("data/background.png", false);
     background.setTexture(texture, 200, 100);
 
     PlayerBridge bridge;
@@ -152,6 +157,9 @@ extern "C"
             game_time = getGameTime();
         }
     }
+
+    texture_manager->clear();
+    render_backend = nullptr;
 
     SDL_GL_DeleteContext(glContext);
     SDL_DestroyWindow(window);

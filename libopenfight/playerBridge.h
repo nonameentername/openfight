@@ -1,7 +1,6 @@
 #ifndef OPEN_FIGHT_PLAYER_BRIDGE_H
 #define OPEN_FIGHT_PLAYER_BRIDGE_H
 
-#include "gl.h"
 #include <algorithm>
 #include <cmath>
 #include <iostream>

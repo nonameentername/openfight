@@ -51,7 +51,7 @@ bool Player::operator<(const Player &p) const {
     return this->index < p.index;
 }
 
-GLfloat Player::getXpos() {
+float Player::getXpos() {
     return x_pos;
 }
 
@@ -181,7 +181,7 @@ void Player::createObject(string object) {
     }
 }
 
-void Player::copyObject(string object, GLfloat x, GLfloat y, int index) {
+void Player::copyObject(string object, float x, float y, int index) {
     Player *obj_copy = new Player(*objects->get(object));
     obj_copy->setOpponent(opponent);
     obj_copy->state["INVERT"] = inverted;
@@ -218,7 +218,7 @@ void Player::doAction(const type_info &type) {
     }
 }
 
-void Player::move(GLfloat x_vel, GLfloat y_vel) {
+void Player::move(float x_vel, float y_vel) {
     moveXpos(x_vel);
     y_pos = y_pos + y_vel;
 
@@ -230,7 +230,7 @@ void Player::move(GLfloat x_vel, GLfloat y_vel) {
     }
 }
 
-void Player::setLocation(GLfloat x, GLfloat y) {
+void Player::setLocation(float x, float y) {
     if (state["INVERT"])
         x_pos = x - x_initial;
     else
@@ -238,7 +238,7 @@ void Player::setLocation(GLfloat x, GLfloat y) {
     y_pos = y + y_initial;
 }
 
-void Player::checkCollisions(GLfloat action_x_vel) {
+void Player::checkCollisions(float action_x_vel) {
     if (action_x_vel == 0)
         action_x_vel = 0.1;
 
@@ -252,7 +252,7 @@ void Player::checkCollisions(GLfloat action_x_vel) {
     }
 }
 
-void Player::moveXpos(GLfloat value) {
+void Player::moveXpos(float value) {
     if (inverted)
         x_pos -= value;
     else

@@ -1,7 +1,6 @@
 #ifndef OPEN_FIGHT_ANIMATION_H
 #define OPEN_FIGHT_ANIMATION_H
 
-#include "gl.h"
 #include <string>
 #include <vector>
 
@@ -22,9 +21,9 @@ private:
     bool is_continual;
     bool show_hitbox;
     bool inverted;
-    GLfloat x_pos;
-    GLfloat y_pos;
-    GLfloat scale;
+    float x_pos;
+    float y_pos;
+    float scale;
     void updateCollisions();
 
 public:
@@ -32,20 +31,19 @@ public:
     Animation(const Animation &a);
     ~Animation();
 
-    GLfloat getWidth();
-    GLfloat getHeight();
+    float getWidth();
+    float getHeight();
     Collision *getOffense();
     Collision *getDefense();
     Actions *getActions();
     bool isCombo();
     bool isContinual();
-    void addFrame(std::string file_name, GLfloat w, GLfloat h, Collision *o, Collision *d, Actions *a,
-                  unsigned int delay);
-    void update(GLfloat x, GLfloat y, GLfloat s, bool flip);
+    void addFrame(std::string file_name, float w, float h, Collision *o, Collision *d, Actions *a, unsigned int delay);
+    void update(float x, float y, float s, bool flip);
     bool nextFrame(bool &changed);
     void restart();
-    void draw(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha);
-    void draw(GLfloat alpha);
+    void draw(float red, float green, float blue, float alpha);
+    void draw(float alpha);
     void draw();
     void drawHitBox();
 };

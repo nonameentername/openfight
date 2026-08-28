@@ -110,7 +110,7 @@ inline void addCollisions(const Node &node, Collision *coll, float r, float g, f
     }
 }
 
-void Player::initialize(string file_name, bool player_one, GLfloat x_pos, GLfloat y_pos) {
+void Player::initialize(string file_name, bool player_one, float x_pos, float y_pos) {
     Animation *animation;
     Actions *actions;
     Collision *defense;

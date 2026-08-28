@@ -1,8 +1,6 @@
 #ifndef OPEN_FIGHT_GRAPHICS_H
 #define OPEN_FIGHT_GRAPHICS_H
 
-#include "gl.h"
-
 class Graphics {
 private:
     bool global_loaded;

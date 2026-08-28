@@ -14,8 +14,8 @@ void PlayerBridge::initialize(Player *player_one, Player *player_two) {
 }
 
 void PlayerBridge::update() {
-    GLfloat x1 = player_one->getXpos();
-    GLfloat x2 = player_two->getXpos();
+    float x1 = player_one->getXpos();
+    float x2 = player_two->getXpos();
 
     if (x1 < x2) {
         if (player_one->isInverted() || !player_two->isInverted()) {

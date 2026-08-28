@@ -1,7 +1,6 @@
 #ifndef OPEN_FIGHT_PLAYER_H
 #define OPEN_FIGHT_PLAYER_H
 
-#include "gl.h"
 #include <algorithm>
 #include <iostream>
 #include <map>
@@ -18,15 +17,15 @@
 
 class Player {
 private:
-    GLfloat x_pos;
-    GLfloat y_pos;
-    GLfloat alpha;
-    GLfloat scale;
+    float x_pos;
+    float y_pos;
+    float alpha;
+    float scale;
 
-    GLfloat y_initial;
-    GLfloat x_initial;
-    GLfloat alpha_initial;
-    GLfloat scale_initial;
+    float y_initial;
+    float x_initial;
+    float alpha_initial;
+    float scale_initial;
 
     std::string type;
     bool inverted;
@@ -44,7 +43,7 @@ private:
     ObjectManager<Player> *objects;
 
     void setCurrentState(std::string state);
-    void checkCollisions(GLfloat action_x_vel);
+    void checkCollisions(float action_x_vel);
 
 public:
     Player();
@@ -54,23 +53,23 @@ public:
     std::map<std::string, bool> state;
 
     bool operator<(const Player &p) const;
-    GLfloat getXpos();
-    void moveXpos(GLfloat value);
+    float getXpos();
+    void moveXpos(float value);
     bool isInverted();
     bool isHurt();
     Collision *getOffense();
     Collision *getDefense();
 
-    void initialize(std::string file_name, bool player_one, GLfloat x_pos, GLfloat y_pos);
+    void initialize(std::string file_name, bool player_one, float x_pos, float y_pos);
     void setOpponent(Player *opponent);
     bool updateState(std::string command);
     bool updateState(std::string command, bool from_opponent);
     bool update();
     void doAction(const std::type_info &type);
-    void move(GLfloat x, GLfloat y);
-    void setLocation(GLfloat x, GLfloat y);
+    void move(float x, float y);
+    void setLocation(float x, float y);
     void createObject(std::string object);
-    void copyObject(std::string object, GLfloat x, GLfloat y, int index);
+    void copyObject(std::string object, float x, float y, int index);
     void draw();
 };
 

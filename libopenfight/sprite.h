@@ -1,27 +1,25 @@
 #ifndef OPEN_FIGHT_SPRITE_H
 #define OPEN_FIGHT_SPRITE_H
 
-#include "gl.h"
-
 class Sprite {
 private:
-    GLuint texture;
-    GLuint mask;
+    unsigned int texture;
+    unsigned int mask;
     bool has_mask;
-    GLfloat width;
-    GLfloat height;
+    float width;
+    float height;
 
 public:
     Sprite();
     ~Sprite();
 
-    GLfloat getWidth();
-    GLfloat getHeight();
-    void setTexture(GLuint texture, GLfloat w, GLfloat h);
-    void setMask(GLuint mask);
-    void draw(GLfloat x, GLfloat y, GLfloat scale, bool flip, GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha);
-    void draw(GLfloat x, GLfloat y, GLfloat scale, bool flip, GLfloat alpha);
-    void draw(GLfloat x, GLfloat y, GLfloat scale, bool flip);
+    float getWidth();
+    float getHeight();
+    void setTexture(unsigned int texture, float w, float h);
+    void setMask(unsigned int mask);
+    void draw(float x, float y, float scale, bool flip, float red, float green, float blue, float alpha);
+    void draw(float x, float y, float scale, bool flip, float alpha);
+    void draw(float x, float y, float scale, bool flip);
 };
 
 #endif

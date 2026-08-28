@@ -31,15 +31,6 @@ else()
     find_package(GLEW REQUIRED)
 endif()
 
-include_directories(
-    ${PROJECT_SOURCE_DIR}/libopenfight
-    ${OPENGL_INCLUDE_DIR}
-    ${GLU_INCLUDE_DIRS}
-    ${SDL2_INCLUDE_DIRS}
-    ${SDL2_IMAGE_INCLUDE_DIRS}
-    ${GLEW_INCLUDE_DIRS}
-)
-
 link_directories(
     ${SDL2_LIBRARY_DIRS}
     ${SDL2_IMAGE_LIBRARY_DIRS}
@@ -49,7 +40,29 @@ link_directories(
 add_library(${LIBRARY_NAME} ${LIBOPENFIGHT_SOURCE} ${LIBOPENFIGHT_HEADER})
 set_target_properties(${LIBRARY_NAME} PROPERTIES OUTPUT_NAME ${PROJECT_NAME})
 
+target_include_directories(${LIBRARY_NAME}
+    PUBLIC ${PROJECT_SOURCE_DIR}/libopenfight
+)
+
 target_link_libraries(
+    ${LIBRARY_NAME}
+    yaml-cpp
+)
+
+add_executable(${PROJECT_NAME} ${SDL_SOURCE})
+
+target_include_directories(${PROJECT_NAME}
+    PRIVATE
+        ${PROJECT_SOURCE_DIR}/platform/sdl
+        ${OPENGL_INCLUDE_DIR}
+        ${GLU_INCLUDE_DIRS}
+        ${SDL2_INCLUDE_DIRS}
+        ${SDL2_IMAGE_INCLUDE_DIRS}
+        ${GLEW_INCLUDE_DIRS}
+)
+
+target_link_libraries(
+    ${PROJECT_NAME}
     ${LIBRARY_NAME}
     ${OPENGL_gl_LIBRARY}
     ${GLU_LIBRARY}
@@ -57,14 +70,6 @@ target_link_libraries(
     GLEW::GLEW
     ${SDL2_LIBRARIES}
     ${SDL2_IMAGE_LIBRARIES}
-    yaml-cpp
-)
-
-add_executable(${PROJECT_NAME} ${SDL_SOURCE})
-
-target_link_libraries(
-    ${PROJECT_NAME}
-    ${LIBRARY_NAME}
 )
 
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD

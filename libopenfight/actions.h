@@ -1,7 +1,6 @@
 #ifndef OPEN_FIGHT_ACTIONS_H
 #define OPEN_FIGHT_ACTIONS_H
 
-#include "gl.h"
 #include <iostream>
 #include <string>
 #include <typeinfo>
@@ -19,11 +18,11 @@ public:
 
 class MoveAction : public Action {
 protected:
-    GLfloat x_vel;
-    GLfloat y_vel;
+    float x_vel;
+    float y_vel;
 
 public:
-    MoveAction(GLfloat x_vel, GLfloat y_vel);
+    MoveAction(float x_vel, float y_vel);
     virtual ~MoveAction() = default;
 
     void doAction(Player *player, Player *opponent);
@@ -32,12 +31,12 @@ public:
 class CreateObjectAction : public Action {
 protected:
     std::string object;
-    GLfloat x_pos;
-    GLfloat y_pos;
+    float x_pos;
+    float y_pos;
     int index;
 
 public:
-    CreateObjectAction(std::string object, GLfloat x_pos, GLfloat y_pos, int index);
+    CreateObjectAction(std::string object, float x_pos, float y_pos, int index);
     virtual ~CreateObjectAction() = default;
 
     void doAction(Player *player, Player *opponent);
@@ -46,15 +45,14 @@ public:
 class CollisionAction : public Action {
 protected:
     std::string object;
-    GLfloat x_pos;
-    GLfloat y_pos;
+    float x_pos;
+    float y_pos;
     int index;
     std::string to;
     std::string to_opponent;
 
 public:
-    CollisionAction(std::string object, GLfloat x_pos, GLfloat y_pos, int index, std::string to,
-                    std::string to_opponent);
+    CollisionAction(std::string object, float x_pos, float y_pos, int index, std::string to, std::string to_opponent);
     virtual ~CollisionAction() = default;
 
     void doAction(Player *player, Player *opponent);

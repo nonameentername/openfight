@@ -13,7 +13,7 @@ std::shared_ptr<Player> PlayerAgent::getPlayer() {
 }
 
 bool PlayerAgent::initialize(string file_name, string moves_file, bool player_one) {
-    GLfloat location = player_one ? 30 : 70;
+    float location = player_one ? 30 : 70;
     player = std::make_shared<Player>();
     player->initialize(file_name, player_one, location, 0);
 

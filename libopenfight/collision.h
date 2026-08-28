@@ -1,7 +1,6 @@
 #ifndef OPEN_FIGHT_COLLISION_H
 #define OPEN_FIGHT_COLLISION_H
 
-#include "gl.h"
 #include <vector>
 
 #include "collisionBox.h"
@@ -16,7 +15,7 @@ public:
     ~Collision();
 
     void addCollision(CollisionBox *c);
-    void update(GLfloat x, GLfloat y, bool inverted);
+    void update(float x, float y, bool inverted);
     bool overlaps(Collision *other);
     void draw();
 };

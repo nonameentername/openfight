@@ -47,18 +47,18 @@ Animation::~Animation() {
 }
 
 void Animation::updateCollisions() {
-    GLfloat width = inverted ? sprites[current]->getWidth() / 2 : -sprites[current]->getWidth() / 2;
-    GLfloat height = sprites[current]->getHeight();
+    float width = inverted ? sprites[current]->getWidth() / 2 : -sprites[current]->getWidth() / 2;
+    float height = sprites[current]->getHeight();
 
     offense[current]->update(x_pos + width, y_pos - height / 2, inverted);
     defense[current]->update(x_pos + width, y_pos - height / 2, inverted);
 }
 
-GLfloat Animation::getWidth() {
+float Animation::getWidth() {
     return sprites[current]->getWidth();
 }
 
-GLfloat Animation::getHeight() {
+float Animation::getHeight() {
     return sprites[current]->getHeight();
 }
 
@@ -84,11 +84,11 @@ bool Animation::isContinual() {
     return is_continual;
 }
 
-void Animation::addFrame(string file_name, GLfloat w, GLfloat h, Collision *o, Collision *d, Actions *a,
+void Animation::addFrame(string file_name, float w, float h, Collision *o, Collision *d, Actions *a,
                          unsigned int delay) {
     Sprite *sprite = new Sprite();
-    GLuint texture = texture_manager->addTexture(file_name, false);
-    GLuint mask = texture_manager->addMask(file_name, false);
+    unsigned int texture = texture_manager->addTexture(file_name, false);
+    unsigned int mask = texture_manager->addMask(file_name, false);
 
     sprite->setTexture(texture, w, h);
     sprite->setMask(mask);
@@ -100,7 +100,7 @@ void Animation::addFrame(string file_name, GLfloat w, GLfloat h, Collision *o, C
     delays.push_back(delay);
 }
 
-void Animation::update(GLfloat x, GLfloat y, GLfloat s, bool flip) {
+void Animation::update(float x, float y, float s, bool flip) {
     x_pos = x;
     y_pos = y;
     scale = s;
@@ -131,13 +131,13 @@ void Animation::restart() {
     current_delay = 0;
 }
 
-void Animation::draw(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha) {
+void Animation::draw(float red, float green, float blue, float alpha) {
     updateCollisions();
     sprites[current]->draw(x_pos, y_pos, scale, inverted, red, green, blue, alpha);
     drawHitBox();
 }
 
-void Animation::draw(GLfloat alpha) {
+void Animation::draw(float alpha) {
     updateCollisions();
     sprites[current]->draw(x_pos, y_pos, scale, inverted, alpha);
     drawHitBox();

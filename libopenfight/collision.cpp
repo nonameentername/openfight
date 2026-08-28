@@ -19,7 +19,7 @@ void Collision::addCollision(CollisionBox *c) {
     collisions.push_back(c);
 }
 
-void Collision::update(GLfloat x, GLfloat y, bool inverted) {
+void Collision::update(float x, float y, bool inverted) {
     for (int i = 0; i < collisions.size(); i++) {
         if (collisions[i] != NULL)
             collisions[i]->update(x, y, inverted);
