@@ -75,7 +75,7 @@ check-leak:
 	valgrind --leak-check=full --leak-check=full --show-leak-kinds=all --track-origins=yes ./${MAIN}
 
 format:
-	clang-format -i libopenfight/*.cpp libopenfight/*.h platform/sdl/*.cpp platform/sdl/*.h
+	clang-format -i src/libopenfight/*.cpp src/libopenfight/*.h src/platform/sdl/*.cpp src/platform/sdl/*.h
 
 format-check:
-	clang-format -n libopenfight/*.cpp libopenfight/*.h platform/sdl/*.cpp platform/sdl/*.h
+	clang-format -n src/libopenfight/*.cpp src/libopenfight/*.h src/platform/sdl/*.cpp src/platform/sdl/*.h
