@@ -2,11 +2,12 @@
 #define OPEN_FIGHT_TEXTURE_MANAGER_H
 
 #include "gl.h"
-#include <SDL2/SDL_image.h>
-#include <SDL2/SDL_opengl.h>
+#include <cstdint>
 #include <iostream>
 #include <map>
 #include <string>
+
+struct SDL_Surface;
 
 class TextureManager {
 private:
@@ -15,8 +16,8 @@ private:
 
     GLuint loadTexture(std::string file_name, bool mipmap, bool masking);
     void createMask(SDL_Surface *image);
-    Uint32 getPixel(SDL_Surface *surface, int x, int y);
-    void setPixel(SDL_Surface *surface, int x, int y, Uint32 pixel);
+    uint32_t getPixel(SDL_Surface *surface, int x, int y);
+    void setPixel(SDL_Surface *surface, int x, int y, uint32_t pixel);
 
 public:
     TextureManager();

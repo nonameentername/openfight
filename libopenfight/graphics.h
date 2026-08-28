@@ -3,8 +3,6 @@
 
 #include "gl.h"
 
-#include <SDL2/SDL_opengl.h>
-
 class Graphics {
 private:
     bool global_loaded;
@@ -19,7 +17,5 @@ public:
     int getScreenWidth();
     int getScreenHeight();
 };
-
-const char *SDL_GetCompiledVersion();
 
 #endif

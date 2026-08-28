@@ -190,7 +190,7 @@ void Player::copyObject(string object, GLfloat x, GLfloat y, int index) {
     obj_copy->setLocation(x_pos + (inverted ? -x : x), y_pos + y);
 
     stringstream sstream;
-    sstream << object << SDL_GetTicks();
+    sstream << object << static_cast<int>(getGameTime());
     object_manager->add(sstream.str(), obj_copy);
 }
 

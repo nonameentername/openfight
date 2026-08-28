@@ -1,7 +1,6 @@
 #ifndef OPEN_FIGHT_UTILITIES_H
 #define OPEN_FIGHT_UTILITIES_H
 
-#include <SDL_timer.h>
 #include <string>
 #include <vector>
 

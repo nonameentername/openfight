@@ -16,7 +16,7 @@ TextureManager::~TextureManager() {
         glDeleteTextures(1, &pair.second);
 }
 
-Uint32 TextureManager::getPixel(SDL_Surface *surface, int x, int y) {
+uint32_t TextureManager::getPixel(SDL_Surface *surface, int x, int y) {
     int bpp = surface->format->BytesPerPixel;
     Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * bpp;
 
@@ -37,7 +37,7 @@ Uint32 TextureManager::getPixel(SDL_Surface *surface, int x, int y) {
     }
 }
 
-void TextureManager::setPixel(SDL_Surface *surface, int x, int y, Uint32 pixel) {
+void TextureManager::setPixel(SDL_Surface *surface, int x, int y, uint32_t pixel) {
     int bpp = surface->format->BytesPerPixel;
     Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * bpp;
 

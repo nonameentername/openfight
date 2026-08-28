@@ -2,7 +2,6 @@
 #define OPEN_FIGHT_KEY_STATE_H
 
 #include "input.h"
-#include <SDL2/SDL.h>
 #include <iostream>
 #include <list>
 #include <string>

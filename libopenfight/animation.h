@@ -2,7 +2,6 @@
 #define OPEN_FIGHT_ANIMATION_H
 
 #include "gl.h"
-#include <SDL2/SDL.h>
 #include <string>
 #include <vector>
 

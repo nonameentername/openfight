@@ -3,14 +3,23 @@
 #include "global.h"
 #include "graphics.h"
 #include "graphicsCore.h"
-#include "input.h"
 #include "playerAgent.h"
 #include "playerBridge.h"
+#include "sdlInput.h"
 #include "sprite.h"
 #include "utilities.h"
 #include <SDL2/SDL.h>
 
 using namespace std;
+
+static const char *SDL_GetCompiledVersion() {
+    static char version[32];
+    SDL_version compiled;
+    SDL_VERSION(&compiled);
+
+    snprintf(version, sizeof(version), "%d.%d.%d", compiled.major, compiled.minor, compiled.patch);
+    return version;
+}
 
 #ifdef __cplusplus
 extern "C"
@@ -79,9 +88,9 @@ extern "C"
     int frames = 0;
 
     bool running = true;
+    float game_time = getGameTime();
 
     while (running && !input.quitGame()) {
-        float game_time;
 
         if (updateGame(game_time)) {
             SDL_Event event = input.poll();

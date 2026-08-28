@@ -25,7 +25,7 @@ MoveSequence::MoveSequence(string keys, string trigger) {
         }
 
         for (int j = 0; j < KEY_MAX; j++) {
-            if (key_name == Input::getKeyName(j)) {
+            if (key_name == getKeyName(j)) {
                 this->keys.push_back(new KeyState(j, time_held, !released, held));
                 break;
             }
@@ -52,7 +52,7 @@ void Moves::buildKey(list<KeyState> key_queue, map<string, int> &state, vector<K
     list<KeyState>::iterator it;
 
     for (it = key_queue.begin(); it != key_queue.end(); it++) {
-        string key_name = Input::getKeyName(it->getKey());
+        string key_name = getKeyName(it->getKey());
         it->setTimeHeld(state[key_name]);
 
         result.push_back(*it);
@@ -64,7 +64,7 @@ string Moves::getTrigger(list<KeyState> key_queue, map<string, int> &state) {
     vector<KeyState> keys;
 
     for (int i = KEY_UP; i <= KEY_RIGHT; i++) {
-        string key_name = Input::getKeyName(i);
+        string key_name = getKeyName(i);
 
         if (state[key_name] > 1) {
             KeyState k(i, true);
@@ -82,7 +82,7 @@ string Moves::getTrigger(list<KeyState> key_queue, map<string, int> &state) {
     }
     //
     for (int i = KEY_A; i <= KEY_Z; i++) {
-        string key_name = Input::getKeyName(i);
+        string key_name = getKeyName(i);
 
         if (state[key_name] > 1) {
             KeyState k(i, true);

@@ -15,7 +15,6 @@
 #include "graphicsCore.h"
 #include "objectManager.h"
 #include "utilities.h"
-#include <SDL2/SDL_opengl.h>
 
 class Player {
 private:

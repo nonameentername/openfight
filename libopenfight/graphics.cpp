@@ -49,12 +49,3 @@ int Graphics::getScreenWidth() {
 int Graphics::getScreenHeight() {
     return height;
 }
-
-const char *SDL_GetCompiledVersion() {
-    static char version[32];
-    SDL_version compiled;
-    SDL_VERSION(&compiled);
-
-    snprintf(version, sizeof(version), "%d.%d.%d", compiled.major, compiled.minor, compiled.patch);
-    return version;
-}

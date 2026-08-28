@@ -34,14 +34,14 @@ void PlayerAgent::update(bool *keys) {
         swap(keys[KEY_LEFT], keys[KEY_RIGHT]);
 
     for (int i = 0; i < KEY_MAX; i++) {
-        if (time_held[Input::getKeyName(i)])
-            time_held[Input::getKeyName(i)]++;
+        if (time_held[getKeyName(i)])
+            time_held[getKeyName(i)]++;
 
         if (keys[i] != previous_keys[i]) {
-            player->state[Input::getKeyName(i)] = keys[i];
+            player->state[getKeyName(i)] = keys[i];
 
             if (keys[i])
-                time_held[Input::getKeyName(i)] = 1;
+                time_held[getKeyName(i)] = 1;
 
             changed = true;
 
@@ -65,7 +65,7 @@ void PlayerAgent::update(bool *keys) {
 
     for (int i = 0; i < KEY_MAX; i++) {
         if (!keys[i])
-            time_held[Input::getKeyName(i)] = 0;
+            time_held[getKeyName(i)] = 0;
 
         previous_keys[i] = keys[i];
     }

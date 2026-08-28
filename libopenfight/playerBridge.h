@@ -9,7 +9,6 @@
 
 #include "graphicsCore.h"
 #include "player.h"
-#include <SDL2/SDL_opengl.h>
 
 class PlayerBridge {
 private:

@@ -1,7 +1,7 @@
 #ifndef OPEN_FIGHT_SPRITE_H
 #define OPEN_FIGHT_SPRITE_H
 
-#include <SDL2/SDL_opengl.h>
+#include "gl.h"
 
 class Sprite {
 private:

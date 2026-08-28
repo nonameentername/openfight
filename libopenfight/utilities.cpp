@@ -1,11 +1,16 @@
 #include "utilities.h"
+#include <chrono>
+#include <cstring>
 
 using namespace std;
 
 const float GAME_TIME_UPDATE_FREQ = 10;
 
 float getGameTime() {
-    return SDL_GetTicks();
+    using namespace std::chrono;
+
+    static const steady_clock::time_point start = steady_clock::now();
+    return duration_cast<duration<float, std::milli>>(steady_clock::now() - start).count();
 }
 
 bool updateGame(float last_update) {
