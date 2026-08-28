@@ -1,0 +1,2 @@
+#define GODOT_OPENFIGHT_VERSION "0.0.0"
+#define GODOT_OPENFIGHT_BUILD "none"

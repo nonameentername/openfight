@@ -1,6 +1,8 @@
 CMAKE      := $(shell command -v cmake)
 DOCKER     := $(shell command -v docker)
 ARCH  	   := $(shell uname -m)
+HOST_UID   := $(shell id -u)
+HOST_GID   := $(shell id -g)
 MAIN       := openfight
 IMAGE_NAME := openfight-compiler
 BUILD_TYPE ?= Release
@@ -12,27 +14,21 @@ build: clean
 docker:
 	${DOCKER} build . -t ${IMAGE_NAME}
 
-UNAME := $(shell uname)
-ifeq ($(UNAME), Windows)
-	UID=1000
-	GID=1000
-else
-	UID=`id -u`
-	GID=`id -g`
-endif
+all: ubuntu
 
-ubuntu-install-deps:
-	sudo apt install -y build-essential libsdl2-dev libsdl2-image-dev libglu1-mesa-dev libglew-dev libyaml-cpp-dev xvfb clang-format
+docker-ubuntu:
+	docker build -t godot-openfight-ubuntu ./platform/ubuntu
 
-macos-install-deps:
-	brew install sdl2 sdl2_image sdl2_gfx cmake make glew yaml-cpp clang-format
+shell-ubuntu: docker-ubuntu
+	docker run -it --rm --user ${HOST_UID}:${HOST_GID} -e HOME=/tmp -v ${CURDIR}:${CURDIR} -w ${CURDIR} godot-openfight-ubuntu ${SHELL_COMMAND}
 
-shell:	docker
-	${DOCKER} run -it --rm -v `pwd`:/tmp/workdir --user ${UID}:${GID} -w /tmp/workdir ${IMAGE_NAME} bash
+ubuntu: ubuntu-debug ubuntu-release
 
-ci-docker:
-	${DOCKER} build -t ${IMAGE_NAME} .
-	${DOCKER} run --rm -v "$(PWD)":/app -w /app ${IMAGE_NAME} sh -c "make clean build validate-log"
+ubuntu-debug:
+	$(MAKE) shell-ubuntu SHELL_COMMAND='./platform/ubuntu/build_debug.sh'
+
+ubuntu-release:
+	$(MAKE) shell-ubuntu SHELL_COMMAND='./platform/ubuntu/build_release.sh'
 
 xvfb-start:
 	Xvfb $(DISPLAY) -screen 0 1024x768x24 > /dev/null 2>&1 &
@@ -58,15 +54,6 @@ validate-log:
 
 zip:
 	zip -9 -r ${MAIN}-${PLATFORM}-${ARCH}.zip data ${MAIN} ${MAIN}.exe
-
-linux:
-	PLATFORM=linux CXX=g++ make build zip
-
-windows:
-	PLATFORM=windows CXX=i686-w64-mingw32-g++ CC=i686-w64-mingw32-gcc make build zip
-
-mac:
-	PLATFORM=mac CXX=g++ make build zip	
 
 clean:
 	rm -rf ${MAIN} *.exe *.o build cmake-build-* log.txt
