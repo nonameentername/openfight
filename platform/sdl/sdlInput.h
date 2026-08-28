@@ -23,7 +23,7 @@ public:
     Input();
     ~Input();
     void addPlayer();
-    void addPlayer(int *config_keys, std::string *config_device);
+    void addPlayer(const int *config_keys, const std::string *config_device);
 
     SDL_Event poll();
     bool *getKeys(int player);

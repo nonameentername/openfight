@@ -70,7 +70,7 @@ public:
     void setLocation(float x, float y);
     void createObject(std::string object);
     void copyObject(std::string object, float x, float y, int index);
-    void draw();
+    void draw(RenderBackend &renderer);
 };
 
 #endif

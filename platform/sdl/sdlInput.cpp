@@ -71,7 +71,7 @@ void Input::addPlayer() {
     playerKeys.push_back(player);
 }
 
-void Input::addPlayer(int *config_keys, string *config_device) {
+void Input::addPlayer(const int *config_keys, const string *config_device) {
     KeyStruct *player = new KeyStruct();
 
     for (int i = 0; i < KEY_MAX; i++) {

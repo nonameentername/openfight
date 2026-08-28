@@ -1,16 +1,13 @@
-#include "animation.h"
 #include "configuration.h"
-#include "gl.h"
+#include "gameContext.h"
 #include "global.h"
 #include "graphics.h"
 #include "graphicsCore.h"
-#include "playerAgent.h"
-#include "playerBridge.h"
 #include "sdlGlRenderBackend.h"
 #include "sdlInput.h"
-#include "sprite.h"
 #include "utilities.h"
 #include <SDL2/SDL.h>
+#include <iostream>
 
 using namespace std;
 
@@ -56,9 +53,7 @@ extern "C"
     SDL_GL_SetSwapInterval(0); // Turn off VSync because it was causing low FPS
 
     SdlGlRenderBackend sdl_render_backend;
-    render_backend = &sdl_render_backend;
-
-    graphics->initialize(screen_width, screen_height);
+    graphics->initialize(screen_width, screen_height, sdl_render_backend);
     cout << "VideoSystem Init OK" << endl;
 
     Configuration configuration("data/config.yml");
@@ -68,26 +63,10 @@ extern "C"
     input.addPlayer(configuration.getConfigKeys(true), configuration.getConfigDevice(true));
     input.addPlayer(configuration.getConfigKeys(false), configuration.getConfigDevice(false));
 
-    PlayerAgent player;
-    player.initialize("data/ryu/ryu.yml", "data/ryu/moves.yml", true);
+    GameSetup setup = {"data/ryu/ryu.yml", "data/ryu/ryu.yml", "data/ryu/moves.yml", "data/background.png"};
 
-    PlayerAgent player2;
-    player2.initialize("data/ryu/ryu.yml", "data/ryu/moves.yml", false);
-
-    auto p2 = player2.getPlayer().get();
-    auto p1 = player.getPlayer().get();
-    player.getPlayer()->setOpponent(p2);
-    player2.getPlayer()->setOpponent(p1);
-
-    Sprite background;
-    unsigned int texture = texture_manager->addTexture("data/background.png", false);
-    background.setTexture(texture, 200, 100);
-
-    PlayerBridge bridge;
-    bridge.initialize(p1, p2);
-
-    object_manager->add("0", p1);
-    object_manager->add("1", p2);
+    GameContext game;
+    game.setup(setup, sdl_render_backend);
 
     Uint32 lastTime = SDL_GetTicks();
     int frames = 0;
@@ -98,6 +77,9 @@ extern "C"
     while (running && !input.quitGame()) {
 
         if (updateGame(game_time)) {
+            float frame_time = getGameTime();
+            float delta_ms = frame_time - game_time;
+
             SDL_Event event = input.poll();
 
             if (event.type == SDL_QUIT) {
@@ -107,41 +89,23 @@ extern "C"
                 int sh = event.window.data2;
 
                 SDL_SetWindowSize(window, sw, sh);
-                graphics->resizeWindow(sw, sh);
+                graphics->resizeWindow(sw, sh, sdl_render_backend);
             }
 
+            FrameInput frame_input;
             bool *keys = input.getKeys(0);
-            player.update(keys);
+            for (int i = 0; i < KEY_MAX; i++)
+                frame_input.players[0][i] = keys[i];
 
-            bool *keys2 = input.getKeys(1);
-            player2.update(keys2);
+            keys = input.getKeys(1);
+            for (int i = 0; i < KEY_MAX; i++)
+                frame_input.players[1][i] = keys[i];
 
-            string key = object_manager->first();
-            while (key != "") {
-                bool done = false;
+            game.update(frame_input, delta_ms);
 
-                if (key != "0" && key != "1")
-                    done = object_manager->get(key)->update();
+            sdl_render_backend.beginFrame();
 
-                if (done) {
-                    object_manager->remove(key);
-                    break;
-                }
-
-                key = object_manager->next();
-            }
-
-            // Render
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-            glLoadIdentity();
-            glTranslatef(-50.0f, -50.0f, -120.0f);
-
-            bridge.update();
-            background.draw(50, 50, 1, false);
-
-            list<Player *> objects = object_manager->getSortedList();
-            for (auto i = objects.begin(); i != objects.end(); ++i)
-                (*i)->draw();
+            game.render(sdl_render_backend);
 
             SDL_GL_SwapWindow(window);
 
@@ -154,13 +118,11 @@ extern "C"
                 frames = 0;
             }
 
-            game_time = getGameTime();
+            game_time = frame_time;
         }
     }
 
-    texture_manager->clear();
-    render_backend = nullptr;
-
+    game.shutdown();
     SDL_GL_DeleteContext(glContext);
     SDL_DestroyWindow(window);
     SDL_Quit();

@@ -29,18 +29,16 @@ void Sprite::setMask(unsigned int mask) {
     this->mask = mask;
 }
 
-void Sprite::draw(float x, float y, float scale, bool flip, float red, float green, float blue, float alpha) {
-    if (render_backend == nullptr)
-        return;
-
+void Sprite::draw(RenderBackend &renderer, float x, float y, float scale, bool flip, float red, float green, float blue,
+                  float alpha) {
     RenderColor color = {red, green, blue, alpha};
-    render_backend->drawSprite(texture, mask, has_mask, width, height, x, y, scale, flip, color);
+    renderer.drawSprite(texture, mask, has_mask, width, height, x, y, scale, flip, color);
 }
 
-void Sprite::draw(float x, float y, float scale, bool flip, float alpha) {
-    draw(x, y, scale, flip, alpha, alpha, alpha, alpha);
+void Sprite::draw(RenderBackend &renderer, float x, float y, float scale, bool flip, float alpha) {
+    draw(renderer, x, y, scale, flip, alpha, alpha, alpha, alpha);
 }
 
-void Sprite::draw(float x, float y, float scale, bool flip) {
-    draw(x, y, scale, flip, 1.0, 1.0, 1.0, 0.0);
+void Sprite::draw(RenderBackend &renderer, float x, float y, float scale, bool flip) {
+    draw(renderer, x, y, scale, flip, 1.0, 1.0, 1.0, 0.0);
 }

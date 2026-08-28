@@ -6,6 +6,7 @@
 
 #include "actions.h"
 #include "collision.h"
+#include "renderBackend.h"
 #include "sprite.h"
 
 class Animation {
@@ -42,10 +43,10 @@ public:
     void update(float x, float y, float s, bool flip);
     bool nextFrame(bool &changed);
     void restart();
-    void draw(float red, float green, float blue, float alpha);
-    void draw(float alpha);
-    void draw();
-    void drawHitBox();
+    void draw(RenderBackend &renderer, float red, float green, float blue, float alpha);
+    void draw(RenderBackend &renderer, float alpha);
+    void draw(RenderBackend &renderer);
+    void drawHitBox(RenderBackend &renderer);
 };
 
 #endif

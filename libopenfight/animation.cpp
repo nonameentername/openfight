@@ -131,27 +131,27 @@ void Animation::restart() {
     current_delay = 0;
 }
 
-void Animation::draw(float red, float green, float blue, float alpha) {
+void Animation::draw(RenderBackend &renderer, float red, float green, float blue, float alpha) {
     updateCollisions();
-    sprites[current]->draw(x_pos, y_pos, scale, inverted, red, green, blue, alpha);
-    drawHitBox();
+    sprites[current]->draw(renderer, x_pos, y_pos, scale, inverted, red, green, blue, alpha);
+    drawHitBox(renderer);
 }
 
-void Animation::draw(float alpha) {
+void Animation::draw(RenderBackend &renderer, float alpha) {
     updateCollisions();
-    sprites[current]->draw(x_pos, y_pos, scale, inverted, alpha);
-    drawHitBox();
+    sprites[current]->draw(renderer, x_pos, y_pos, scale, inverted, alpha);
+    drawHitBox(renderer);
 }
 
-void Animation::draw() {
+void Animation::draw(RenderBackend &renderer) {
     updateCollisions();
-    sprites[current]->draw(x_pos, y_pos, scale, inverted);
-    drawHitBox();
+    sprites[current]->draw(renderer, x_pos, y_pos, scale, inverted);
+    drawHitBox(renderer);
 }
 
-void Animation::drawHitBox() {
+void Animation::drawHitBox(RenderBackend &renderer) {
     if (!show_hitbox)
         return;
-    offense[current]->draw();
-    defense[current]->draw();
+    offense[current]->draw(renderer);
+    defense[current]->draw(renderer);
 }

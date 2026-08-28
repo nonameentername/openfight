@@ -73,6 +73,6 @@ void PlayerAgent::update(bool *keys) {
     player->update();
 }
 
-void PlayerAgent::draw() {
-    player->draw();
+void PlayerAgent::draw(RenderBackend &renderer) {
+    player->draw(renderer);
 }

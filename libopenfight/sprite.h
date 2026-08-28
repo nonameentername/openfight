@@ -1,6 +1,8 @@
 #ifndef OPEN_FIGHT_SPRITE_H
 #define OPEN_FIGHT_SPRITE_H
 
+#include "renderBackend.h"
+
 class Sprite {
 private:
     unsigned int texture;
@@ -17,9 +19,10 @@ public:
     float getHeight();
     void setTexture(unsigned int texture, float w, float h);
     void setMask(unsigned int mask);
-    void draw(float x, float y, float scale, bool flip, float red, float green, float blue, float alpha);
-    void draw(float x, float y, float scale, bool flip, float alpha);
-    void draw(float x, float y, float scale, bool flip);
+    void draw(RenderBackend &renderer, float x, float y, float scale, bool flip, float red, float green, float blue,
+              float alpha);
+    void draw(RenderBackend &renderer, float x, float y, float scale, bool flip, float alpha);
+    void draw(RenderBackend &renderer, float x, float y, float scale, bool flip);
 };
 
 #endif

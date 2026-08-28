@@ -194,9 +194,9 @@ void Player::copyObject(string object, float x, float y, int index) {
     object_manager->add(sstream.str(), obj_copy);
 }
 
-void Player::draw() {
+void Player::draw(RenderBackend &renderer) {
     if (animation_manager->get(current_state) != NULL)
-        animation_manager->get(current_state)->draw(alpha);
+        animation_manager->get(current_state)->draw(renderer, alpha);
 }
 
 void Player::doAction(const type_info &type) {

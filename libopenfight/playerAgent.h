@@ -29,7 +29,7 @@ public:
     std::shared_ptr<Player> getPlayer();
     bool initialize(std::string file_name, std::string moves_file, bool player_one);
     void update(bool *keys);
-    void draw();
+    void draw(RenderBackend &renderer);
 };
 
 #endif

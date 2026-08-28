@@ -5,14 +5,18 @@
 #include <map>
 #include <string>
 
+class RenderBackend;
+
 class TextureManager {
 private:
+    RenderBackend *backend;
     std::map<std::string, unsigned int> textures;
     std::map<std::string, unsigned int> masks;
 
     unsigned int loadTexture(std::string file_name, bool mipmap, bool masking);
 
 public:
+    void setRenderBackend(RenderBackend *backend);
     TextureManager();
     ~TextureManager();
 

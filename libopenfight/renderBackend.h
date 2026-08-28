@@ -16,6 +16,7 @@ public:
 
     virtual void initialize(int width, int height) = 0;
     virtual void resizeWindow(int width, int height) = 0;
+    virtual void beginFrame() = 0;
     virtual unsigned int loadTexture(const std::string &file_name, bool mipmap, bool masking) = 0;
     virtual void releaseTexture(unsigned int texture) = 0;
     virtual void drawSprite(unsigned int texture, unsigned int mask, bool has_mask, float width, float height, float x,

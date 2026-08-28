@@ -14,6 +14,12 @@ void SdlGlRenderBackend::initialize(int width, int height) {
     resizeWindow(width, height);
 }
 
+void SdlGlRenderBackend::beginFrame() {
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glLoadIdentity();
+    glTranslatef(-50.0f, -50.0f, -120.0f);
+}
+
 void SdlGlRenderBackend::resizeWindow(int width, int height) {
     if (height == 0)
         height = 1;

@@ -2,6 +2,7 @@
 #define OPEN_FIGHT_COLLISION_BOX_H
 
 #include "graphicsCore.h"
+#include "renderBackend.h"
 
 class CollisionBox {
 private:
@@ -31,7 +32,7 @@ public:
 
     void update(float x, float y, bool inverted);
     bool overlaps(CollisionBox *other);
-    void draw();
+    void draw(RenderBackend &renderer);
 };
 
 #endif

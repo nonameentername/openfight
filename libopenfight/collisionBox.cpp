@@ -52,10 +52,7 @@ bool CollisionBox::overlaps(CollisionBox *other) {
     return false;
 }
 
-void CollisionBox::draw() {
-    if (render_backend == nullptr)
-        return;
-
+void CollisionBox::draw(RenderBackend &renderer) {
     RenderColor color = {red, green, blue, alpha};
-    render_backend->drawCollisionBox(x, y, x_pos, y_pos, width, height, inverted, color);
+    renderer.drawCollisionBox(x, y, x_pos, y_pos, width, height, inverted, color);
 }

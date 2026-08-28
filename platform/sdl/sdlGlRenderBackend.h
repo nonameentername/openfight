@@ -11,6 +11,7 @@ class SdlGlRenderBackend : public RenderBackend {
 public:
     void initialize(int width, int height) override;
     void resizeWindow(int width, int height) override;
+    void beginFrame() override;
     unsigned int loadTexture(const std::string &file_name, bool mipmap, bool masking) override;
     void releaseTexture(unsigned int texture) override;
     void drawSprite(unsigned int texture, unsigned int mask, bool has_mask, float width, float height, float x, float y,

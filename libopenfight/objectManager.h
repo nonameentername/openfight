@@ -54,6 +54,10 @@ public:
         objects.erase(name);
     }
 
+    void detach(std::string name) {
+        objects.erase(name);
+    }
+
     T *get(std::string name) {
         return objects[name];
     }

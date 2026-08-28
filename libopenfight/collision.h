@@ -17,7 +17,7 @@ public:
     void addCollision(CollisionBox *c);
     void update(float x, float y, bool inverted);
     bool overlaps(Collision *other);
-    void draw();
+    void draw(RenderBackend &renderer);
 };
 
 #endif

@@ -40,7 +40,7 @@ bool Collision::overlaps(Collision *other) {
     return overlap;
 }
 
-void Collision::draw() {
+void Collision::draw(RenderBackend &renderer) {
     for (int i = 0; i < collisions.size(); i++)
-        collisions[i]->draw();
+        collisions[i]->draw(renderer);
 }

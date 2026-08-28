@@ -1,11 +1,11 @@
 #include "textureManager.h"
-#include "graphicsCore.h"
+#include "renderBackend.h"
 #include <map>
 #include <string>
 
 using namespace std;
 
-TextureManager::TextureManager() {
+TextureManager::TextureManager() : backend(nullptr) {
 }
 
 TextureManager::~TextureManager() {
@@ -13,10 +13,10 @@ TextureManager::~TextureManager() {
 }
 
 unsigned int TextureManager::loadTexture(std::string file_name, bool mipmap, bool masking) {
-    if (render_backend == nullptr)
+    if (backend == nullptr)
         return 0;
 
-    return render_backend->loadTexture(file_name, mipmap, masking);
+    return backend->loadTexture(file_name, mipmap, masking);
 }
 
 unsigned int TextureManager::addTexture(string file_name, bool mipmap) {
@@ -34,15 +34,19 @@ unsigned int TextureManager::addMask(string file_name, bool mipmap) {
 }
 
 void TextureManager::clear() {
-    if (render_backend == nullptr)
+    if (backend == nullptr)
         return;
 
     for (auto &pair : textures)
-        render_backend->releaseTexture(pair.second);
+        backend->releaseTexture(pair.second);
 
     for (auto &pair : masks)
-        render_backend->releaseTexture(pair.second);
+        backend->releaseTexture(pair.second);
 
     textures.clear();
     masks.clear();
+}
+
+void TextureManager::setRenderBackend(RenderBackend *backend) {
+    this->backend = backend;
 }

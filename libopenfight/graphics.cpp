@@ -9,20 +9,18 @@ Graphics::~Graphics() {
     delete camera;
 }
 
-void Graphics::initialize(int w, int h) {
+void Graphics::initialize(int w, int h, RenderBackend &renderer) {
     width = w;
     height = h;
 
-    if (render_backend != nullptr)
-        render_backend->initialize(w, h);
+    renderer.initialize(w, h);
 }
 
-void Graphics::resizeWindow(int w, int h) {
+void Graphics::resizeWindow(int w, int h, RenderBackend &renderer) {
     width = w;
     height = h;
 
-    if (render_backend != nullptr)
-        render_backend->resizeWindow(w, h);
+    renderer.resizeWindow(w, h);
 }
 
 int Graphics::getScreenWidth() {
