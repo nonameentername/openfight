@@ -12,8 +12,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-file(GLOB SOURCE src/*.cpp)
-file(GLOB HEADER include/*.h)
+file(GLOB LIBOPENFIGHT_SOURCE CONFIGURE_DEPENDS libopenfight/*.cpp)
+file(GLOB LIBOPENFIGHT_HEADER CONFIGURE_DEPENDS libopenfight/*.h)
+file(GLOB SDL_SOURCE CONFIGURE_DEPENDS platform/sdl/*.cpp)
 
 set(OpenGL_GL_PREFERENCE LEGACY)
 
@@ -31,7 +32,7 @@ else()
 endif()
 
 include_directories(
-    ${PROJECT_SOURCE_DIR}/include
+    ${PROJECT_SOURCE_DIR}/libopenfight
     ${OPENGL_INCLUDE_DIR}
     ${GLU_INCLUDE_DIRS}
     ${SDL2_INCLUDE_DIRS}
@@ -45,13 +46,11 @@ link_directories(
     ${GLEW_LIBRARY_DIRS}
 )
 
-add_executable(${PROJECT_NAME} ${SOURCE} ${HEADER})
-
-add_library(${LIBRARY_NAME} ${SOURCE} ${HEADER})
+add_library(${LIBRARY_NAME} ${LIBOPENFIGHT_SOURCE} ${LIBOPENFIGHT_HEADER})
 set_target_properties(${LIBRARY_NAME} PROPERTIES OUTPUT_NAME ${PROJECT_NAME})
 
 target_link_libraries(
-    ${PROJECT_NAME}
+    ${LIBRARY_NAME}
     ${OPENGL_gl_LIBRARY}
     ${GLU_LIBRARY}
     ${GLEW_LIBRARIES}
@@ -59,6 +58,13 @@ target_link_libraries(
     ${SDL2_LIBRARIES}
     ${SDL2_IMAGE_LIBRARIES}
     yaml-cpp
+)
+
+add_executable(${PROJECT_NAME} ${SDL_SOURCE})
+
+target_link_libraries(
+    ${PROJECT_NAME}
+    ${LIBRARY_NAME}
 )
 
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
