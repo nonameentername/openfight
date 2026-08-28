@@ -15,55 +15,55 @@ character:
   animation:
     name: start
     frame:
-    - path: data/collision/01.pcx
+    - path: data/collision/01.png
       width: 60
       height: 15
       delay: 1
-    - path: data/collision/02.pcx
+    - path: data/collision/02.png
       width: 60
       height: 15
       delay: 1
-    - path: data/collision/03.pcx
+    - path: data/collision/03.png
       width: 60
       height: 30
       delay: 1
-    - path: data/collision/04.pcx
+    - path: data/collision/04.png
       width: 60
       height: 30
       delay: 1
-    - path: data/collision/05.pcx
+    - path: data/collision/05.png
       width: 60
       height: 30
       delay: 1
-    - path: data/collision/06.pcx
+    - path: data/collision/06.png
       width: 60
       height: 30
       delay: 1
-    - path: data/collision/07.pcx
+    - path: data/collision/07.png
       width: 60
       height: 30
       delay: 1
-    - path: data/collision/08.pcx
+    - path: data/collision/08.png
       width: 60
       height: 30
       delay: 1
-    - path: data/collision/09.pcx
+    - path: data/collision/09.png
       width: 60
       height: 30
       delay: 1
-    - path: data/collision/10.pcx
+    - path: data/collision/10.png
       width: 60
       height: 30
       delay: 1
-    - path: data/collision/11.pcx
+    - path: data/collision/11.png
       width: 60
       height: 30
       delay: 1
-    - path: data/collision/12.pcx
+    - path: data/collision/12.png
       width: 60
       height: 30
       delay: 1
-    - path: data/collision/13.pcx
+    - path: data/collision/13.png
       width: 60
       height: 30
       delay: 1

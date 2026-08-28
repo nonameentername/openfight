@@ -7,3 +7,7 @@ log.txt
 .cache
 /src/gen/
 .sconsign.dblite
+.godot/*
+
+*.o
+*.os

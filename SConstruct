@@ -20,7 +20,7 @@ def set_build_info(source, target):
     content = content.replace("${build}", os.environ.get('BUILD_SHA', 'none'))
 
     with open(target, 'w') as f:
-        f.write(content) 
+        f.write(content)
 
 
 build_info_source_files = ["templates/godotopenfight.gdextension.in",
@@ -90,7 +90,7 @@ env = SConscript("godot-cpp/SConstruct", {"env": env, "customs": customs})
 
 if env["platform"] == "windows":
     env.Append(CPPFLAGS=["-DMINGW"])
-    env.Append(LIBS=[])
+    env.Append(LIBS=["yaml-cpp"])
 
     if env["dev_build"]:
         env.Append(LIBPATH=["addons/openfight/bin/windows/debug/vcpkg_installed/x64-mingw-static/debug/lib"])
@@ -108,7 +108,7 @@ elif env["platform"] == "macos":
                           "-framework", "CoreFoundation",
                           "-framework", "Foundation"
                           ])
-    env.Append(LIBS=[])
+    env.Append(LIBS=["yaml-cpp"])
 
     if env["dev_build"]:
         env.Append(LIBPATH=["addons/openfight/bin/osxcross/debug/vcpkg_installed/universal-osxcross/debug/lib"])
@@ -117,10 +117,10 @@ elif env["platform"] == "macos":
         env.Append(LIBPATH=["addons/openfight/bin/osxcross/release/vcpkg_installed/universal-osxcross/lib"])
         env.Append(CPPPATH=["addons/openfight/bin/osxcross/release/vcpkg_installed/universal-osxcross/include"])
 elif env["platform"] == "linux":
-    env.Append(LIBS=[])
+    env.Append(LIBS=["yaml-cpp"])
 
     if env["dev_build"]:
-        env.Append(LIBPATH=["addons/openfight/bin/linux/debug/vcpkg_installed/x64-linux/debug/lib"])
+        env.Append(LIBPATH=["addons/openfight/bin/linux/debug/vcpkg_installed/x64-linux/lib"])
         env.Append(CPPPATH=["addons/openfight/bin/linux/debug/vcpkg_installed/x64-linux/include"])
         #env.Append(RPATH=["", "."])
     else:
@@ -128,10 +128,10 @@ elif env["platform"] == "linux":
         env.Append(CPPPATH=["addons/openfight/bin/linux/release/vcpkg_installed/x64-linux/include"])
         #env.Append(RPATH=["", "."])
 
-#env.Append(CPPFLAGS=["-fexceptions"])
+env.Append(CPPFLAGS=["-fexceptions"])
 
-env.Append(CPPPATH=["src/"])
-sources = Glob("src/*.cpp")
+env.Append(CPPPATH=["src/", "src/libopenfight", "src/platform/godot"])
+sources = Glob("src/libopenfight/*.cpp") + Glob("src/platform/godot/*.cpp")
 
 if env.get("asan", False):
     print("SCons: Building with AddressSanitizer instrumentation")
@@ -139,11 +139,11 @@ if env.get("asan", False):
     env.Append(LINKFLAGS=["-fsanitize=address"])
 
 if env["target"] in ["editor", "template_debug"]:
-	try:
-		doc_data = env.GodotCPPDocData("src/gen/doc_data.gen.cpp", source=Glob("doc_classes/*.xml"))
-		sources.append(doc_data)
-	except AttributeError:
-		print("Not including class reference as we're targeting a pre-4.3 baseline.")
+    try:
+        doc_data = env.GodotCPPDocData("src/gen/doc_data.gen.cpp", source=Glob("doc_classes/*.xml"))
+        sources.append(doc_data)
+    except AttributeError:
+        print("Not including class reference as we're targeting a pre-4.3 baseline.")
 
 file = "{}{}{}".format(libname, env["suffix"], env["SHLIBSUFFIX"])
 

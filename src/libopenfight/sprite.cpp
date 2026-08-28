@@ -40,5 +40,5 @@ void Sprite::draw(RenderBackend &renderer, float x, float y, float scale, bool f
 }
 
 void Sprite::draw(RenderBackend &renderer, float x, float y, float scale, bool flip) {
-    draw(renderer, x, y, scale, flip, 1.0, 1.0, 1.0, 0.0);
+    draw(renderer, x, y, scale, flip, 1.0, 1.0, 1.0, 1.0);
 }
