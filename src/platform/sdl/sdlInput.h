@@ -1,0 +1,34 @@
+#ifndef OPEN_FIGHT_SDL_INPUT_H
+#define OPEN_FIGHT_SDL_INPUT_H
+
+#include "input.h"
+#include <SDL2/SDL.h>
+#include <iostream>
+#include <sstream>
+#include <string>
+#include <vector>
+
+class Input {
+private:
+    std::vector<KeyStruct *> playerKeys;
+    bool keys[KEY_MAX];
+    std::vector<SDL_Joystick *> sticks;
+    bool quit_key;
+
+    int getKeyWait(std::string &device);
+    static std::string key_names[KEY_MAX];
+    std::string deviceName(SDL_Event event);
+
+public:
+    Input();
+    ~Input();
+    void addPlayer();
+    void addPlayer(const int *config_keys, const std::string *config_device);
+
+    SDL_Event poll();
+    bool *getKeys(int player);
+    bool quitGame();
+    static std::string getKeyName(int key);
+};
+
+#endif
