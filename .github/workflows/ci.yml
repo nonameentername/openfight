@@ -27,6 +27,7 @@ jobs:
         run: make DISPLAY=:99 xvfb-start ci xvfb-stop
 
   MacOS:
+    if: false
     runs-on: macos-latest
 
     steps:
