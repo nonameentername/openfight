@@ -1,0 +1,2 @@
+#define GODOT_OPENFIGHT_VERSION "${version}"
+#define GODOT_OPENFIGHT_BUILD "${build}"

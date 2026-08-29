@@ -21,6 +21,20 @@ else
 	GID=`id -g`
 endif
 
+docker-ubuntu:
+	docker build -t godot-openfight-ubuntu ./platform/ubuntu
+
+shell-ubuntu: docker-ubuntu
+	docker run --rm --user ${UID}:${GID} -e HOME=/tmp -v ${CURDIR}:${CURDIR} -w ${CURDIR} godot-openfight-ubuntu ${SHELL_COMMAND}
+
+ubuntu: ubuntu-debug ubuntu-release
+
+ubuntu-debug:
+	$(MAKE) shell-ubuntu SHELL_COMMAND='./platform/ubuntu/build_debug.sh'
+
+ubuntu-release:
+	$(MAKE) shell-ubuntu SHELL_COMMAND='./platform/ubuntu/build_release.sh'
+
 ubuntu-install-deps:
 	sudo apt install -y build-essential libsdl2-dev libsdl2-image-dev libglu1-mesa-dev libglew-dev libyaml-cpp-dev xvfb clang-format
 

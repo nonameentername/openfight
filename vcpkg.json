@@ -1,0 +1,9 @@
+{
+  "name": "godot-openfight",
+  "version": "0.0.1",
+  "dependencies": [
+    "yaml-cpp",
+    "glew",
+    "glm"
+  ]
+}

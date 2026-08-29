@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://bllyjiie1ftfb"]
+
+[node name="Main" type="Node2D" unique_id=415684118]
+
+[node name="OpenFightNode" type="OpenFightNode" parent="." unique_id=829417630]
+scale = Vector2(4, 4)
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=582724881]
+position = Vector2(198, 208)
+zoom = Vector2(1.5, 1.5)

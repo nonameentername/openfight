@@ -1,0 +1,19 @@
+[godot-openfight]
+
+version = "${version}"
+build = "${build}"
+
+[configuration]
+
+entry_symbol = "godot_openfight_library_init"
+compatibility_minimum = 4.7
+reloadable = true
+
+[libraries]
+
+linux.debug.x86_64 = "res://addons/openfight/bin/linux/libopenfightgodot.linux.template_debug.dev.x86_64.so"
+linux.release.x86_64 = "res://addons/openfight/bin/linux/libopenfightgodot.linux.template_release.x86_64.so"
+windows.debug.x86_64 = "res://addons/openfight/bin/windows/libopenfightgodot.windows.template_debug.dev.x86_64.dll"
+windows.release.x86_64 = "res://addons/openfight/bin/windows/libopenfightgodot.windows.template_release.x86_64.dll"
+macos.debug = "res://addons/openfight/bin/macos/macos.framework/libopenfightgodot.macos.template_debug"
+macos.release = "res://addons/openfight/bin/macos/macos.framework/libopenfightgodot.macos.template_release"

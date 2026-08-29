@@ -1,8 +1,30 @@
 cmake_minimum_required(VERSION 3.10...3.27)
+
+set(CMAKE_OSX_DEPLOYMENT_TARGET "11.0" CACHE STRING "" FORCE)
+
+set(VCPKG_FEATURE_FLAGS versions)
+set(X_VCPKG_APPLOCAL_DEPS_INSTALL ON)
+set(VCPKG_OVERLAY_TRIPLETS ${CMAKE_CURRENT_SOURCE_DIR}/platform/vcpkg/triplets)
+set(VCPKG_OVERLAY_PORTS ${CMAKE_CURRENT_SOURCE_DIR}/platform/vcpkg/ports)
+set(CMAKE_TOOLCHAIN_FILE ${CMAKE_CURRENT_SOURCE_DIR}/modules/vcpkg/scripts/buildsystems/vcpkg.cmake CACHE STRING "Vcpkg toolchain file")
+
+set(VCPKG_TARGET_TRIPLET "x64-linux")
+
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    set(GODOT_LIBRARIES_SUFFIX ".linuxbsd.editor.dev.x86_64")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DDEBUG")
+else()
+    set(GODOT_LIBRARIES_SUFFIX ".linuxbsd.editor.x86_64")
+endif()
+
 project(openfight)
+
+message(STATUS "VCPKG_TARGET_TRIPLET: ${VCPKG_TARGET_TRIPLET}")
+message(STATUS "CMAKE_TOOLCHAIN_FILE: ${CMAKE_TOOLCHAIN_FILE}")
+
 set(LIBRARY_NAME libopenfight)
 
-if(CMAKE_BUILD_TYPE MATCHES Debug)
+if(ENABLE_ASAN AND CMAKE_BUILD_TYPE MATCHES Debug)
     add_compile_options(-fsanitize=address -fsanitize=undefined)
     add_link_options(-fsanitize=address -fsanitize=undefined)
 endif()

@@ -1,5 +1,8 @@
 #include "sdlGlRenderBackend.h"
 #include "gl.h"
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include "graphicsCore.h"
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_opengl.h>
@@ -30,7 +33,16 @@ void SdlGlRenderBackend::resizeWindow(int width, int height) {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
 
-    gluPerspective(45.0f, ratio, 0.1f, 200.0f);
+    //gluPerspective(45.0f, ratio, 0.1f, 200.0f);
+
+    glm::mat4 projection = glm::perspective(
+            glm::radians(45.0f),
+            ratio,
+            01.f,
+            200.0f
+            );
+
+    glMultMatrixf(glm::value_ptr(projection));
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
