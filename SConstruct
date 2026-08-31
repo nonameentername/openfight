@@ -90,12 +90,13 @@ env = SConscript("godot-cpp/SConstruct", {"env": env, "customs": customs})
 
 if env["platform"] == "windows":
     env.Append(CPPFLAGS=["-DMINGW"])
-    env.Append(LIBS=["yaml-cpp"])
 
     if env["dev_build"]:
+        env.Append(LIBS=["yaml-cppd"])
         env.Append(LIBPATH=["addons/openfight/bin/windows/debug/vcpkg_installed/x64-mingw-static/debug/lib"])
         env.Append(CPPPATH=["addons/openfight/bin/windows/debug/vcpkg_installed/x64-mingw-static/include"])
     else:
+        env.Append(LIBS=["yaml-cpp"])
         env.Append(LIBPATH=["addons/openfight/bin/windows/release/vcpkg_installed/x64-mingw-static/lib"])
         env.Append(CPPPATH=["addons/openfight/bin/windows/release/vcpkg_installed/x64-mingw-static/include"])
 elif env["platform"] == "web":

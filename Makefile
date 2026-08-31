@@ -35,6 +35,20 @@ ubuntu-debug:
 ubuntu-release:
 	$(MAKE) shell-ubuntu SHELL_COMMAND='./platform/ubuntu/build_release.sh'
 
+docker-mingw:
+	docker build -t godot-openfight-mingw ./platform/mingw
+
+shell-mingw: docker-mingw
+	docker run -it --rm -v ${CURDIR}:${CURDIR} -w ${CURDIR} godot-openfight-mingw ${SHELL_COMMAND}
+
+mingw: mingw-debug mingw-release
+
+mingw-debug:
+	$(MAKE) shell-mingw SHELL_COMMAND='./platform/mingw/build_debug.sh'
+
+mingw-release:
+	$(MAKE) shell-mingw SHELL_COMMAND='./platform/mingw/build_release.sh'
+
 docker-osxcross:
 	docker build -t godot-csound-osxcross ./platform/osxcross
 
