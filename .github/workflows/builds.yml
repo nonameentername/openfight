@@ -90,7 +90,7 @@ jobs:
           submodules: recursive
 
       - name: Bootstrap VCPKG
-        run: ./modules/openfight/vcpkg/bootstrap-vcpkg.sh
+        run: ./modules/vcpkg/bootstrap-vcpkg.sh
 
       - name: Build openfight
         uses: nonameentername/docker-run-action@v3
