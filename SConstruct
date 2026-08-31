@@ -111,11 +111,11 @@ elif env["platform"] == "macos":
     env.Append(LIBS=["yaml-cpp"])
 
     if env["dev_build"]:
-        env.Append(LIBPATH=["addons/openfight/bin/osxcross/debug/vcpkg_installed/universal-osxcross/lib"])
-        env.Append(CPPPATH=["addons/openfight/bin/osxcross/debug/vcpkg_installed/universal-osxcross/include"])
+        env.Append(LIBPATH=["addons/openfight/bin/macos/debug/vcpkg_installed/universal-osxcross/lib"])
+        env.Append(CPPPATH=["addons/openfight/bin/macos/debug/vcpkg_installed/universal-osxcross/include"])
     else:
-        env.Append(LIBPATH=["addons/openfight/bin/osxcross/release/vcpkg_installed/universal-osxcross/lib"])
-        env.Append(CPPPATH=["addons/openfight/bin/osxcross/release/vcpkg_installed/universal-osxcross/include"])
+        env.Append(LIBPATH=["addons/openfight/bin/macos/release/vcpkg_installed/universal-osxcross/lib"])
+        env.Append(CPPPATH=["addons/openfight/bin/macos/release/vcpkg_installed/universal-osxcross/include"])
 elif env["platform"] == "linux":
     env.Append(LIBS=["yaml-cpp"])
 
