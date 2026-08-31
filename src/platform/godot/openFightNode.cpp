@@ -3,6 +3,7 @@
 #include "graphicsCore.h"
 #include "utilities.h"
 
+#include <godot_cpp/classes/file_access.hpp>
 #include <godot_cpp/classes/input.hpp>
 #include <godot_cpp/classes/input_map.hpp>
 #include <godot_cpp/classes/project_settings.hpp>
@@ -124,11 +125,26 @@ void OpenFightNode::setup_game() {
     graphics->initialize(static_cast<int>(get_viewport_rect().size.x), static_cast<int>(get_viewport_rect().size.y),
                          *renderer);
 
-    GameSetup setup = {toFilePath(player_one_path), toFilePath(player_two_path), toFilePath(moves_path),
+    GameSetup setup = {toResourcePath(player_one_path), toResourcePath(player_two_path), toResourcePath(moves_path),
                        toResourcePath(background_path)};
 
+    ReadTextFileCallback read_text_file = [](const std::string &path, std::string &contents) {
+        String godot_path = String::utf8(path.c_str());
+        Ref<FileAccess> file = FileAccess::open(godot_path, FileAccess::READ);
+        if ((file.is_null() || !file->is_open()) && !godot_path.begins_with("res://") &&
+            !godot_path.begins_with("user://")) {
+            file = FileAccess::open(String("res://") + godot_path, FileAccess::READ);
+        }
+        if (file.is_null() || !file->is_open())
+            return false;
+
+        CharString utf8 = file->get_as_text().utf8();
+        contents = std::string(utf8.get_data());
+        return true;
+    };
+
     update_accumulator_ms = 0.0f;
-    running = game->setup(setup, *renderer);
+    running = game->setup(setup, *renderer, read_text_file);
     set_process(running);
     queue_redraw();
 }

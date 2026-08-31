@@ -8,6 +8,7 @@ log.txt
 /src/gen/
 .sconsign.dblite
 .godot/*
+__pycache__/
 
 *.o
 *.os

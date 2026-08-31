@@ -11,6 +11,7 @@
 #include "actions.h"
 #include "animation.h"
 #include "collision.h"
+#include "fileReader.h"
 #include "graphicsCore.h"
 #include "objectManager.h"
 #include "utilities.h"
@@ -41,6 +42,7 @@ private:
 
     Player *opponent;
     ObjectManager<Player> *objects;
+    ReadTextFileCallback yaml_loader;
 
     void setCurrentState(std::string state);
     void checkCollisions(float action_x_vel);
@@ -60,7 +62,8 @@ public:
     Collision *getOffense();
     Collision *getDefense();
 
-    void initialize(std::string file_name, bool player_one, float x_pos, float y_pos);
+    void initialize(std::string file_name, bool player_one, float x_pos, float y_pos,
+                    const ReadTextFileCallback &read_text_file = ReadTextFileCallback());
     void setOpponent(Player *opponent);
     bool updateState(std::string command);
     bool updateState(std::string command, bool from_opponent);

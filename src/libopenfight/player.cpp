@@ -174,7 +174,7 @@ void Player::createObject(string object) {
     if (!objects->contains(object)) {
         Player *new_object = new Player();
 
-        new_object->initialize(object, !inverted, 0, 0);
+        new_object->initialize(object, !inverted, 0, 0, yaml_loader);
         new_object->setOpponent(opponent);
 
         objects->add(object, new_object);

@@ -12,13 +12,14 @@ std::shared_ptr<Player> PlayerAgent::getPlayer() {
     return player;
 }
 
-bool PlayerAgent::initialize(string file_name, string moves_file, bool player_one) {
+bool PlayerAgent::initialize(string file_name, string moves_file, bool player_one,
+                             const ReadTextFileCallback &read_text_file) {
     float location = player_one ? 30 : 70;
     player = std::make_shared<Player>();
-    player->initialize(file_name, player_one, location, 0);
+    player->initialize(file_name, player_one, location, 0, read_text_file);
 
     moves = std::make_unique<Moves>();
-    moves->initialize(moves_file);
+    moves->initialize(moves_file, read_text_file);
 
     for (int i = 0; i < KEY_MAX; i++)
         previous_keys[i] = false;

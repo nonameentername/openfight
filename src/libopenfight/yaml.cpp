@@ -3,6 +3,16 @@
 #include "moves.h"
 #include "player.h"
 
+Node loadYamlFile(const string &file_name, const ReadTextFileCallback &read_text_file) {
+    if (read_text_file) {
+        string contents;
+        if (read_text_file(file_name, contents))
+            return Load(contents);
+    }
+
+    return LoadFile(file_name);
+}
+
 void Configuration::read() {
     ifstream file(file_name);
     if (!file.is_open()) {
@@ -51,17 +61,11 @@ void Configuration::read() {
     readPlayerConfig("player_two", config_keys_two, device_keys_two);
 }
 
-void Moves::initialize(string file_name) {
-    ifstream ifs(file_name);
-    if (!ifs) {
-        cerr << "Failed to open file: " << file_name << endl;
-        return;
-    }
-
+void Moves::initialize(string file_name, const ReadTextFileCallback &read_text_file) {
     Node root;
     try {
-        root = Load(ifs);
-    } catch (const ParserException &e) {
+        root = loadYamlFile(file_name, read_text_file);
+    } catch (const Exception &e) {
         cerr << "Failed to parse YAML in file: " << file_name << endl << e.what() << endl;
         return;
     }
@@ -110,7 +114,8 @@ inline void addCollisions(const Node &node, Collision *coll, float r, float g, f
     }
 }
 
-void Player::initialize(string file_name, bool player_one, float x_pos, float y_pos) {
+void Player::initialize(string file_name, bool player_one, float x_pos, float y_pos,
+                        const ReadTextFileCallback &read_text_file) {
     Animation *animation;
     Actions *actions;
     Collision *defense;
@@ -122,9 +127,16 @@ void Player::initialize(string file_name, bool player_one, float x_pos, float y_
 
     this->x_pos = x_pos;
     this->y_pos = y_pos;
+    yaml_loader = read_text_file;
 
     // Load YAML and access root node "character"
-    Node root_yaml = LoadFile(file_name);
+    Node root_yaml;
+    try {
+        root_yaml = loadYamlFile(file_name, read_text_file);
+    } catch (const Exception &e) {
+        cerr << "Failed to load YAML file: " << file_name << endl << e.what() << endl;
+        return;
+    }
     Node root = root_yaml["character"];
     if (!root) {
         cerr << "Missing root node 'character' in YAML file: " << file_name << endl;

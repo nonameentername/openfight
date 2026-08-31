@@ -12,14 +12,14 @@ GameContext::~GameContext() {
     shutdown();
 }
 
-bool GameContext::setup(const GameSetup &setup, RenderBackend &renderer) {
+bool GameContext::setup(const GameSetup &setup, RenderBackend &renderer, const ReadTextFileCallback &read_text_file) {
     if (initialized)
         shutdown();
 
     texture_manager->setRenderBackend(&renderer);
 
-    player_one.initialize(setup.player_one_path, setup.moves_path, true);
-    player_two.initialize(setup.player_two_path, setup.moves_path, false);
+    player_one.initialize(setup.player_one_path, setup.moves_path, true, read_text_file);
+    player_two.initialize(setup.player_two_path, setup.moves_path, false, read_text_file);
 
     auto p2 = player_two.getPlayer().get();
     auto p1 = player_one.getPlayer().get();

@@ -1,6 +1,7 @@
 #ifndef OPEN_FIGHT_GAME_CONTEXT_H
 #define OPEN_FIGHT_GAME_CONTEXT_H
 
+#include "fileReader.h"
 #include "input.h"
 #include "playerAgent.h"
 #include "playerBridge.h"
@@ -35,7 +36,8 @@ public:
     GameContext();
     ~GameContext();
 
-    bool setup(const GameSetup &setup, RenderBackend &renderer);
+    bool setup(const GameSetup &setup, RenderBackend &renderer,
+               const ReadTextFileCallback &read_text_file = ReadTextFileCallback());
     void update(const FrameInput &input, float delta_ms);
     void render(RenderBackend &renderer);
     void shutdown();

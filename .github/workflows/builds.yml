@@ -170,3 +170,60 @@ jobs:
         with:
           path: addons/openfight/bin
           key: macos-artifacts-${{ matrix.environment }}-${{github.run_id}}
+
+  web-build:
+    name: Web build
+    runs-on: ubuntu-latest
+    env:
+      VERSION: v1
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 1
+          submodules: recursive
+
+      - name: Bootstrap VCPKG
+        run: ./modules/vcpkg/bootstrap-vcpkg.sh
+
+      - name: Update minor version
+        id: tag
+        uses: anothrNick/github-tag-action@1.36.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WITH_V: true
+          DRY_RUN: true
+          RELEASE_BRANCHES: none
+
+      - uses: benjlevesque/short-sha@v3.0
+        id: short-sha
+        with:
+          length: 6
+
+      - name: Build godot-openfight (Debug)
+        uses: nonameentername/docker-run-action@v3
+        with:
+          image: ghcr.io/nonameentername/godot-openfight-wasm:${{ env.VERSION }}
+          options: -v ${{ github.workspace }}:${{ github.workspace }} --workdir ${{ github.workspace }} -e BUILD_SHA -e TAG_VERSION
+          run: |
+            ./platform/web/build_debug.sh
+        env:
+          BUILD_SHA: ${{ steps.short-sha.outputs.sha }}
+          TAG_VERSION: ${{ steps.tag.outputs.new_tag }}
+
+      - name: Build godot-openfight (Release)
+        uses: nonameentername/docker-run-action@v3
+        with:
+          image: ghcr.io/nonameentername/godot-openfight-wasm:${{ env.VERSION }}
+          options: -v ${{ github.workspace }}:${{ github.workspace }} --workdir ${{ github.workspace }} -e BUILD_SHA -e TAG_VERSION
+          run: |
+            ./platform/web/build_release.sh
+        env:
+          BUILD_SHA: ${{ steps.short-sha.outputs.sha }}
+          TAG_VERSION: ${{ steps.tag.outputs.new_tag }}
+
+      - name: Create cache for build
+        uses: actions/cache@v4
+        with:
+          path: addons/openfight/bin
+          key: web-artifacts-${{github.run_id}}

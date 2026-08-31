@@ -42,6 +42,10 @@ if(OSXCROSS_TARGET)
         "-framework ApplicationServices"
         "-framework Security"
     )
+elseif (CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
+    set(VCPKG_TARGET_TRIPLET "wasm32-emscripten")
+    set(VCPKG_CHAINLOAD_TOOLCHAIN_FILE ${CMAKE_CURRENT_SOURCE_DIR}/platform/web/wasm32.cmake)
+    set(VCPKG_CMAKE_SYSTEM_NAME Emscripten)
 elseif(UNIX)
     set(VCPKG_TARGET_TRIPLET "x64-linux")
 
@@ -73,8 +77,14 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 file(GLOB LIBOPENFIGHT_SOURCE CONFIGURE_DEPENDS src/libopenfight/*.cpp)
 file(GLOB LIBOPENFIGHT_HEADER CONFIGURE_DEPENDS src/libopenfight/*.h)
 file(GLOB SDL_SOURCE CONFIGURE_DEPENDS src/platform/sdl/*.cpp)
+
 if(NOT OSXCROSS_TARGET)
     list(REMOVE_ITEM SDL_SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/src/platform/sdl/osxcrossAvailability.cpp)
+endif()
+
+if(CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
+    list(REMOVE_ITEM SDL_SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/src/platform/sdl/sdlGlRenderBackend.cpp)
+    list(REMOVE_ITEM SDL_SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/src/platform/sdl/main.cpp)
 endif()
 
 set(OpenGL_GL_PREFERENCE LEGACY)
@@ -103,6 +113,7 @@ target_link_libraries(
     yaml-cpp
 )
 
+if(NOT CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
 add_executable(${PROJECT_NAME} ${SDL_SOURCE})
 
 target_include_directories(${PROJECT_NAME}
@@ -129,3 +140,5 @@ add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
             $<TARGET_FILE:${PROJECT_NAME}>
             ${CMAKE_CURRENT_BINARY_DIR}/..
 )
+endif()
+
