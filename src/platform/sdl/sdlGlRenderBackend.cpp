@@ -1,11 +1,11 @@
 #include "sdlGlRenderBackend.h"
 #include "gl.h"
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
 #include "graphicsCore.h"
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_opengl.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 void SdlGlRenderBackend::initialize(int width, int height) {
     glClearColor(0.0f, 0.0f, 0.0f, 0.5f);
@@ -33,14 +33,7 @@ void SdlGlRenderBackend::resizeWindow(int width, int height) {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
 
-    //gluPerspective(45.0f, ratio, 0.1f, 200.0f);
-
-    glm::mat4 projection = glm::perspective(
-            glm::radians(45.0f),
-            ratio,
-            01.f,
-            200.0f
-            );
+    glm::mat4 projection = glm::perspective(glm::radians(45.0f), ratio, 01.f, 200.0f);
 
     glMultMatrixf(glm::value_ptr(projection));
 
@@ -99,15 +92,21 @@ void SdlGlRenderBackend::setPixel(SDL_Surface *surface, int x, int y, uint32_t p
 
 void SdlGlRenderBackend::createMask(SDL_Surface *image) {
     SDL_LockSurface(image);
-    Uint32 color_black = SDL_MapRGB(image->format, 0xff, 0xff, 0xff);
-    Uint32 color_white = SDL_MapRGB(image->format, 0x00, 0x00, 0x00);
+    Uint32 transparent_mask = SDL_MapRGBA(image->format, 0xff, 0xff, 0xff, 0xff);
+    Uint32 opaque_mask = SDL_MapRGBA(image->format, 0x00, 0x00, 0x00, 0xff);
 
     for (int x = 0; x < image->w; x++) {
         for (int y = 0; y < image->h; y++) {
-            if (getPixel(image, x, y) != 0)
-                setPixel(image, x, y, color_white);
+            Uint8 red;
+            Uint8 green;
+            Uint8 blue;
+            Uint8 alpha;
+            SDL_GetRGBA(getPixel(image, x, y), image->format, &red, &green, &blue, &alpha);
+
+            if (alpha == 0 || (red == 0 && green == 0 && blue == 0))
+                setPixel(image, x, y, transparent_mask);
             else
-                setPixel(image, x, y, color_black);
+                setPixel(image, x, y, opaque_mask);
         }
     }
 
@@ -115,8 +114,16 @@ void SdlGlRenderBackend::createMask(SDL_Surface *image) {
 }
 
 unsigned int SdlGlRenderBackend::loadTexture(const std::string &file_name, bool mipmap, bool masking) {
+    (void)mipmap;
+
     GLuint texture;
-    SDL_Surface *imgFile = IMG_Load(file_name.c_str());
+    SDL_Surface *loaded_image = IMG_Load(file_name.c_str());
+
+    if (loaded_image == nullptr)
+        return 0;
+
+    SDL_Surface *imgFile = SDL_ConvertSurfaceFormat(loaded_image, SDL_PIXELFORMAT_RGBA32, 0);
+    SDL_FreeSurface(loaded_image);
 
     if (imgFile == nullptr)
         return 0;
@@ -124,21 +131,14 @@ unsigned int SdlGlRenderBackend::loadTexture(const std::string &file_name, bool 
     if (masking)
         createMask(imgFile);
 
-    GLenum texture_format = GL_RGB;
-    if (imgFile->format->BytesPerPixel == 4)
-        texture_format = GL_RGBA;
-
     glGenTextures(1, &texture);
     glBindTexture(GL_TEXTURE_2D, texture);
 
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, mipmap ? GL_LINEAR_MIPMAP_LINEAR : GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-    glTexImage2D(GL_TEXTURE_2D, 0, imgFile->format->BytesPerPixel == 4 ? GL_RGBA : GL_RGB, imgFile->w, imgFile->h, 0,
-                 texture_format, GL_UNSIGNED_BYTE, imgFile->pixels);
-
-    if (mipmap)
-        glGenerateMipmap(GL_TEXTURE_2D);
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imgFile->w, imgFile->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, imgFile->pixels);
 
     SDL_FreeSurface(imgFile);
 
