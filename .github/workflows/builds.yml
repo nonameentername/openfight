@@ -312,7 +312,9 @@ jobs:
           include-templates: true
 
       - name: Export Web build
-        run: godot --headless --export-release "Web"
+        run: |
+          mkdir -p build/web
+          godot --headless --export-release "Web"
 
       - name: Enable threads
         run: |
