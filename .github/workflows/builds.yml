@@ -1,0 +1,172 @@
+name: builds
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ${{ github.ref }}
+
+jobs:
+  linux-build:
+    name: Linux/Ubuntu build
+    runs-on: ubuntu-latest
+    env:
+      VERSION: v1
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 1
+          submodules: recursive
+
+      - name: Bootstrap VCPKG
+        run: ./modules/vcpkg/bootstrap-vcpkg.sh
+
+      - name: Update minor version
+        id: tag
+        uses: anothrNick/github-tag-action@1.36.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WITH_V: true
+          DRY_RUN: true
+          RELEASE_BRANCHES: none
+
+      - uses: benjlevesque/short-sha@v3.0
+        id: short-sha
+        with:
+          length: 6
+
+      - name: Build openfight (Debug)
+        uses: nonameentername/docker-run-action@v3
+        with:
+          image: ghcr.io/nonameentername/godot-openfight-ubuntu:${{ env.VERSION }}
+          options: -v ${{ github.workspace }}:${{ github.workspace }} --workdir ${{ github.workspace }} -e BUILD_SHA -e TAG_VERSION
+          run: |
+            ./platform/ubuntu/build_debug.sh
+        env:
+          BUILD_SHA: ${{ steps.short-sha.outputs.sha }}
+          TAG_VERSION: ${{ steps.tag.outputs.new_tag }}
+
+      - name: Build openfight (Release)
+        uses: nonameentername/docker-run-action@v3
+        with:
+          image: ghcr.io/nonameentername/godot-openfight-ubuntu:${{ env.VERSION }}
+          options: -v ${{ github.workspace }}:${{ github.workspace }} --workdir ${{ github.workspace }} -e BUILD_SHA -e TAG_VERSION
+          run: |
+            ./platform/ubuntu/build_release.sh
+        env:
+          BUILD_SHA: ${{ steps.short-sha.outputs.sha }}
+          TAG_VERSION: ${{ steps.tag.outputs.new_tag }}
+
+      - name: Create cache for build
+        uses: actions/cache@v4
+        with:
+          path: addons/openfight/bin
+          key: linux-artifacts-${{github.run_id}}
+
+  macos-build-deps:
+    name: MacOS build deps
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        environment: [debug, release]
+        arch: [arm64, x86_64]
+    env:
+      VERSION: v1
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 1
+          submodules: recursive
+
+      - name: Bootstrap VCPKG
+        run: ./modules/vcpkg/bootstrap-vcpkg.sh
+
+      - name: Build openfight
+        uses: nonameentername/docker-run-action@v3
+        with:
+          image: ghcr.io/nonameentername/godot-openfight-osxcross:${{ env.VERSION }}
+          options: -v ${{ github.workspace }}:${{ github.workspace }} --workdir ${{ github.workspace }}
+          run: |
+            ARCH=${{ matrix.arch }} ./platform/osxcross/build_deps_${{ matrix.environment }}.sh
+
+      - name: Create cache for build
+        uses: actions/cache@v4
+        with:
+          path: |
+            addons/openfight/bin
+          key: macos-deps-artifacts-${{ matrix.environment }}-${{ matrix.arch }}-${{github.run_id}}
+
+  macos-build:
+    name: MacOS build
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        environment: [debug, release]
+    needs: [macos-build-deps]
+    env:
+      VERSION: v1
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 1
+          submodules: recursive
+
+      - name: Bootstrap VCPKG
+        run: ./modules/vcpkg/bootstrap-vcpkg.sh
+
+      - name: Update minor version
+        id: tag
+        uses: anothrNick/github-tag-action@1.36.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WITH_V: true
+          DRY_RUN: true
+          RELEASE_BRANCHES: none
+
+      - uses: benjlevesque/short-sha@v3.0
+        id: short-sha
+        with:
+          length: 6
+
+      - name: Restore cached MacOS artifacts (arm64)
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            addons/openfight/bin
+          key: macos-deps-artifacts-${{ matrix.environment }}-arm64-${{github.run_id}}
+
+      - name: Restore cached MacOS artifacts (x86_64)
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            addons/openfight/bin
+          key: macos-deps-artifacts-${{ matrix.environment }}-x86_64-${{github.run_id}}
+
+      - name: Build godot-openfight
+        uses: nonameentername/docker-run-action@v3
+        with:
+          image: ghcr.io/nonameentername/godot-openfight-osxcross:${{ env.VERSION }}
+          options: -v ${{ github.workspace }}:${{ github.workspace }} --workdir ${{ github.workspace }} -e BUILD_SHA -e TAG_VERSION
+          run: |
+            ./platform/osxcross/build_lib_${{ matrix.environment }}.sh
+        env:
+          BUILD_SHA: ${{ steps.short-sha.outputs.sha }}
+          TAG_VERSION: ${{ steps.tag.outputs.new_tag }}
+
+      - name: Create cache for build
+        uses: actions/cache@v4
+        with:
+          path: addons/openfight/bin
+          key: macos-artifacts-${{ matrix.environment }}-${{github.run_id}}

@@ -8,13 +8,49 @@ set(VCPKG_OVERLAY_TRIPLETS ${CMAKE_CURRENT_SOURCE_DIR}/platform/vcpkg/triplets)
 set(VCPKG_OVERLAY_PORTS ${CMAKE_CURRENT_SOURCE_DIR}/platform/vcpkg/ports)
 set(CMAKE_TOOLCHAIN_FILE ${CMAKE_CURRENT_SOURCE_DIR}/modules/vcpkg/scripts/buildsystems/vcpkg.cmake CACHE STRING "Vcpkg toolchain file")
 
-set(VCPKG_TARGET_TRIPLET "x64-linux")
+if(OSXCROSS_TARGET)
+    if(CMAKE_OSX_ARCHITECTURES STREQUAL "x86_64")
+        set(VCPKG_TARGET_TRIPLET "x64-osxcross")
+        set(VCPKG_CHAINLOAD_TOOLCHAIN_FILE ${CMAKE_CURRENT_SOURCE_DIR}/platform/osxcross/osx-x64.cmake)
+    elseif(CMAKE_OSX_ARCHITECTURES STREQUAL "arm64")
+        set(VCPKG_TARGET_TRIPLET "arm64-osxcross")
+        set(VCPKG_CHAINLOAD_TOOLCHAIN_FILE ${CMAKE_CURRENT_SOURCE_DIR}/platform/osxcross/osx-arm64.cmake)
+    endif()
 
-if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    set(GODOT_LIBRARIES_SUFFIX ".linuxbsd.editor.dev.x86_64")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DDEBUG")
-else()
-    set(GODOT_LIBRARIES_SUFFIX ".linuxbsd.editor.x86_64")
+    if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+        set(GODOT_LIBRARIES_SUFFIX ".macos.editor.dev.${CMAKE_OSX_ARCHITECTURES}")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DDEBUG")
+    else()
+        set(GODOT_LIBRARIES_SUFFIX ".macos.editor.${CMAKE_OSX_ARCHITECTURES}")
+    endif()
+    set(OSXCROSS_FRAMEWORKS
+        "-framework Cocoa"
+        "-framework Foundation"
+        "-framework CoreFoundation"
+        "-framework CoreAudio"
+        "-framework AudioToolbox"
+        "-framework CoreVideo"
+        "-framework CoreGraphics"
+        "-framework IOKit"
+        "-framework ForceFeedback"
+        "-framework GameController"
+        "-framework Metal"
+        "-framework MetalKit"
+        "-framework QuartzCore"
+        "-framework CoreHaptics"
+        "-framework Carbon"
+        "-framework ApplicationServices"
+        "-framework Security"
+    )
+elseif(UNIX)
+    set(VCPKG_TARGET_TRIPLET "x64-linux")
+
+    if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+        set(GODOT_LIBRARIES_SUFFIX ".linuxbsd.editor.dev.x86_64")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DDEBUG")
+    else()
+        set(GODOT_LIBRARIES_SUFFIX ".linuxbsd.editor.x86_64")
+    endif()
 endif()
 
 project(openfight)
@@ -37,6 +73,9 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 file(GLOB LIBOPENFIGHT_SOURCE CONFIGURE_DEPENDS src/libopenfight/*.cpp)
 file(GLOB LIBOPENFIGHT_HEADER CONFIGURE_DEPENDS src/libopenfight/*.h)
 file(GLOB SDL_SOURCE CONFIGURE_DEPENDS src/platform/sdl/*.cpp)
+if(NOT OSXCROSS_TARGET)
+    list(REMOVE_ITEM SDL_SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/src/platform/sdl/osxcrossAvailability.cpp)
+endif()
 
 set(OpenGL_GL_PREFERENCE LEGACY)
 
@@ -47,16 +86,9 @@ pkg_check_modules(SDL2 REQUIRED sdl2)
 pkg_check_modules(SDL2_IMAGE REQUIRED SDL2_image)
 find_package(yaml-cpp REQUIRED)
 
-if(APPLE)
-    find_package(GLEW REQUIRED CONFIG)
-else()
-    find_package(GLEW REQUIRED)
-endif()
-
 link_directories(
     ${SDL2_LIBRARY_DIRS}
     ${SDL2_IMAGE_LIBRARY_DIRS}
-    ${GLEW_LIBRARY_DIRS}
 )
 
 add_library(${LIBRARY_NAME} ${LIBOPENFIGHT_SOURCE} ${LIBOPENFIGHT_HEADER})
@@ -80,7 +112,6 @@ target_include_directories(${PROJECT_NAME}
         ${GLU_INCLUDE_DIRS}
         ${SDL2_INCLUDE_DIRS}
         ${SDL2_IMAGE_INCLUDE_DIRS}
-        ${GLEW_INCLUDE_DIRS}
 )
 
 target_link_libraries(
@@ -88,10 +119,9 @@ target_link_libraries(
     ${LIBRARY_NAME}
     ${OPENGL_gl_LIBRARY}
     ${GLU_LIBRARY}
-    ${GLEW_LIBRARIES}
-    GLEW::GLEW
     ${SDL2_LIBRARIES}
     ${SDL2_IMAGE_LIBRARIES}
+    ${OSXCROSS_FRAMEWORKS}
 )
 
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
