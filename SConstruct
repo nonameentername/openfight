@@ -99,9 +99,17 @@ if env["platform"] == "windows":
         env.Append(LIBPATH=["addons/openfight/bin/windows/release/vcpkg_installed/x64-mingw-static/lib"])
         env.Append(CPPPATH=["addons/openfight/bin/windows/release/vcpkg_installed/x64-mingw-static/include"])
 elif env["platform"] == "web":
+    env.Append(LIBS=["openfight", "yaml-cpp"])
+
     if env["dev_build"]:
+        env.Append(LIBPATH=["addons/openfight/bin/web/debug", "addons/openfight/bin/web/debug/vcpkg_installed/wasm32-emscripten/lib"])
+        env.Append(CPPPATH=["addons/openfight/bin/web/debug/vcpkg_installed/wasm32-emscripten/include"])
+
         env.Append(CPPFLAGS=["-g"])
         env.Append(LINKFLAGS=["-g", "-s", "ERROR_ON_UNDEFINED_SYMBOLS=1"])
+    else:
+        env.Append(LIBPATH=["addons/openfight/bin/web/release", "addons/openfight/bin/web/release/vcpkg_installed/wasm32-emscripten/lib"])
+        env.Append(CPPPATH=["addons/openfight/bin/web/release/vcpkg_installed/wasm32-emscripten/include"])
 elif env["platform"] == "macos":
     env.Append(LINKFLAGS=["-framework", "CoreAudio",
                           "-framework", "AudioToolbox",
@@ -128,10 +136,15 @@ elif env["platform"] == "linux":
         env.Append(CPPPATH=["addons/openfight/bin/linux/release/vcpkg_installed/x64-linux/include"])
         #env.Append(RPATH=["", "."])
 
-env.Append(CPPFLAGS=["-fexceptions"])
+if env["platform"] != "web":
+    env.Append(CPPFLAGS=["-fexceptions"])
 
 env.Append(CPPPATH=["src/", "src/libopenfight", "src/platform/godot"])
-sources = Glob("src/libopenfight/*.cpp") + Glob("src/platform/godot/*.cpp")
+
+if env["platform"] == "web":
+    sources = Glob("src/platform/godot/*.cpp")
+else:
+    sources = Glob("src/libopenfight/*.cpp") + Glob("src/platform/godot/*.cpp")
 
 if env.get("asan", False):
     print("SCons: Building with AddressSanitizer instrumentation")

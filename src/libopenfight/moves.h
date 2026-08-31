@@ -1,6 +1,7 @@
 #ifndef OPEN_FIGHT_MOVES_H
 #define OPEN_FIGHT_MOVES_H
 
+#include "fileReader.h"
 #include "input.h"
 #include "keyState.h"
 #include <algorithm>
@@ -28,7 +29,7 @@ public:
     Moves();
     ~Moves();
 
-    void initialize(std::string file_name);
+    void initialize(std::string file_name, const ReadTextFileCallback &read_text_file = ReadTextFileCallback());
     std::string getTrigger(std::list<KeyState> key_queue, std::map<std::string, int> &state);
 };
 

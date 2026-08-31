@@ -17,3 +17,5 @@ windows.debug.x86_64 = "res://addons/openfight/bin/windows/libopenfightgodot.win
 windows.release.x86_64 = "res://addons/openfight/bin/windows/libopenfightgodot.windows.template_release.x86_64.dll"
 macos.debug = "res://addons/openfight/bin/macos/macos.framework/libopenfightgodot.macos.template_debug"
 macos.release = "res://addons/openfight/bin/macos/macos.framework/libopenfightgodot.macos.template_release"
+web.release.wasm32 = "res://addons/openfight/bin/web/libopenfightgodot.web.template_release.wasm32.wasm"
+web.debug.wasm32 = "res://addons/openfight/bin/web/libopenfightgodot.web.template_debug.dev.wasm32.wasm"

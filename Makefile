@@ -38,6 +38,20 @@ ubuntu-release:
 docker-osxcross:
 	docker build -t godot-csound-osxcross ./platform/osxcross
 
+docker-web:
+	docker build -t godot-openfight-web ./platform/web
+
+shell-web: docker-web
+	docker run -it --rm -v ${CURDIR}:${CURDIR} -w ${CURDIR} godot-openfight-web ${SHELL_COMMAND}
+
+web: web-debug web-release
+
+web-debug:
+	$(MAKE) shell-web SHELL_COMMAND='./platform/web/build_debug.sh'
+
+web-release:
+	$(MAKE) shell-web SHELL_COMMAND='./platform/web/build_release.sh'
+
 shell-osxcross: docker-osxcross
 	docker run -it --rm -v ${CURDIR}:${CURDIR} -w ${CURDIR} godot-csound-osxcross ${SHELL_COMMAND}
 
