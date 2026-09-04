@@ -66,6 +66,7 @@ web-debug:
 web-release:
 	$(MAKE) shell-web SHELL_COMMAND='./platform/web/build_release.sh'
 
+
 shell-osxcross: docker-osxcross
 	docker run -it --rm -v ${CURDIR}:${CURDIR} -w ${CURDIR} godot-csound-osxcross ${SHELL_COMMAND}
 

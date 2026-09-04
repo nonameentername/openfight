@@ -116,7 +116,7 @@ int Input::getKeyWait(string &device) {
 }
 
 SDL_Event Input::poll() {
-    SDL_Event event;
+    SDL_Event event = {};
 
     string device;
     int button;
