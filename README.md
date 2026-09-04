@@ -1,5 +1,5 @@
-[![CI](https://github.com/nonameentername/openfight/actions/workflows/ci.yml/badge.svg)](https://github.com/nonameentername/openfight/actions/workflows/ci.yml)
-[![CD](https://github.com/nonameentername/openfight/actions/workflows/cd.yml/badge.svg)](https://github.com/nonameentername/openfight/actions/workflows/cd.yml)
+[![builds](https://github.com/nonameentername/openfight/actions/workflows/builds.yml/badge.svg)](https://github.com/nonameentername/openfight/actions/workflows/builds.yml)
+[![docker_builds](https://github.com/nonameentername/openfight/actions/workflows/build_images.yml/badge.svg)](https://github.com/nonameentername/openfight/actions/workflows/build_images.yml)
 ![GitHub all downloads](https://img.shields.io/github/downloads/nonameentername/openfight/total)
 
 # OpenFight
