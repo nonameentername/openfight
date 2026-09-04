@@ -304,22 +304,13 @@ jobs:
           path: addons/openfight/bin
           key: web-artifacts-${{github.run_id}}
 
-      - name: Setup Godot
-        uses: chickensoft-games/setup-godot@v2
-        with:
-          version: 4.7.0
-          use-dotnet: false
-          include-templates: true
-
-      - name: Export Web build
+      - name: Prepare Web build
         run: |
           mkdir -p build/web
-          godot --headless --export-release "Web"
-
-      - name: Enable threads
-        run: |
-          cp platform/web/enable-threads.js build/web
-          sed 's,</head>,    <script src="enable-threads.js"></script></head>,g' build/web/OpenFight.html > build/web/index.html
+          cp addons/openfight/bin/web/release/openfight.* build/web/
+          cp platform/web/enable-threads.js build/web/
+          sed 's,</head>,    <script src="enable-threads.js"></script></head>,g' build/web/openfight.html > build/web/index.html
+          rm build/web/openfight.html
 
       - name: Publish to gh-pages
         uses: peaceiris/actions-gh-pages@v4

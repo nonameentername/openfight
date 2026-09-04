@@ -19,9 +19,9 @@ cmake -DCMAKE_BUILD_TYPE=Debug \
     -DEMSDK_NODE=$EMSDK_NODE \
     $dir
 
-# build godot-openfight
+# build openfight
 
-make libopenfight
+make
 
 cd $dir
 scons platform=web target=template_debug dev_build=yes debug_symbols=yes

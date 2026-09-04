@@ -90,17 +90,20 @@ endif()
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
     list(REMOVE_ITEM SDL_SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/src/platform/sdl/sdlGlRenderBackend.cpp)
-    list(REMOVE_ITEM SDL_SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/src/platform/sdl/main.cpp)
+else()
+    list(REMOVE_ITEM SDL_SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/src/platform/sdl/sdlRenderBackend.cpp)
 endif()
 
-set(OpenGL_GL_PREFERENCE LEGACY)
-
-find_package(OpenGL REQUIRED)
 find_package(PkgConfig REQUIRED)
-find_package(GLU REQUIRED)
 pkg_check_modules(SDL2 REQUIRED sdl2)
 pkg_check_modules(SDL2_IMAGE REQUIRED SDL2_image)
 find_package(yaml-cpp REQUIRED)
+
+if(NOT CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
+    set(OpenGL_GL_PREFERENCE LEGACY)
+    find_package(OpenGL REQUIRED)
+    find_package(GLU REQUIRED)
+endif()
 
 link_directories(
     ${SDL2_LIBRARY_DIRS}
@@ -119,32 +122,42 @@ target_link_libraries(
     yaml-cpp
 )
 
-if(NOT CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
 add_executable(${PROJECT_NAME} ${SDL_SOURCE})
 
-target_include_directories(${PROJECT_NAME}
-    PRIVATE
-        ${PROJECT_SOURCE_DIR}/src/platform/sdl
-        ${OPENGL_INCLUDE_DIR}
-        ${GLU_INCLUDE_DIRS}
-        ${SDL2_INCLUDE_DIRS}
-        ${SDL2_IMAGE_INCLUDE_DIRS}
+target_include_directories(${PROJECT_NAME} PRIVATE
+    ${PROJECT_SOURCE_DIR}/src/platform/sdl
+    ${SDL2_INCLUDE_DIRS}
+    ${SDL2_IMAGE_INCLUDE_DIRS}
 )
+
+if(NOT CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
+    target_include_directories(${PROJECT_NAME} PRIVATE ${OPENGL_INCLUDE_DIR} ${GLU_INCLUDE_DIRS})
+endif()
 
 target_link_libraries(
     ${PROJECT_NAME}
     ${LIBRARY_NAME}
-    ${OPENGL_gl_LIBRARY}
-    ${GLU_LIBRARY}
     ${SDL2_LIBRARIES}
     ${SDL2_IMAGE_LIBRARIES}
-    ${OSXCROSS_FRAMEWORKS}
 )
 
-add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy
-            $<TARGET_FILE:${PROJECT_NAME}>
-            ${CMAKE_CURRENT_BINARY_DIR}/..
-)
+if(CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+        SUFFIX ".html"
+        LINK_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/web/shell.html"
+    )
+    target_link_options(${PROJECT_NAME} PRIVATE
+        "SHELL:--shell-file ${CMAKE_CURRENT_SOURCE_DIR}/web/shell.html"
+        "SHELL:--preload-file ${CMAKE_CURRENT_SOURCE_DIR}/data@data"
+        "SHELL:-sALLOW_MEMORY_GROWTH=1"
+    )
+else()
+    target_link_libraries(${PROJECT_NAME} ${OPENGL_gl_LIBRARY} ${GLU_LIBRARY} ${OSXCROSS_FRAMEWORKS})
+
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy
+                $<TARGET_FILE:${PROJECT_NAME}>
+                ${CMAKE_CURRENT_BINARY_DIR}/..
+    )
 endif()
 

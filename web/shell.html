@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Openfight</title>
+  <style>
+    :root { color-scheme: dark; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      display: grid;
+      place-items: center;
+      background: #17191c;
+      overflow: hidden;
+    }
+    #canvas {
+      display: block;
+      width: min(100vw, calc(100vh * 2), 1600px);
+      height: auto;
+      aspect-ratio: 2 / 1;
+      max-width: 1600px;
+      max-height: 800px;
+      background: #000;
+      outline: 1px solid #3a3f46;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canvas" width="1600" height="800" tabindex="0" oncontextmenu="event.preventDefault()"></canvas>
+  <script>
+    var Module = {
+      canvas: document.getElementById("canvas"),
+      print: function(text) { console.log(text); },
+      printErr: function(text) { console.error(text); }
+    };
+    Module.canvas.addEventListener("click", function() { Module.canvas.focus(); });
+  </script>
+  {{{ SCRIPT }}}
+</body>
+</html>
